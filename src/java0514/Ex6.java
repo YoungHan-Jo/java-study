@@ -34,8 +34,12 @@ public class Ex6 {
 		}
 		System.out.println();
 		// 2 4 6 8 10 15 14 16 18 20
-		for (int i = 1; i*2 <=20; i++) {
-			System.out.print(i*2 + " ");
+		for (int i = 1; i * 2 <= 20; i++) {
+			System.out.print(i * 2 + " ");
+		}
+		System.out.println();
+		for (int i = 2; i <= 20; i+=2) {
+			System.out.print(i + " ");
 		}
 		System.out.println();
 		// 10 9 8 ~ 1 정수 출력
@@ -43,6 +47,24 @@ public class Ex6 {
 			System.out.print(i + " ");
 		}
 		System.out.println();
+		System.out.println("==================================");
+//		for (;;) {
+//			// 무한반복문
+//		}
+//		
+//		for (;true;) {
+//			//무한반복문
+//		}
+		
+		// for문으로 구구단 2단 출력
+		// 2 * 1 =2 ...
+		
+		for(int i=1; i<=9 ; i++) {
+			System.out.printf("2 * %d = %d%n", i , 2*i);
+		}
+		
+		
+		
 	} // main
 
 }
