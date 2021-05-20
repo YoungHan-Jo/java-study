@@ -7,7 +7,10 @@ public class prac7 {
 		int sum = 0;
 
 		for (int i = 0; i < str.length(); i++) {
-			sum += str.charAt(i) - '0';
+			char ch = str.charAt(i);
+			int num = ch - '0';
+			sum += ch - '0';
+		
 		}
 		System.out.println("sum = " + sum);
 
