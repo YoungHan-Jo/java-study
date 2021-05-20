@@ -14,18 +14,18 @@ public class prac10 {
 		
 		do {
 			count++;
-			System.out.printf("1¿¡¼­ 100 »çÀÌÀÇ °ªÀ» ÀÔ·ÂÇÏ¼¼¿ä.>");
+			System.out.printf("1ì—ì„œ 100 ì‚¬ì´ì˜ ê°’ì„ ì…ë ¥í•˜ì„¸ìš”.>");
 			answer = scanner.nextInt();
 			
 			if(answer > randomNum) {
-				System.out.println("´õ ÀÛÀº ¼ö¸¦ ÀÔ·ÂÇÏ¼¼¿ä.");
+				System.out.println("ë” ì‘ì€ ìˆ˜ë¥¼ ì…ë ¥í•˜ì„¸ìš”.");
 				
 			}else if(answer <randomNum) {
-				System.out.println("´õ Å« ¼ö¸¦ ÀÔ·ÂÇÏ¼¼¿ä.");
+				System.out.println("ë” í° ìˆ˜ë¥¼ ì…ë ¥í•˜ì„¸ìš”.");
 				
 			}else {
-				System.out.println("Á¤´äÀÔ´Ï´Ù.");
-				System.out.printf("½ÃµµÈ½¼ö´Â %d¹ø ÀÔ´Ï´Ù.", count);
+				System.out.println("ì •ë‹µì…ë‹ˆë‹¤.");
+				System.out.printf("ì‹œë„íšŸìˆ˜ëŠ” %dë²ˆ ì…ë‹ˆë‹¤.", count);
 				break;
 			}
 		

@@ -14,7 +14,7 @@ public class prac4 {
 			}
 			
 			if (sum >= 100) {
-				System.out.printf("%d ±îÁö ´õÇÏ¸é %d\n", i,sum);
+				System.out.printf("%dê¹Œì§€ ë”í•˜ë©´%d\n", i,sum);
 				break;
 			}
 			

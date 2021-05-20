@@ -8,7 +8,7 @@ public class prac6 {
 			for(int j = 1; j<= 6; j++) {
 				int sum = i + j;
 				if(sum == 6) {
-					System.out.printf("ÁÖ»çÀ§A : %d + ÁÖ»çÀ§B : %d\n", i, j);
+					System.out.printf("ì£¼ì‚¬ìœ„A : %d + ì£¼ì‚¬ìœ„B : %d\n", i, j);
 				}
 			}
 		}
