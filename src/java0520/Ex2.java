@@ -9,9 +9,15 @@ public class Ex2 {
 		double avg = 0; // 점수 평균
 
 
-		for (int i = 0; i < score.length; i++) {
-			sum += score[i];
-			
+//		for (int i = 0; i < score.length; i++) {
+//			sum += score[i];
+//			
+//		}
+//		avg = (double) sum / score.length;
+//		
+//		
+		for (int num : score) {
+			sum += num;
 		}
 		avg = (double) sum / score.length;
 
