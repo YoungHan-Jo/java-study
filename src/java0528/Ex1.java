@@ -1,6 +1,6 @@
 package java0528;
 
-public class Ex1 {
+public class Ex1 { //객체로 사용됨
 	// 순차적 진행 아님 // class 안에서만 함수선언 가능. but 다른 함수 안에서 다른 함수 선언 불가
 	
 	static void showStar(){
