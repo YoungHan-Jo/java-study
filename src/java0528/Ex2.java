@@ -31,8 +31,9 @@ public class Ex2 {
 		return sum;
 	}
 
-	static int randomNum(int fromA, int range) {
-		return (int) (Math.random() * range) + fromA;
+	static int randomNum(int from, int to) {
+		int range = to - from +1;
+		return (int) (Math.random() * range) + from;
 	}
 
 	static int[] getThreeNum() {
