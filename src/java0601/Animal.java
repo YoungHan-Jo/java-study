@@ -45,7 +45,7 @@ public class Animal {
 	
 	// showAnimal() 출력 - age 살, name 이(가) 뛴다.
 	void showAnimal() {
-		System.out.printf("%d 살, %s 이/가 뛴다.\n",age,name);
+		System.out.printf("%d 살짜리 %s 이/가 뛴다.\n",age,name);
 	}
 	
 }

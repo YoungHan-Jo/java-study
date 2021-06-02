@@ -1,5 +1,7 @@
 package java0601;
 
+import java.util.Scanner;
+
 public class Ex4 {
 
 	public static void main(String[] args) {
@@ -24,6 +26,13 @@ public class Ex4 {
 		System.out.printf("%s는 %d 살\n",a5.getName(), a5.getAge());
 		
 		
+		Scanner scanner = new Scanner(System.in);
+		
+		String animal = scanner.nextLine();
+		int age = scanner.nextInt();
+		
+		Animal a6 = new Animal(animal, age);
+		a6.showAnimal();
 		
 		
 		
