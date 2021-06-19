@@ -2,28 +2,6 @@ package java0528;
 
 public class Ex3 {
 
-	static void showArray(int[] A) {
-		System.out.println("showArray 함수에서 배열요소 출력 : ");
-		for(int i = 0; i<A.length;++i) {
-			System.out.print(A[i] + " ");
-		}
-		System.out.println();
-		
-		A[1] = 200;
-		
-		System.out.println("showArray 함수에서 배열요소 수정 후 출력 : ");
-		for(int i = 0; i<A.length;++i) {
-			System.out.print(A[i] + " ");
-		}
-		System.out.println();
-	}
-
-	static void showNum(int num) {
-
-		System.out.printf("showNum()에서 num 출력 : %d\n", num);
-		num = 20;
-		System.out.printf("showNum()에서 수정된 num 출력 : %d\n", num);
-	}
 
 	public static void main(String[] args) {
 
@@ -47,5 +25,29 @@ public class Ex3 {
 		
 
 	}// main
+	
+
+	static void showArray(int[] A) {
+		System.out.println("showArray 함수에서 배열요소 출력 : ");
+		for(int i = 0; i<A.length;++i) {
+			System.out.print(A[i] + " ");
+		}
+		System.out.println();
+		
+		A[1] = 200;
+		
+		System.out.println("showArray 함수에서 배열요소 수정 후 출력 : ");
+		for(int i = 0; i<A.length;++i) {
+			System.out.print(A[i] + " ");
+		}
+		System.out.println();
+	}
+
+	static void showNum(int num) {
+
+		System.out.printf("showNum()에서 num 출력 : %d\n", num);
+		num = 20;
+		System.out.printf("showNum()에서 수정된 num 출력 : %d\n", num);
+	}
 
 }// class
