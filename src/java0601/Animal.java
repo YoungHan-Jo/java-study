@@ -9,10 +9,14 @@ public class Animal {
 	// this : 객체 자기자신을 가리키는 클래스 내부적인 참조변수
 	// 생성자 코드블록 안에서 this 사용이 가능한 이유
 	// - 생성자 호출시점에는 이미 객체가 생성되었고 그 객체를 this로 부를수있음.
+	
+	
 	Animal(){
 		name = "강아지";
 		age = 3;
 	}
+	
+	
 	// 외부로부터 name 받는 생성자. age 1
 	Animal(String name){
 		this.name = name;
