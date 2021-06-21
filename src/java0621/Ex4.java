@@ -8,38 +8,34 @@ package java0621;
 // Point2D 클래스
 // 멤버변수 정수형 x y
 // 메소드 show2D() 출력 "x,y"
-class Point2D {
+class Point2d {
 	int x;
 	int y;
-
-	void show2D() {
-		System.out.printf("%d, %d\n", x, y);
+	
+	void show2d() {
+		System.out.println(x + ", " + y);
 	}
 }
 
 // Point3D 클래스 상속받고 z 추가하기
 
-class Point3D extends Point2D {
-	int z;
 
-	void show3D() {
-		System.out.printf("%d, %d, %d\n", x, y, z);
+class Point3d extends Point2d {
+	int z;
+	
+	void show3d() {
+		System.out.println(x + ", " + y + ", " + z);
 	}
 }
 
 public class Ex4 {
 
-	public void main(String[] args) {
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
 		
-	Point3D p = new Point3D();
-	p.x = 10;
-	p.y = 20;
-	p.z = 30;
-	p.show3D();
-	
-	
-	
-
+		Point3d p3d = new Point3d();
+		p3d.show3d();
+		
 	} // main
 
 }
