@@ -34,6 +34,7 @@ public class Ex4 {
 		// TODO Auto-generated method stub
 		
 		Point3d p3d = new Point3d();
+		p3d.show2d();
 		p3d.show3d();
 		
 	} // main
