@@ -7,6 +7,13 @@ import lombok.Setter;
 public class Tv {
 	private int channel;
 	
+	public Tv() {
+		channel = 10;
+	}
+	public Tv(int channel) {
+		this.channel = channel;
+	}
+	
 	void channelUp() {
 		channel++;
 	}
