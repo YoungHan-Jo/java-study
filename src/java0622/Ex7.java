@@ -12,6 +12,9 @@ import lombok.Setter;
 class Point2DD {
 	private int x;
 	private int y;
+	
+	// 부모클래스가 기본생성자가 없는 클래스일때 상속받는 클래스 작성시 유의사항
+	
 
 	Point2DD(int x, int y) {
 		super();

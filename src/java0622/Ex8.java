@@ -33,6 +33,21 @@ class Cat extends Animal{
 	}
 }
 
+class Vet {//수의사 클래스
+	
+	void giveShot(Animal animal) {
+		animal.speak();
+	}
+	
+	void giveShot(Puppy puppy) {
+		puppy.speak();
+	}
+	
+	void giveShot(Cat cat) {
+		cat.speak();
+	}
+}
+
 public class Ex8 {
 
 	public static void main(String[] args) {
@@ -47,6 +62,7 @@ public class Ex8 {
 		Puppy puppy = new Puppy();
 		puppy.eat();
 		puppy.speak();
+		//정적바인딩 - 객체와 참조변수 같을때
 		System.out.println("=====================");
 		
 		// 자료형 형변환. 참조자료형 - 같은 계열타입(상속관계)끼리만 가능
@@ -54,10 +70,27 @@ public class Ex8 {
 		
 		Animal ani = new Puppy(); // 부모타입(넓은범위 ex 실수) = 자식타입(좁은 범위 ex 정수);
 		ani.speak();
+		ani.eat();
+		Puppy p = (Puppy) ani;
+		p.helpPerson();
 		
+		System.out.println("=============================");
+		//동적바인딩- 자식타입 객체를 부모타입 참조변수로 사용할때 발생
 		ani = new Cat();
 		ani.speak();
 		//ani.helpPerson(); // 오버라이딩 일때만 가능함. 참조변수 타입이 Animal 이기 때문에 helpPerson()은 없는거라서 쓸 수 없음.
+		
+		System.out.println("=========================");
+		Vet vet = new Vet();
+		vet.giveShot(new Cat());
+		vet.giveShot(new Puppy());
+		
+		System.out.println("==================================");
+		
+		Animal[] aniArr = new Animal[] {new Puppy(), new Cat()};
+		for(Animal animal : aniArr) {
+			vet.giveShot(animal);
+		}
 		
 		// 정적 바인딩 : 컴파일 시간에 메소드 호출 결정(참조변수 타입기준)
 		// 동적 바인딩: 실행 시간에 JVM이 메소드 호출 결정(객체 기준)

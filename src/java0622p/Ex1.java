@@ -7,7 +7,6 @@ public class Ex1 {
 		tv1.showChannel();	
 		tv1.captionStatus();
 		
-		
 	} // main
 	
 }

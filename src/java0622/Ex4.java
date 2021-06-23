@@ -37,6 +37,7 @@ public class Ex4 {
 		c.showChild();
 		c.showParent(); // 오버라이드한 메소드가 호출됨.
 		
+		
 		// 부모쪽 메소드는 외부에서 호출 할 수 없음.
 		System.out.println("=======================");
 		
