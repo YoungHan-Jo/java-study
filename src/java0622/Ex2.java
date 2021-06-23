@@ -11,9 +11,8 @@ import lombok.Setter;
 class Employee {
 	private String name;
 	private int salary;
-
+	
 	Employee() {
-
 	}
 
 	// 접근 지정자는 별 이유 없으면 클래스를 따라감
