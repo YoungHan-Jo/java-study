@@ -17,7 +17,7 @@ public class Ex2 {
 		System.out.println("charAt(0) : " + str.charAt(0)); // char charAt(i) - i 번 인덱스 문자 하나 호출 // String 객체는 char배열과같음
 		System.out.println("substring(5) : " + str.substring(5)); // String substring(i) - i번 인덱스부터 끝까지 호출
 		System.out.println("substring(5,8) : " + str.substring(5, 8)); // String substring(i,j) - 인덱스 i 이상 j미만까지 호출
-		System.out.println("문자열 연결 : " + str + "!!!");
+		System.out.println("문자열 연결 : " + str + str.concat("!!!"));
 		System.out.println("문자열 대체 : " + str.replace("Java", "JSP")); // replace(바꿀문자열, 새 문자열)
 		System.out.println("문자열 앞에서부터 첫 인덱스 위치 : " + str.indexOf('a'));
 		System.out.println("문자열 뒤에서부터 첫 인덱스 위치 : " + str.lastIndexOf('a'));
@@ -45,7 +45,7 @@ public class Ex2 {
 
 		String str2 = "   [안  녕]   ";
 		System.out.println(str2);
-		System.out.println("좌우 공백을 없애기 : " + str2.trim());
+		System.out.println("좌우 공백을 없애기 : " + str2.trim()); // 좌우공백 없애기는 자주 사용할 수 있음.
 
 		System.out.println("======================================================================");
 		// 주민번호 남,여 구분 - > 1,3 남 // 2,4 여

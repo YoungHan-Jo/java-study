@@ -36,7 +36,7 @@ public class Ex6 {
 		
 		System.out.println(set.toString());
 		
-		// Iterator 반복자로 요소 꺼내기
+		// Iterator 반복자로 요소 꺼내기 // set은 순서가 없기 때문에 for문으로 안됨
 		Iterator iter = set.iterator();
 		while(iter.hasNext()) { // hasNext : 다음요소가 있으면 꺼낸다
 			System.out.println(iter.next());

@@ -32,9 +32,7 @@ public class Ex8 {
 				System.out.println(puppy.toString());
 			}
 		}
-		
-		
-		
+			
 	} // main
 
 }
