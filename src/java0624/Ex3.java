@@ -5,7 +5,8 @@ import java.util.StringTokenizer;
 public class Ex3 {
 
 	public static void main(String[] args) {
-		//String은 불변 객체이므로 문자열 조작이 빈번할때 쓰레기 객체가 많이 발생됨. 비효율적. jvm이 쓰레기 객체 삭제해야할 때 비효율적, 진행중인거 전부 스톱해야함
+		// String은 불변 객체이므로 문자열 조작이 빈번할때 쓰레기 객체가 많이 발생됨. 
+		// 비효율적. jvm이 쓰레기 객체 삭제해야할 때 진행중인거 전부 스톱해야함
 		String str = "";
 		str += "Java";
 		str += " Programming";
