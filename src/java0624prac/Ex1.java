@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 class ObjectTest extends Object {
 
@@ -17,6 +18,7 @@ class ObjectTest extends Object {
 @NoArgsConstructor
 @Setter
 @Getter
+@ToString
 class Puppy {
 	private String name;
 	private int age;

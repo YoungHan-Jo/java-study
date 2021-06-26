@@ -10,24 +10,22 @@ public class Chap11_17 {
 		// TODO Auto-generated method stub
 		
 		Stack<Object> st = new Stack<>();
+		st.push(1);
+		st.push(2);
+		st.push(3);
+		
 		Queue<Object> q = new LinkedList<>();
+		q.add(1);
+		q.add(2);
+		q.add(3);
 		
-		st.push("0");
-		st.push("1");
-		st.push("2");
-		
-		q.offer("0");
-		q.offer("1");
-		q.offer("2");
-		
-		System.out.println("== stack ==");
 		while(!st.empty())
 			System.out.println(st.pop());
 		
-		System.out.println("== queue ==");
+		System.out.println("===================");
+		
 		while(!q.isEmpty())
 			System.out.println(q.poll());
-		
 		
 		
 		
