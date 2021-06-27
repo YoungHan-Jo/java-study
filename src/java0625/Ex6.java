@@ -46,6 +46,9 @@ public class Ex6 {
 		Thread thread1 = new Thread(goTask);
 		Thread thread2 = new Thread(comeTask);
 		
+		//한줄로도 가능
+		// Thread thread1 = new Thread(new GoTask());
+		
 		thread1.start();
 		thread2.start();
 		
