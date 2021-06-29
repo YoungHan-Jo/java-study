@@ -14,7 +14,7 @@ public class Ex6 extends JFrame {
 	private JLabel[] lbNum;
 
 	private int[] randNum;
-	private JLabel label;
+	private JLabel lbResult;
 	private Container c;
 
 	public Ex6() {
@@ -38,11 +38,11 @@ public class Ex6 extends JFrame {
 			this.lbNum[i].setOpaque(true);
 		}
 
-		this.label = new JLabel("시작합니다");
-		this.label.setFont(new Font("D2Coding", Font.PLAIN, 20));
-		this.label.setHorizontalAlignment(SwingConstants.CENTER);
-		this.label.setLocation(97, 145);
-		this.label.setSize(183, 30);
+		this.lbResult = new JLabel("시작합니다");
+		this.lbResult.setFont(new Font("D2Coding", Font.PLAIN, 20));
+		this.lbResult.setHorizontalAlignment(SwingConstants.CENTER);
+		this.lbResult.setLocation(97, 145);
+		this.lbResult.setSize(183, 30);
 
 	}// end of init
 
@@ -51,7 +51,7 @@ public class Ex6 extends JFrame {
 		c.setLayout(null);
 		for (int i = 0; i < lbNum.length; ++i)
 			c.add(lbNum[i]);
-		c.add(label);
+		c.add(lbResult);
 	} // end of setComponents
 
 	private void addListener() {
@@ -65,9 +65,9 @@ public class Ex6 extends JFrame {
 					pullLever();
 
 					if (pullLever() == true)
-						label.setText("축하합니다");
+						lbResult.setText("축하합니다");
 					else
-						label.setText("아쉽군요");
+						lbResult.setText("아쉽군요");
 				}
 			};
 		});
