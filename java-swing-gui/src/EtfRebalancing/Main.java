@@ -24,7 +24,7 @@ public class Main extends JFrame {
 
 	public Main() {
 		this.init();
-		this.setLayout();
+		this.setComponents();
 		this.addListener();
 		this.showFrame();
 	}// end of Main
@@ -59,7 +59,7 @@ public class Main extends JFrame {
 		this.btn = new JButton("계산하기");
 	}// end of init
 
-	private void setLayout() {
+	private void setComponents() {
 		Container c = getContentPane();
 		c.setLayout(new FlowLayout());
 		c.add(lbHoldStock);

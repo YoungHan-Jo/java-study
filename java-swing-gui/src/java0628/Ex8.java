@@ -8,67 +8,76 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 public class Ex8 extends JFrame {
+	private JTextField tfNum1, tfNum2, tfOperator, tfResult;
+	private JButton btn;
+	private JLabel label;
 
 	public Ex8() {
-
 		setTitle("초간단 사칙연산 계산기");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(800, 200);
-		setLocationByPlatform(true);
+		this.init();
+		this.setComponents();
+		this.addListener();
+		this.setFrame();
+	} // end of Ex8
 
+	private void init() {
+		this.tfNum1 = new JTextField(5);
+		this.tfNum2 = new JTextField(5);
+		this.tfOperator = new JTextField(3);
+		this.tfResult = new JTextField(5);
+		this.btn = new JButton("계산");
+		this.label = new JLabel("=");
+	} // end of init
+
+	private void setComponents() {
 		Container c = getContentPane();
 		c.setLayout(new FlowLayout());
-		
-		JButton btn = new JButton("계산");
+		c.add(this.tfNum1);
+		c.add(this.tfOperator);
+		c.add(this.tfNum2);
+		c.add(this.label);
+		c.add(this.tfResult);
+		c.add(this.btn);
+	} // end of setComponents
 
-		JTextField tfNum1 = new JTextField(10);
-		JTextField tfNum2 = new JTextField(10);
-		JTextField tfOperator = new JTextField(3);
-		JTextField tfResult = new JTextField(10);
+	private void setFrame() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setSize(500, 100);
+		setLocationByPlatform(true);
+		setVisible(true);
+	} // end of setFrame
 
-		c.add(tfNum1);
-		c.add(tfOperator);
-		c.add(tfNum2);
-		c.add(new JLabel("="));
-		c.add(tfResult);
-		c.add(btn);
+	private void addListener() {
+		this.btn.addActionListener(event -> {
+			Float num1 = Float.valueOf(tfNum1.getText().trim());
+			Float num2 = Float.valueOf(tfNum2.getText().trim());
+			String operator = tfOperator.getText().trim();
 
-		btn.addActionListener(event -> {
-			String num1_String = tfNum1.getText();
-			String num2_String = tfNum2.getText();
-			String operator = tfOperator.getText();
-
-			String answer = String.valueOf(calculator(num1_String, operator, num2_String));
+			String answer = String.valueOf(calculator(num1, num2, operator));
 
 			tfResult.setText(answer);
 		});
-		
-		
-		setVisible(true);
-	} // end of Ex8
+	} // end of addListener
 
-	private float calculator(String num1_String, String operator, String num2_String) {
-		Float a = Float.valueOf(num1_String);
-		Float b = Float.valueOf(num2_String);
+	private float calculator(float num1, float num2, String operator) {
+
 		float result = 0.0f;
 
 		if (operator.equals("+")) {
-			result = a + b;
+			result = num1 + num2;
 		} else if (operator.equals("-")) {
-			result = a - b;
+			result = num1 - num2;
 		} else if (operator.equals("*")) {
-			result = a * b;
+			result = num1 * num2;
 		} else if (operator.equals("/")) {
-			result = a / b;
+			result = num1 / num2;
 		}
-
 		return result;
 	} // end of calculator()
 
 	public static void main(String[] args) {
-
+		
 		new Ex8();
-
 	} // end of main
 
 }// end of Ex8
