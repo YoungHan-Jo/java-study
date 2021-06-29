@@ -11,11 +11,12 @@ import java.awt.Color;
 
 public class Ex6 extends JFrame {
 
-	private JLabel[] lbNum;
-
+	private JLabel[] lblNum;
 	private int[] randNum;
-	private JLabel lbResult;
+	private JLabel lblResult;
 	private Container c;
+	public static final int NUMBER_OF_LBLNUM = 3;
+	public static final int RANGE_OF_RANDNUM = 3;
 
 	public Ex6() {
 		super("Pull the Lever");
@@ -26,32 +27,38 @@ public class Ex6 extends JFrame {
 	} // end of Ex6
 
 	private void init() {
-		lbNum = new JLabel[3];
-		for (int i = 0; i < lbNum.length; ++i) {
-			this.lbNum[i] = new JLabel("0");
-			this.lbNum[i].setSize(50, 50);
-			this.lbNum[i].setLocation(100 * i + 60, 56);
-			this.lbNum[i].setBackground(new Color(0, 0, 0));
-			this.lbNum[i].setForeground(new Color(255, 255, 255));
-			this.lbNum[i].setFont(new Font("D2Coding", Font.BOLD | Font.ITALIC, 25));
-			this.lbNum[i].setHorizontalAlignment(SwingConstants.CENTER);
-			this.lbNum[i].setOpaque(true);
+		lblNum = new JLabel[NUMBER_OF_LBLNUM];
+		for (int i = 0; i < lblNum.length; ++i) {
+			this.lblNum[i] = new JLabel("0");
+			makeUpLblNum(this.lblNum[i], i);
 		}
 
-		this.lbResult = new JLabel("시작합니다");
-		this.lbResult.setFont(new Font("D2Coding", Font.PLAIN, 20));
-		this.lbResult.setHorizontalAlignment(SwingConstants.CENTER);
-		this.lbResult.setLocation(97, 145);
-		this.lbResult.setSize(183, 30);
+		this.lblResult = new JLabel("시작합니다");
+		this.lblResult.setFont(new Font("D2Coding", Font.PLAIN, 20));
+		this.lblResult.setHorizontalAlignment(SwingConstants.CENTER);
+		this.lblResult.setLocation(NUMBER_OF_LBLNUM * 45 - 40, 145);
+		this.lblResult.setSize(183, 30);
 
 	}// end of init
+
+	private void makeUpLblNum(JLabel label, int indexNum) {
+		label.setSize(50, 50);
+		label.setLocation(100 * indexNum + 60, 55);
+		label.setBackground(new Color(0, 0, 0));
+		label.setForeground(new Color(255, 255, 255));
+		label.setFont(new Font("D2Coding", Font.BOLD | Font.ITALIC, 25));
+		label.setHorizontalAlignment(SwingConstants.CENTER);
+		label.setOpaque(true);
+	} // end of makeUpLblNum
 
 	private void setComponents() {
 		c = getContentPane();
 		c.setLayout(null);
-		for (int i = 0; i < lbNum.length; ++i)
-			c.add(lbNum[i]);
-		c.add(lbResult);
+
+		for (JLabel label : lblNum)
+			c.add(label);
+
+		c.add(lblResult);
 	} // end of setComponents
 
 	private void addListener() {
@@ -65,35 +72,38 @@ public class Ex6 extends JFrame {
 					pullLever();
 
 					if (pullLever() == true)
-						lbResult.setText("축하합니다");
+						lblResult.setText("축하합니다");
 					else
-						lbResult.setText("아쉽군요");
+						lblResult.setText("아쉽군요");
 				}
-			};
+			}; // end of keyPressed
 		});
 	} // end of addListener
 
 	private boolean pullLever() {
-		this.randNum = new int[3];
-		
+		this.randNum = new int[NUMBER_OF_LBLNUM];
+
 		for (int i = 0; i < randNum.length; ++i) {
-			randNum[i] = (int) (Math.random() * 3 + 1);
-			lbNum[i].setText(String.valueOf(randNum[i]));
+			randNum[i] = (int) (Math.random() * RANGE_OF_RANDNUM + 1);
+			lblNum[i].setText(String.valueOf(randNum[i]));
 		}
 
 		boolean result = false;
 
-		if (randNum[0] == randNum[1] && randNum[0] == randNum[2])
-			result = true;
-		else
-			result = false;
+		for (int i = 1; i < randNum.length; ++i) {
+			if (randNum[i] != randNum[i - 1]) {
+				result = false;
+				break;
+			} else
+				result = true;
+		}
 
 		return result;
 	} // end of pullLever Method
 
 	private void setFrame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(387, 245);
+		setSize(NUMBER_OF_LBLNUM * 100 + 80, 245);
 		setLocationByPlatform(true);
 		setVisible(true);
 		c.setFocusable(true);
@@ -105,4 +115,4 @@ public class Ex6 extends JFrame {
 		new Ex6();
 
 	} // end of main
-}
+} // end of Ex6
