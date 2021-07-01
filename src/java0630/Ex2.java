@@ -44,16 +44,16 @@ public class Ex2 {
 				String gender = rs.getString("gender");
 				Date dob = rs.getDate("dob"); // getTimestamp 는 시,분,초 까지 다 나옴.
 				String email = rs.getString("email");
-				System.out
-						.println(memberId + "," + firstName + "," + lastName + "," + gender + "," + dob.toString() + "," + email);
+				System.out.println(memberId + "," + firstName + "," + lastName + "," + gender + "," + dob.toString()
+						+ "," + email);
 			}
 
 		} catch (Exception e) {
 
 			e.printStackTrace();
-		}finally {
+		} finally {
 			// JDBC 자원 닫기 ( 사용의 역순으로 닫음)
-			
+
 			try {
 				rs.close();
 				stmt.close();
@@ -62,7 +62,7 @@ public class Ex2 {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 		}
 
 	} // end of main

@@ -46,7 +46,6 @@ public class Ex7 {
 			sql = "DELETE FROM members ";
 			sql += " WHERE member_id = ? ";
 			
-
 			// sql 문장객체 준비
 			pstmt = con.prepareStatement(sql); // prepare Statement 는 sql문장을 미리요구함
 

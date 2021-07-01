@@ -24,7 +24,6 @@ public class Ex5 {
 
 		Connection con = null; 
 		PreparedStatement pstmt = null;
-		ResultSet rs = null; 
 
 		MembersVO membersVO = new MembersVO();
 		membersVO.setMemberId(1001);
