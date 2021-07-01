@@ -15,8 +15,6 @@ import java.sql.Statement;
 //AND first_name LIKE '%M%'
 //ORDER BY member_id DESC;
 
-
-
 public class Ex3 {
 
 	public static void main(String[] args) {

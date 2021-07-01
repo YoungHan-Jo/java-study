@@ -41,7 +41,7 @@ public class Ex4 {
 			// 3단계. sql 생성
 			//preparedStatement 방식으로
 			String sql = ""; 
-			sql = "SELECT * ";
+			sql += "SELECT * ";
 			sql += " FROM members ";// 공백 들어가야함.
 			sql += " WHERE member_id >= ? "; // <- 값 들어갈 부분에 ? 로 채워줌
 			sql += " AND gender = ? "; // ''같은거 전부 떼야함
