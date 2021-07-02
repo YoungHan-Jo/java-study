@@ -17,7 +17,6 @@ public class MemberDAO {
 	private final String URL = "jdbc:oracle:thin:@localhost:1521:xe";
 	private final String USER = "MYUSERPRAC";
 	private final String PASSWD = "1234";
-	private int count = 0;
 
 	private Connection getConnection() throws ClassNotFoundException, SQLException {
 		Connection con = null;
@@ -56,6 +55,7 @@ public class MemberDAO {
 	// =====================================================insert()=================================================
 
 	public int insert(MemberVO memberVO) {
+		int count = 0;
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
@@ -84,6 +84,7 @@ public class MemberDAO {
 	} // insert
 //=========================================================deleteAll()=================================================
 	public int deleteAll() {
+		int count = 0;
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		try {
@@ -103,7 +104,7 @@ public class MemberDAO {
 	
 //========================================================deleteById()=================================================
 	public int deleteById(String id) {
-		count = 0;
+		int count = 0;
 		
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -129,8 +130,8 @@ public class MemberDAO {
 
 	
 //===========================================================updateById()===================================================
-	public int updateById(String id) {
-		count = 0;
+	public int updateById(MemberVO memberVO) {
+		int count = 0;
 		
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -143,12 +144,12 @@ public class MemberDAO {
 			sql += " WHERE id = ? ";
 						
 			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, "4321");
-			pstmt.setString(2, "성춘향");
-			pstmt.setString(3, "bbb@b.com");
-			pstmt.setString(4, "N");
-			pstmt.setTimestamp(5, new Timestamp(System.currentTimeMillis()));
-			pstmt.setString(6, "user9");
+			pstmt.setString(1, memberVO.getPasswd());
+			pstmt.setString(2, memberVO.getName());
+			pstmt.setString(3, memberVO.getEmail());
+			pstmt.setString(4, memberVO.getRecvEmail());
+			pstmt.setTimestamp(5, memberVO.getRegDate());
+			pstmt.setString(6, memberVO.getId());
 			
 			count = pstmt.executeUpdate();
 						
@@ -194,7 +195,7 @@ public class MemberDAO {
 	} // getMemberById
 	//========================================================getCountAll()=================================================
 	public int getCountAll() {
-		count = 0;
+		int count = 0;
 		
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -217,7 +218,7 @@ public class MemberDAO {
 	
 //==============================================================getCountById==================================================
 	public int getCountById(String id) {
-		count = 0;
+		int count = 0;
 		
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -316,18 +317,18 @@ public class MemberDAO {
 			System.out.println(m.toString());
 		}
 		System.out.println();
-		System.out.println("==================getCountAll()=======================");
+		System.out.println("====================getCountAll()=======================");
 		count = dao.getCountAll();
 		System.out.println("전체 행 개수 : " + count);
 		System.out.println();
-		System.out.println("==================deleteById()=========================");
+		System.out.println("====================deleteById()=========================");
 		int deleteCnt = dao.deleteById("user1");
 		System.out.println("delete 된 행 개수 : " + deleteCnt);
 		count = dao.getCountAll();
 		System.out.println("전체 행 개수 : " + count);
 		System.out.println();
-		System.out.println("===================updateById()========================");
-		int updateCnt = dao.updateById("user9");
+		System.out.println("====================updateById()========================");
+		int updateCnt = dao.updateById(member);
 		System.out.println("update 된 행 개수 : "+updateCnt);
 		count = dao.getCountAll();
 		System.out.println("전체 행 개수 : " + count);
@@ -336,10 +337,6 @@ public class MemberDAO {
 		count = dao.getCountById("user2");
 		System.out.println("id 가 user2 인 행 개수 : " + count);
 		
-		
-		
-		
-
 	} // end of main
 
 }

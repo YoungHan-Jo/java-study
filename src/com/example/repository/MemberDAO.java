@@ -15,6 +15,17 @@ import com.example.domain.MemberVO;
 // DAO(Data Access Object) : 데이터 접근 오브젝트 역할
 
 public class MemberDAO {
+	
+	//싱글톤(singleton) 클래스 설계 : 객체만 한개만 공유해서 사용하기
+	private static MemberDAO instance = new MemberDAO();
+	
+	public static MemberDAO getInstance() { // 외부에서 호출할때 이 메소드 사용
+		return instance;
+	}
+	
+	private MemberDAO() {
+	}
+	
 	// DB접속
 	private final String URL = "jdbc:oracle:thin:@localhost:1521:xe";
 	private final String USER = "MYUSER";
@@ -155,48 +166,39 @@ public class MemberDAO {
 	}// deleteById()
 
 	// =====================================================updateById()======================================================
-	// UPDATE member
-	// SET passwd = ?, name = ?, email = ?, recv_email = ?, reg_date = ?
-	// WHERE id = ? ;
 
-	public int updateById(MemberVO memberVO) {
-		int count = 0;
-
+	public void updateById(MemberVO memberVO) {
 		Connection con = null; // 접속
 		PreparedStatement pstmt = null; // sql 문장 객체 타입
 
 		try {
 			con = getConnection();
-			String sql = "";
-			sql += " UPDATE member ";
-			sql += " SET passwd = ?, name = ?, email = ?, recv_email = ?, reg_date = ? ";
-			sql += " WHERE id = ? ";
+			
+			StringBuilder sb = new StringBuilder(); // 쓰레기 객체(String으로 계속 만드는거) 방지.
+			sb.append(" UPDATE member ");
+			sb.append(" SET passwd = ?, name = ?, email = ?, recv_email = ?, reg_date = ? ");
+			sb.append(" WHERE id = ? ");
+			
 			// 3단계. pstmt 문장객체 생성
-			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, "4321");
-			pstmt.setString(2, "성춘향");
-			pstmt.setString(3, "bbb@b.com");
-			pstmt.setString(4, "N");
-			pstmt.setTimestamp(5, new Timestamp(System.currentTimeMillis()));
-			pstmt.setString(6, "user9");
+			pstmt = con.prepareStatement(sb.toString());
+			pstmt.setString(1, memberVO.getPasswd());
+			pstmt.setString(2, memberVO.getName());
+			pstmt.setString(3, memberVO.getEmail());
+			pstmt.setString(4, memberVO.getRecvEmail());
+			pstmt.setTimestamp(5, memberVO.getRegDate());
+			pstmt.setString(6, memberVO.getId());
 
 			// 4단계. sql 문장 실행
-			count = pstmt.executeUpdate();
+			pstmt.executeUpdate();
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			close(con, pstmt);
 		}
-
-		return count;
 	}// updateById()
 
-	// SELECT COUNT(*)
-	// FROM member
-	// WHERE id = ?
 	// =================================================================getMemberById()================================================
-	// SELECT * FROM member WHERE id = 'bbb' ;
 	// 기본키 컬럼값을 기준으로 레코드(행) 최대 1개 가져오기
 	public MemberVO getMemberById(String id) {
 		MemberVO memberVO = null;
@@ -236,7 +238,6 @@ public class MemberDAO {
 
 	// ================================================================getCountAll()============================================
 
-	// SELECT COUNT(*) AS cnt FROM member ;
 	public int getCountAll() {
 		int count = 0;
 
@@ -298,7 +299,6 @@ public class MemberDAO {
 
 	// ============================================================getMembers()==========================================================
 
-	// SELECT * FROM member ORDER BY name
 	// 가져와서 리스트에 담기.
 	public List<MemberVO> getMembers() {
 		List<MemberVO> list = new ArrayList<>();
@@ -341,7 +341,9 @@ public class MemberDAO {
 	// 테스트용 main메소드
 	public static void main(String[] args) {
 		// MemberDAO 객체 생성
-		MemberDAO dao = new MemberDAO();
+//		MemberDAO dao = new MemberDAO();
+		MemberDAO dao = MemberDAO.getInstance(); // 외부에서 호출할때 이렇게 호출.
+		
 		MemberVO member = new MemberVO();
 		int count = dao.deleteAll();
 
@@ -386,18 +388,32 @@ public class MemberDAO {
 		System.out.println("전체 행 개수 : " + count);
 		System.out.println();
 		System.out.println("===================updateById()========================");
-
-		int updateCnt = dao.updateById(member);
-		System.out.println("변경된 행 개수 : " + updateCnt);
+		
+		//update용 데이터 준비
+		member = new MemberVO();
+		member.setId("user10");
+		member.setPasswd("5678");
+		member.setName("성춘향");
+		member.setEmail("bbb@b.com");
+		member.setRecvEmail("N");
+		member.setRegDate(new Timestamp(System.currentTimeMillis()));
+		
+		dao.updateById(member);
+		
+		MemberVO dbMemberVO = dao.getMemberById(member.getId());
+		System.out.println(dbMemberVO.toString());
+		
 		count = dao.getCountAll();
 		System.out.println("전체 행 개수 : " + count);
 		System.out.println();
 		System.out.println("====================getCountById===========================");
 
-		int countById = dao.getCountById("user10");
-		System.out.println("id 가 user10 인 행 개수 : " + countById);
+		String searchId = "user10";
+		int countById = dao.getCountById(searchId);
+		System.out.println("id 가 " + searchId + "인 행 개수 : " + countById);
 
-		System.out.println("==테스트 종료==");
+		System.out.println();
+		System.out.println("======테스트 종료=======");
 
 	}
 
