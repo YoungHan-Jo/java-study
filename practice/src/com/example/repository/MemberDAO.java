@@ -13,7 +13,17 @@ import java.util.Random;
 import com.example.domain.MemberVO;
 
 public class MemberDAO {
+	
+	private static MemberDAO instance = new MemberDAO();
+	
+	public static MemberDAO getInstance() {
+		return instance;
+	}
 
+	private MemberDAO() {
+	}
+	
+	
 	private final String URL = "jdbc:oracle:thin:@localhost:1521:xe";
 	private final String USER = "MYUSERPRAC";
 	private final String PASSWD = "1234";
@@ -286,7 +296,7 @@ public class MemberDAO {
 	//=======================================================================================================================================
 	public static void main(String[] args) {
 
-		MemberDAO dao = new MemberDAO();
+		MemberDAO dao = MemberDAO.getInstance();
 		MemberVO member = new MemberVO();
 		Random random = new Random();
 		int count = 0;

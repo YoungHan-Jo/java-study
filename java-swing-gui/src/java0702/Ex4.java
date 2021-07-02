@@ -28,7 +28,6 @@ public class Ex4 extends JFrame {
 
 		JLabel lblMenu = new JLabel("사과 100원, 배 500원, 체리 20000원");
 	
-		
 		apple.setBorderPainted(true);
 		pear.setBorderPainted(true);
 		cherry.setBorderPainted(true); // 테두리 선 유무
@@ -54,7 +53,7 @@ public class Ex4 extends JFrame {
 		
 		@Override
 		public void itemStateChanged(ItemEvent e) {
-			JCheckBox item = (JCheckBox) e.getItem();
+			JCheckBox item = (JCheckBox) e.getItem();// 이벤트를 발생시킨 Object 리턴.
 			
 			if(e.getStateChange() == ItemEvent.SELECTED) {
 				if(item == apple) {
