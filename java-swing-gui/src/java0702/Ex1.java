@@ -38,10 +38,10 @@ public class Ex1 extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				JButton b = (JButton) e.getSource(); // 이벤트발생 객체를 추출해서 다운캐스팅
 				String location = b.getX() + "," + b.getY();
-				
+
 				JFrame frame = (JFrame) b.getTopLevelAncestor(); // 외부에 있으면 이런식으로 최상위 프레임 가져와서 최상위 프레임 만들기
-				// frame.setTitle(location); 
-				
+				// frame.setTitle(location);
+
 				Ex1.this.setTitle(location); // 내부클래스에서 외부클래스 this 로 참조 하려면. 외부클래스이름.this로 참조
 			}
 		});

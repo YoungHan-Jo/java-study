@@ -9,14 +9,13 @@ import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-
 public class Ex4 extends JFrame {
 
 	private JLabel sumLabel = new JLabel("현재 0 원 입니다.");
 	private JCheckBox apple = new JCheckBox("사과");
 	private JCheckBox pear = new JCheckBox("배");
 	private JCheckBox cherry = new JCheckBox("체리");
-	
+
 	public Ex4() {
 		super("체크박스");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -27,7 +26,7 @@ public class Ex4 extends JFrame {
 		c.setLayout(new FlowLayout());
 
 		JLabel lblMenu = new JLabel("사과 100원, 배 500원, 체리 20000원");
-	
+
 		apple.setBorderPainted(true);
 		pear.setBorderPainted(true);
 		cherry.setBorderPainted(true); // 테두리 선 유무
@@ -37,7 +36,7 @@ public class Ex4 extends JFrame {
 		c.add(pear);
 		c.add(cherry);
 		c.add(sumLabel);
-		
+
 		MyItemListener itemListener = new MyItemListener();
 		apple.addItemListener(itemListener);
 		pear.addItemListener(itemListener);
@@ -45,39 +44,37 @@ public class Ex4 extends JFrame {
 
 		setVisible(true);
 	}
-	
-	
-	class MyItemListener implements ItemListener{
+
+	class MyItemListener implements ItemListener {
 
 		private int sum = 0;
-		
+
 		@Override
 		public void itemStateChanged(ItemEvent e) {
 			JCheckBox item = (JCheckBox) e.getItem();// 이벤트를 발생시킨 Object 리턴.
-			
-			if(e.getStateChange() == ItemEvent.SELECTED) {
-				if(item == apple) {
+
+			if (e.getStateChange() == ItemEvent.SELECTED) {
+				if (item == apple) {
 					sum += 100;
-				}else if(item == pear) {
+				} else if (item == pear) {
 					sum += 500;
-				}else { // item == cherry
+				} else { // item == cherry
 					sum += 20000;
 				}
-			}else { // ItemEvent.DESELECTED
-				if(item == apple) {
+			} else { // ItemEvent.DESELECTED
+				if (item == apple) {
 					sum -= 100;
-				}else if(item == pear) {
+				} else if (item == pear) {
 					sum -= 500;
-				}else { // item == cherry
+				} else { // item == cherry
 					sum -= 20000;
 				}
-				
+
 			}
 			sumLabel.setText("현재 " + sum + "원 입니다.");
-			
+
 		}
-		
-		
+
 	}
 
 	public static void main(String[] args) {

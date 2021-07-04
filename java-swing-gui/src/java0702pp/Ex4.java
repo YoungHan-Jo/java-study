@@ -1,4 +1,4 @@
-package java0702p;
+package java0702pp;
 
 import java.awt.Container;
 import java.awt.FlowLayout;
@@ -9,7 +9,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-public class Ex4p2 extends JFrame {
+public class Ex4 extends JFrame {
 
 	private Container c;
 
@@ -18,8 +18,8 @@ public class Ex4p2 extends JFrame {
 
 	private JCheckBox[] fruits;
 
-	public Ex4p2() {
-		super("shopping bag");
+	public Ex4() {
+		super("체크박스");
 		init();
 		setComponents();
 		addListener();
@@ -35,39 +35,40 @@ public class Ex4p2 extends JFrame {
 		fruits[1] = new JCheckBox("배");
 		fruits[2] = new JCheckBox("체리");
 
-		for (int i = 0; i < fruits.length; ++i) {
-			paintBorder(fruits[i]);
-		}
-	}
-
-	private void paintBorder(JCheckBox jCheckBox) {
-		jCheckBox.setBorderPainted(true);
+		for (JCheckBox cb : fruits)
+			cb.setBorderPainted(true);
 	}
 
 	private void setComponents() {
 		c = getContentPane();
+		c.setLayout(new FlowLayout());
 		c.add(lblMenu);
-		for (JCheckBox cb : fruits) {
+
+		for (JCheckBox cb : fruits)
 			c.add(cb);
-		}
+
 		c.add(lblSum);
 
 	}
 
 	private void addListener() {
-		MyItemListener itemlistener = new MyItemListener();
-
-		for (int i = 0; i < fruits.length; ++i) {
-			fruits[i].addItemListener(itemlistener);
-		}
+		MyItemListener itemListener = new MyItemListener(lblSum);
+		for (JCheckBox cb : fruits)
+			cb.addItemListener(itemListener);
 	}
 
-	private class MyItemListener implements ItemListener {
+	class MyItemListener implements ItemListener {
 
+		JLabel lblSum;
 		int sum = 0;
+
+		public MyItemListener(JLabel lblSum) {
+			this.lblSum = lblSum;
+		}
 
 		@Override
 		public void itemStateChanged(ItemEvent e) {
+
 			JCheckBox item = (JCheckBox) e.getItem();
 
 			if (e.getStateChange() == ItemEvent.SELECTED) {
@@ -77,7 +78,6 @@ public class Ex4p2 extends JFrame {
 					sum += 500;
 				else
 					sum += 20000;
-
 			} else {
 				if (item == fruits[0])
 					sum -= 100;
@@ -86,7 +86,8 @@ public class Ex4p2 extends JFrame {
 				else
 					sum -= 20000;
 			}
-			Ex4p2.this.lblSum.setText("현재 " + sum + "원 입니다.");
+
+			lblSum.setText("현재 " + sum + "원 입니다.");
 
 		}
 
@@ -96,15 +97,14 @@ public class Ex4p2 extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(250, 200);
 		setLocationByPlatform(true);
-		c.setLayout(new FlowLayout());
 
 		setVisible(true);
 	}
 
 	public static void main(String[] args) {
 
-		new Ex4p2();
+		new Ex4();
 
-	} // end of main
+	}
 
 }
