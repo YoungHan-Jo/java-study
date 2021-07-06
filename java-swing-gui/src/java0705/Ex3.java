@@ -22,15 +22,15 @@ import javax.swing.SwingConstants;
 
 public class Ex3 extends JFrame {
 
-	private MemberDAO dao = MemberDAO.getInstance();
+	private MemberDAO memberDAO = MemberDAO.getInstance();
 
 	private Container c;
 
 	private CardLayout cardLayout = new CardLayout(0, 0);
 
-	private final JPanel panel1 = new JPanel();
-	private final JPanel panel2 = new JPanel();
-	private final JPanel panel3 = new JPanel();
+	private final JPanel panelSignIn = new JPanel();
+	private final JPanel panelLogin = new JPanel();
+	private final JPanel panelProfile = new JPanel();
 
 	private final JLabel lblSignInId = new JLabel("아이디");
 	private final JTextField tfSignInId = new JTextField();
@@ -82,28 +82,26 @@ public class Ex3 extends JFrame {
 		setComponents();
 		addListener();
 		setFrame();
-	}
+	} // end of Ex3
 
 	private void init() {
 		setupViewSignIn();
 		setupViewLogin();
 		setupViewProfile();
-	}
+	} // end of init
 
 	private void setComponents() {
 		c = getContentPane();
 		c.setLayout(cardLayout);
-		this.panel1.setBackground(new Color(255, 255, 255));
-		c.add(this.panel1, "sign in");
-		this.panel2.setBackground(new Color(255, 255, 255));
-		c.add(this.panel2, "login");
-		this.panel3.setBackground(new Color(255, 255, 255));
-		c.add(this.panel3, "profile");
-
+		this.panelSignIn.setBackground(new Color(255, 255, 255));
+		c.add(this.panelSignIn, "sign in");
+		this.panelLogin.setBackground(new Color(255, 255, 255));
+		c.add(this.panelLogin, "login");
+		this.panelProfile.setBackground(new Color(255, 255, 255));
+		c.add(this.panelProfile, "profile");
 	}
 
 	private void addListener() {
-
 		btnInsertAccount.addActionListener(e -> {
 			insertAccount();
 		});
@@ -130,7 +128,7 @@ public class Ex3 extends JFrame {
 			public void keyReleased(KeyEvent e) {
 				String signInId = tfSignInId.getText().trim();
 
-				int count = dao.getCountById(signInId);
+				int count = memberDAO.getCountById(signInId);
 
 				if (count > 0) {
 					lblWrongId.setText("이미 사용중이거나 탈퇴한 아이디입니다.");
@@ -140,10 +138,6 @@ public class Ex3 extends JFrame {
 					lblWrongId.setForeground(Color.GREEN);
 				}
 			}
-		});
-
-		btnLogout.addActionListener(e -> {
-			cardLayout.show(c, "login");
 		});
 
 		pfSignInPasswd1.addKeyListener(new KeyAdapter() {
@@ -175,6 +169,11 @@ public class Ex3 extends JFrame {
 				}
 			}
 		});
+		
+		btnLogout.addActionListener(e -> {
+			cardLayout.show(c, "login");
+		});
+		
 	}
 
 	private void insertAccount() {
@@ -192,7 +191,7 @@ public class Ex3 extends JFrame {
 		member.setRecvEmail(recvEmail);
 		member.setRegDate(new Timestamp(System.currentTimeMillis()));
 
-		dao.insert(member);
+		memberDAO.insert(member);
 
 		cardLayout.show(c, "login");
 		Ex3.this.setSize(347, 400);
@@ -211,8 +210,8 @@ public class Ex3 extends JFrame {
 		String id = tfLoginId.getText().trim();
 		String passwd = new String(pfLoginPasswd.getPassword());
 
-		if (dao.getCountById(id) > 0) {
-			if (passwd.equals(dao.getMemberById(id).getPasswd())) {
+		if (memberDAO.getCountById(id) > 0) {
+			if (passwd.equals(memberDAO.getMemberById(id).getPasswd())) {
 				cardLayout.show(c, "profile");
 				Ex3.this.setSize(347, 593);
 
@@ -229,7 +228,7 @@ public class Ex3 extends JFrame {
 	}
 
 	private void paintProfile(String id) {
-		MemberVO member = dao.getMemberById(id);
+		MemberVO member = memberDAO.getMemberById(id);
 
 		lblGetId.setText(member.getId());
 		lblGetPasswd.setText(member.getPasswd());
@@ -240,7 +239,7 @@ public class Ex3 extends JFrame {
 			recvEmail = "예";
 		else
 			recvEmail = "아니오";
-		
+
 		lblGetRecvEmail.setText(recvEmail);
 		lblGetTimestamp.setText(String.valueOf(member.getRegDate()));
 	}
@@ -256,77 +255,77 @@ public class Ex3 extends JFrame {
 
 	private void setupViewSignIn() {
 
-		this.panel1.setLayout(null);
-		this.panel1.add(this.lblSignInId);
+		this.panelSignIn.setLayout(null);
+		this.panelSignIn.add(this.lblSignInId);
 		this.lblSignInId.setFont(new Font("맑은 고딕", Font.BOLD, 12));
 		this.lblSignInId.setBounds(65, 28, 57, 15);
 
-		this.panel1.add(this.tfSignInId);
+		this.panelSignIn.add(this.tfSignInId);
 		this.tfSignInId.setBounds(65, 53, 203, 21);
 		this.tfSignInId.setColumns(10);
 
-		this.panel1.add(this.lblWrongId);
+		this.panelSignIn.add(this.lblWrongId);
 		this.lblWrongId.setFont(new Font("굴림", Font.PLAIN, 11));
 		this.lblWrongId.setForeground(Color.RED);
 		this.lblWrongId.setBounds(65, 84, 203, 15);
 
-		this.panel1.add(this.lblSignInPasswd1);
+		this.panelSignIn.add(this.lblSignInPasswd1);
 		this.lblSignInPasswd1.setFont(new Font("맑은 고딕", Font.BOLD, 12));
 		this.lblSignInPasswd1.setBounds(65, 109, 57, 15);
 
-		this.panel1.add(this.pfSignInPasswd1);
+		this.panelSignIn.add(this.pfSignInPasswd1);
 		this.pfSignInPasswd1.setBounds(65, 134, 203, 21);
 
-		this.panel1.add(this.lblWrongPasswd1);
+		this.panelSignIn.add(this.lblWrongPasswd1);
 		this.lblWrongPasswd1.setFont(new Font("굴림", Font.PLAIN, 11));
 		this.lblWrongPasswd1.setForeground(Color.RED);
 		this.lblWrongPasswd1.setBounds(65, 165, 203, 15);
 
-		this.panel1.add(this.lblSignInPasswd2);
+		this.panelSignIn.add(this.lblSignInPasswd2);
 		this.lblSignInPasswd2.setFont(new Font("맑은 고딕", Font.BOLD, 12));
 		this.lblSignInPasswd2.setBounds(65, 190, 116, 15);
 
-		this.panel1.add(this.pfSignInPasswd2);
+		this.panelSignIn.add(this.pfSignInPasswd2);
 		this.pfSignInPasswd2.setBounds(65, 215, 203, 21);
 
-		this.panel1.add(this.lblWrongPasswd2);
+		this.panelSignIn.add(this.lblWrongPasswd2);
 		this.lblWrongPasswd2.setFont(new Font("굴림", Font.PLAIN, 11));
 		this.lblWrongPasswd2.setForeground(Color.RED);
 		this.lblWrongPasswd2.setBounds(65, 246, 203, 15);
 
-		this.panel1.add(this.lblSignInName);
+		this.panelSignIn.add(this.lblSignInName);
 		this.lblSignInName.setFont(new Font("맑은 고딕", Font.BOLD, 12));
 		this.lblSignInName.setBounds(65, 271, 57, 15);
 
-		this.panel1.add(this.tfSignInName);
+		this.panelSignIn.add(this.tfSignInName);
 		this.tfSignInName.setBounds(65, 296, 203, 21);
 		this.tfSignInName.setColumns(10);
 
-		this.panel1.add(this.lblSignInEmail);
+		this.panelSignIn.add(this.lblSignInEmail);
 		this.lblSignInEmail.setFont(new Font("맑은 고딕", Font.BOLD, 12));
 		this.lblSignInEmail.setBounds(65, 338, 57, 15);
 
-		this.panel1.add(this.tfSignInEmail);
+		this.panelSignIn.add(this.tfSignInEmail);
 		this.tfSignInEmail.setBounds(65, 363, 203, 21);
 		this.tfSignInEmail.setColumns(10);
 
-		this.panel1.add(this.tfRecvEmail);
+		this.panelSignIn.add(this.tfRecvEmail);
 		this.tfRecvEmail.setFont(new Font("맑은 고딕", Font.BOLD, 12));
 		this.tfRecvEmail.setBounds(65, 407, 57, 15);
 
-		this.panel1.add(this.rdbtnRecvYes);
+		this.panelSignIn.add(this.rdbtnRecvYes);
 		this.rdbtnRecvYes.setBackground(new Color(255, 255, 255));
 		this.rdbtnRecvYes.setBounds(65, 428, 62, 23);
 
 		g.add(rdbtnRecvYes);
 		g.add(rdbtnRecvNo);
 
-		this.panel1.add(this.rdbtnRecvNo);
+		this.panelSignIn.add(this.rdbtnRecvNo);
 		this.rdbtnRecvNo.setBackground(new Color(255, 255, 255));
 		this.rdbtnRecvNo.setSelected(true);
 		this.rdbtnRecvNo.setBounds(147, 428, 121, 23);
 
-		this.panel1.add(this.btnInsertAccount);
+		this.panelSignIn.add(this.btnInsertAccount);
 		this.btnInsertAccount.setFont(new Font("굴림", Font.PLAIN, 20));
 		this.btnInsertAccount.setForeground(new Color(255, 255, 255));
 		this.btnInsertAccount.setBackground(new Color(51, 204, 51));
@@ -335,113 +334,112 @@ public class Ex3 extends JFrame {
 	}
 
 	private void setupViewLogin() {
-		this.panel2.setLayout(null);
+		this.panelLogin.setLayout(null);
 
-		this.panel2.add(this.lblLoginId);
+		this.panelLogin.add(this.lblLoginId);
 		this.lblLoginId.setFont(new Font("굴림", Font.PLAIN, 12));
 		this.lblLoginId.setHorizontalAlignment(SwingConstants.TRAILING);
 		this.lblLoginId.setBounds(62, 61, 57, 15);
 
-		this.panel2.add(this.tfLoginId);
+		this.panelLogin.add(this.tfLoginId);
 		this.tfLoginId.setBounds(131, 58, 127, 21);
 		this.tfLoginId.setColumns(10);
 
-		this.panel2.add(this.lblLoginPasswd);
+		this.panelLogin.add(this.lblLoginPasswd);
 		this.lblLoginPasswd.setFont(new Font("굴림", Font.PLAIN, 12));
 		this.lblLoginPasswd.setHorizontalAlignment(SwingConstants.TRAILING);
 		this.lblLoginPasswd.setBounds(62, 104, 57, 15);
 
-		this.panel2.add(this.pfLoginPasswd);
+		this.panelLogin.add(this.pfLoginPasswd);
 		this.pfLoginPasswd.setBounds(133, 101, 127, 21);
 
-		this.panel2.add(this.btnLogin);
+		this.panelLogin.add(this.lblWrongUser);
+		this.lblWrongUser.setFont(new Font("굴림", Font.PLAIN, 12));
+		this.lblWrongUser.setHorizontalAlignment(SwingConstants.CENTER);
+		this.lblWrongUser.setForeground(Color.RED);
+		this.lblWrongUser.setBounds(12, 136, 307, 15);
+		
+		this.panelLogin.add(this.btnLogin);
 		this.btnLogin.setForeground(Color.WHITE);
 		this.btnLogin.setFont(new Font("굴림", Font.PLAIN, 12));
 		this.btnLogin.setBackground(new Color(51, 204, 51));
 		this.btnLogin.setBounds(62, 174, 196, 50);
 
-		this.panel2.add(this.btnSignIn);
+		this.panelLogin.add(this.btnSignIn);
 		this.btnSignIn.setBounds(113, 234, 97, 23);
 		this.btnSignIn.setBackground(new Color(255, 255, 255));
 		this.btnSignIn.setFont(new Font("굴림", Font.PLAIN, 12));
-		
-		this.panel2.add(this.lblWrongUser);
-		this.lblWrongUser.setFont(new Font("굴림", Font.PLAIN, 12));
-		this.lblWrongUser.setHorizontalAlignment(SwingConstants.CENTER);
-		this.lblWrongUser.setForeground(Color.RED);
-		this.lblWrongUser.setBounds(12, 136, 307, 15);
-
 	}
 
 	private void setupViewProfile() {
 
-		this.panel3.setLayout(null);
+		this.panelProfile.setLayout(null);
 
-		this.panel3.add(this.lblProfile);
+		this.panelProfile.add(this.lblProfile);
 		this.lblProfile.setBackground(new Color(255, 255, 255));
 		this.lblProfile.setFont(new Font("굴림", Font.PLAIN, 20));
 		this.lblProfile.setHorizontalAlignment(SwingConstants.CENTER);
 		this.lblProfile.setBounds(81, 48, 165, 52);
 
-		this.panel3.add(this.lblProfileId);
+		this.panelProfile.add(this.lblProfileId);
 		this.lblProfileId.setFont(new Font("굴림", Font.PLAIN, 12));
 		this.lblProfileId.setHorizontalAlignment(SwingConstants.TRAILING);
 		this.lblProfileId.setBounds(41, 110, 57, 15);
 
-		this.panel3.add(this.lblProfilePasswd);
+		this.panelProfile.add(this.lblProfilePasswd);
 		this.lblProfilePasswd.setFont(new Font("굴림", Font.PLAIN, 12));
 		this.lblProfilePasswd.setHorizontalAlignment(SwingConstants.TRAILING);
 		this.lblProfilePasswd.setBounds(41, 155, 57, 15);
 
-		this.panel3.add(this.lblGetId);
+		this.panelProfile.add(this.lblGetId);
 		this.lblGetId.setFont(new Font("굴림", Font.PLAIN, 12));
 		this.lblGetId.setBounds(120, 110, 126, 15);
 
-		this.panel3.add(this.lblGetPasswd);
+		this.panelProfile.add(this.lblGetPasswd);
 		this.lblGetPasswd.setFont(new Font("굴림", Font.PLAIN, 12));
 		this.lblGetPasswd.setBounds(120, 155, 126, 15);
 
-		this.panel3.add(this.lblProfileName);
+		this.panelProfile.add(this.lblProfileName);
 		this.lblProfileName.setFont(new Font("굴림", Font.PLAIN, 12));
 		this.lblProfileName.setHorizontalAlignment(SwingConstants.TRAILING);
 		this.lblProfileName.setBounds(41, 199, 57, 15);
 
-		this.panel3.add(this.lblProfileEmail);
+		this.panelProfile.add(this.lblProfileEmail);
 		this.lblProfileEmail.setFont(new Font("굴림", Font.PLAIN, 12));
 		this.lblProfileEmail.setHorizontalAlignment(SwingConstants.TRAILING);
 		this.lblProfileEmail.setBounds(41, 240, 57, 15);
 
-		this.panel3.add(this.lblProfileRecvEmail);
+		this.panelProfile.add(this.lblProfileRecvEmail);
 		this.lblProfileRecvEmail.setFont(new Font("굴림", Font.PLAIN, 12));
 		this.lblProfileRecvEmail.setHorizontalAlignment(SwingConstants.TRAILING);
 		this.lblProfileRecvEmail.setBounds(41, 282, 57, 15);
 
-		this.panel3.add(this.lblGetName);
+		this.panelProfile.add(this.lblGetName);
 		this.lblGetName.setFont(new Font("굴림", Font.PLAIN, 12));
 		this.lblGetName.setBounds(120, 199, 126, 15);
 
-		this.panel3.add(this.lblGetEmail);
+		this.panelProfile.add(this.lblGetEmail);
 		this.lblGetEmail.setFont(new Font("굴림", Font.PLAIN, 12));
 		this.lblGetEmail.setBounds(120, 240, 126, 15);
 
-		this.panel3.add(this.lblGetRecvEmail);
+		this.panelProfile.add(this.lblGetRecvEmail);
 		this.lblGetRecvEmail.setFont(new Font("굴림", Font.PLAIN, 12));
 		this.lblGetRecvEmail.setBounds(120, 282, 126, 15);
 
-		this.panel3.add(this.btnUpdateProfile);
+		this.panelProfile.add(this.btnUpdateProfile);
 		this.btnUpdateProfile.setBackground(Color.LIGHT_GRAY);
 		this.btnUpdateProfile.setBounds(104, 371, 115, 23);
 
-		this.panel3.add(this.btnLogout);
+		this.panelProfile.add(this.btnLogout);
 		this.btnLogout.setBackground(Color.WHITE);
 		this.btnLogout.setBounds(222, 10, 97, 23);
 
-		this.panel3.add(this.lblProfileTimpstamp);
+		this.panelProfile.add(this.lblProfileTimpstamp);
 		this.lblProfileTimpstamp.setHorizontalAlignment(SwingConstants.TRAILING);
 		this.lblProfileTimpstamp.setFont(new Font("굴림", Font.PLAIN, 12));
 		this.lblProfileTimpstamp.setBounds(41, 326, 57, 15);
 
-		this.panel3.add(this.lblGetTimestamp);
+		this.panelProfile.add(this.lblGetTimestamp);
 		this.lblGetTimestamp.setFont(new Font("굴림", Font.PLAIN, 12));
 		this.lblGetTimestamp.setBounds(120, 326, 126, 15);
 

@@ -17,5 +17,4 @@ public class MemberVO {
 	private String email;
 	private String recvEmail; //'Y' or 'N'
 	private Timestamp regDate;
-	
 }
