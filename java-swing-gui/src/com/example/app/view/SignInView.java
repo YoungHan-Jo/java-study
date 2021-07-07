@@ -19,6 +19,7 @@ import javax.swing.JTextField;
 
 import com.example.domain.MemberVO;
 import com.example.repository.MemberDAO;
+import java.awt.SystemColor;
 
 public class SignInView implements Viewable {
 
@@ -48,6 +49,7 @@ public class SignInView implements Viewable {
 	private JRadioButton rdbtnRecvYes;
 	private JRadioButton rdbtnRecvNo;
 	private JButton btnInsertAccount;
+	private JButton btnGoBackToLogin;
 
 	public SignInView(CardLayout cardLayout, Container container) {
 		this.cardLayout = cardLayout;
@@ -84,6 +86,9 @@ public class SignInView implements Viewable {
 		rdbtnRecvYes = new JRadioButton("예");
 		rdbtnRecvNo = new JRadioButton("아니오");
 		btnInsertAccount = new JButton("가입하기");
+		btnGoBackToLogin = new JButton("로그인화면으로 돌아가기");
+		btnGoBackToLogin.setFont(new Font("굴림", Font.PLAIN, 12));
+		btnGoBackToLogin.setBackground(Color.WHITE);
 	}
 
 	private void setComponents() {
@@ -146,14 +151,14 @@ public class SignInView implements Viewable {
 		this.tfRecvEmail.setBounds(65, 407, 57, 15);
 
 		this.panelSignIn.add(this.rdbtnRecvYes);
-		this.rdbtnRecvYes.setBackground(new Color(255, 255, 255));
+		this.rdbtnRecvYes.setBackground(SystemColor.control);
 		this.rdbtnRecvYes.setBounds(65, 428, 62, 23);
 
 		g.add(rdbtnRecvYes);
 		g.add(rdbtnRecvNo);
 
 		this.panelSignIn.add(this.rdbtnRecvNo);
-		this.rdbtnRecvNo.setBackground(new Color(255, 255, 255));
+		this.rdbtnRecvNo.setBackground(SystemColor.control);
 		this.rdbtnRecvNo.setSelected(true);
 		this.rdbtnRecvNo.setBounds(147, 428, 121, 23);
 
@@ -162,6 +167,9 @@ public class SignInView implements Viewable {
 		this.btnInsertAccount.setForeground(new Color(255, 255, 255));
 		this.btnInsertAccount.setBackground(new Color(51, 204, 51));
 		this.btnInsertAccount.setBounds(65, 477, 196, 50);
+		this.btnGoBackToLogin.setBounds(65, 537, 196, 23);
+		
+		panelSignIn.add(this.btnGoBackToLogin);
 	}
 
 	private void addListener() {
@@ -172,6 +180,12 @@ public class SignInView implements Viewable {
 			} else {
 				insertAccount();
 			}
+		});
+		
+		btnGoBackToLogin.addActionListener(e ->{
+			cardLayout.show(container, "login");
+
+			initializeSignIn();
 		});
 
 		tfSignInId.addKeyListener(new KeyAdapter() {
@@ -246,6 +260,10 @@ public class SignInView implements Viewable {
 
 		cardLayout.show(container, "login");
 
+		initializeSignIn();
+	}
+
+	private void initializeSignIn() {
 		tfSignInId.setText("");
 		lblWrongId.setText("");
 		pfSignInPasswd1.setText("");
@@ -254,5 +272,4 @@ public class SignInView implements Viewable {
 		tfSignInEmail.setText("");
 		rdbtnRecvNo.setSelected(true);
 	}
-
 }

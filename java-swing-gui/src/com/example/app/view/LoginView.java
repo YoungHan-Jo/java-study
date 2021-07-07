@@ -3,6 +3,7 @@ package com.example.app.view;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -15,6 +16,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import com.example.domain.MemberVO;
+import com.example.domain.SharedData;
 import com.example.repository.MemberDAO;
 
 public class LoginView implements Viewable { // panelLogin 패널에 다 넣기
@@ -65,6 +67,7 @@ public class LoginView implements Viewable { // panelLogin 패널에 다 넣기
 
 	private void setComponents() {
 		this.panelLogin.setLayout(null);
+//		this.panelLogin.setPreferredSize(new Dimension(329, 293));
 
 		this.lblLoginId.setFont(new Font("굴림", Font.PLAIN, 12));
 		this.lblLoginId.setHorizontalAlignment(SwingConstants.TRAILING);
@@ -103,7 +106,12 @@ public class LoginView implements Viewable { // panelLogin 패널에 다 넣기
 
 	private void addListener() {
 		btnLogin.addActionListener(e -> {
-			login();
+			processLogin();
+		});
+
+		btnSignIn.addActionListener(e -> {
+			cardLayout.show(container, SignInView.VIEW_NAME);
+			initializeLogin();
 		});
 
 		tfLoginId.addKeyListener(new KeyAdapter() {
@@ -117,38 +125,50 @@ public class LoginView implements Viewable { // panelLogin 패널에 다 넣기
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER)
-					login();
+					processLogin();
 			}
 		});
 
-		btnSignIn.addActionListener(e -> {
-			cardLayout.show(container, SignInView.VIEW_NAME);
-		});
-	} // addListener
+	} // end of addListener
 
-	private void login() {
+	private void processLogin() {
 		String id = tfLoginId.getText().trim();
 		String passwd = new String(pfLoginPasswd.getPassword());
+		MemberVO member = memberDAO.getMemberById(id);
 
-		if (memberDAO.getCountById(id) > 0) {
-			if (passwd.equals(memberDAO.getMemberById(id).getPasswd())) {
+		if (id.length() > 0) {
+			if (passwd.length() > 0) {
+				if (memberDAO.getCountById(id) > 0) {
+					if (passwd.equals(member.getPasswd())) {
 
-				MemberVO member = memberDAO.getMemberById(id);
+						if (id.equals("admin")) {
+							cardLayout.show(container, AdminView.VIEW_NAME);
+						} else {
+							ProfileView profileView = (ProfileView) SharedData.MAP.get("profileView");
+							profileView.paintProfile(member);
+							
+							cardLayout.show(container, ProfileView.VIEW_NAME);
+						}
 
-				ProfileView profileView = new ProfileView(cardLayout, container, member);
-				container.add(profileView.getView(), ProfileView.VIEW_NAME);
+						initializeLogin();
+					} else
+						lblWrongUser.setText("잘못된 비밀번호입니다.");
 
-				cardLayout.show(container, ProfileView.VIEW_NAME);
-
-				tfLoginId.setText("");
-				pfLoginPasswd.setText("");
-				lblWrongUser.setText("");
+				} else
+					lblWrongUser.setText("가입하지 않은 아이디입니다.");
 
 			} else
-				lblWrongUser.setText("가입하지 않은 아이디이거나, 잘못된 비밀번호입니다.");
+				lblWrongUser.setText("비밀번호를 입력해 주세요.");
 
 		} else
 			lblWrongUser.setText("아이디를 입력해주세요.");
+
+	}
+
+	private void initializeLogin() {
+		tfLoginId.setText("");
+		pfLoginPasswd.setText("");
+		lblWrongUser.setText("");
 	}
 
 }

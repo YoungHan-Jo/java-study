@@ -5,15 +5,18 @@ import java.awt.Container;
 
 import javax.swing.JFrame;
 
+import com.example.app.view.AdminView;
 import com.example.app.view.LoginView;
 import com.example.app.view.ProfileView;
 import com.example.app.view.SignInView;
+import com.example.domain.SharedData;
 
 public class MemberManager extends JFrame {
 
 	private LoginView loginView;
 	private SignInView signInView;
 	private ProfileView profileView;
+	private AdminView adminView;
 
 	CardLayout cardLayout;
 	Container container;
@@ -41,11 +44,20 @@ public class MemberManager extends JFrame {
 
 		profileView = new ProfileView(cardLayout, container);
 		container.add(profileView.getView(), ProfileView.VIEW_NAME);
+		saveAsMap("profileView", profileView);
+		
+		adminView = new AdminView(cardLayout, container);
+		container.add(adminView.getView(), AdminView.VIEW_NAME);
+		
+	}
+
+	private void saveAsMap(String key, Object object) {
+		SharedData.MAP.put(key, object);
 	}
 
 	private void setFrame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(360, 600);
+		setSize(360, 700);
 		setLocationByPlatform(true);
 
 		cardLayout.show(container, LoginView.VIEW_NAME); // 프로그램 시작 첫화면

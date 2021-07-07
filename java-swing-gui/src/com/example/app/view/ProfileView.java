@@ -12,6 +12,7 @@ import javax.swing.SwingConstants;
 
 import com.example.domain.MemberVO;
 import com.example.repository.MemberDAO;
+import java.awt.SystemColor;
 
 public class ProfileView implements Viewable {
 
@@ -23,8 +24,6 @@ public class ProfileView implements Viewable {
 	private Container container;
 
 	private JPanel panelProfile;
-
-	private MemberVO member;
 
 	private JLabel lblProfile;
 	private JLabel lblProfileId;
@@ -41,21 +40,11 @@ public class ProfileView implements Viewable {
 	private JLabel lblGetTimestamp;
 	private JButton btnUpdateProfile;
 	private JButton btnLogout;
+	private JButton btnDeleteUser;
 
 	public ProfileView(CardLayout cardLayout, Container container) {
 		this.cardLayout = cardLayout;
 		this.container = container;
-
-		init();
-		setComponents();
-		addListener();
-	}
-
-	public ProfileView(CardLayout cardLayout, Container container, MemberVO member) {
-		super();
-		this.cardLayout = cardLayout;
-		this.container = container;
-		this.member = member;
 
 		init();
 		setComponents();
@@ -78,34 +67,31 @@ public class ProfileView implements Viewable {
 		lblProfileRecvEmail = new JLabel("메일수신");
 		lblProfileTimpstamp = new JLabel("가입일");
 		btnUpdateProfile = new JButton("회원정보 수정");
+		
 		btnLogout = new JButton("로그아웃");
-
-		if (member == null) {
-			member = memberDAO.getMemberById("");
-			lblGetId = new JLabel("");
-			lblGetPasswd = new JLabel("");
-			lblGetName = new JLabel("");
-			lblGetEmail = new JLabel("");
-			lblGetRecvEmail = new JLabel("");
-			lblGetTimestamp = new JLabel("");
-		} else {
-			paintProfile();
-		}
+		
+		btnDeleteUser = new JButton("회원 탈퇴");
+		
+		initializeProfile();
 
 	}
 
-	private void paintProfile() {
-		lblGetId = new JLabel(member.getId());
-		lblGetPasswd = new JLabel(member.getPasswd());
-		lblGetName = new JLabel(member.getName());
-		lblGetEmail = new JLabel(member.getEmail());
-		String recvEmail;
-		if (member.getRecvEmail() == "Y")
-			recvEmail = "예";
-		else
-			recvEmail = "아니오";
-		lblGetRecvEmail = new JLabel(recvEmail);
-		lblGetTimestamp = new JLabel(String.valueOf(member.getRegDate()));
+	private void initializeProfile() {
+		lblGetId = new JLabel("");
+		lblGetPasswd = new JLabel("");
+		lblGetName = new JLabel("");
+		lblGetEmail = new JLabel("");
+		lblGetRecvEmail = new JLabel("");
+		lblGetTimestamp = new JLabel("");
+	}
+	
+	public void paintProfile(MemberVO member) {
+		lblGetId.setText(member.getId());
+		lblGetPasswd.setText(member.getPasswd());
+		lblGetName.setText(member.getName());
+		lblGetEmail.setText(member.getEmail());
+		lblGetRecvEmail.setText(member.getRecvEmail());
+		lblGetTimestamp.setText(String.valueOf(member.getRegDate()));
 	}
 
 	private void setComponents() {
@@ -163,12 +149,14 @@ public class ProfileView implements Viewable {
 		this.lblGetRecvEmail.setBounds(120, 282, 126, 15);
 
 		this.panelProfile.add(this.btnUpdateProfile);
-		this.btnUpdateProfile.setBackground(Color.LIGHT_GRAY);
+		this.btnUpdateProfile.setBackground(SystemColor.control);
 		this.btnUpdateProfile.setBounds(104, 371, 115, 23);
+		this.btnUpdateProfile.setFont(new Font("굴림", Font.PLAIN, 12));
 
 		this.panelProfile.add(this.btnLogout);
 		this.btnLogout.setBackground(Color.WHITE);
 		this.btnLogout.setBounds(222, 10, 97, 23);
+		this.btnLogout.setFont(new Font("굴림", Font.PLAIN, 12));
 
 		this.panelProfile.add(this.lblProfileTimpstamp);
 		this.lblProfileTimpstamp.setHorizontalAlignment(SwingConstants.TRAILING);
@@ -178,6 +166,11 @@ public class ProfileView implements Viewable {
 		this.panelProfile.add(this.lblGetTimestamp);
 		this.lblGetTimestamp.setFont(new Font("굴림", Font.PLAIN, 12));
 		this.lblGetTimestamp.setBounds(120, 326, 126, 15);
+		
+		this.btnDeleteUser.setBackground(SystemColor.control);
+		this.btnDeleteUser.setFont(new Font("굴림", Font.PLAIN, 12));
+		this.btnDeleteUser.setBounds(104, 404, 115, 23);
+		this.panelProfile.add(btnDeleteUser);
 
 	}
 
@@ -185,7 +178,12 @@ public class ProfileView implements Viewable {
 		btnLogout.addActionListener(e -> {
 			cardLayout.show(container, "login");
 		});
-
+		
+		btnDeleteUser.addActionListener(e -> {
+			
+		});
+	
 	}
+	
 
 }
