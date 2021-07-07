@@ -11,4 +11,7 @@ public class SharedData {	// 임시 공유 저장소 같은 역할
 	
 	public static final List<Object> LIST = new ArrayList<>();
 		
+	public static void saveAsMap(String key, Object object) {
+		SharedData.MAP.put(key, object);
+	}
 }

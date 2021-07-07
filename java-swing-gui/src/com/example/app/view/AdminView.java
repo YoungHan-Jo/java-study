@@ -2,45 +2,54 @@ package com.example.app.view;
 
 import java.awt.CardLayout;
 import java.awt.Container;
-import java.awt.SystemColor;
-import java.text.SimpleDateFormat;
-import java.util.List;
-import java.util.Vector;
-import javax.swing.JButton;
+
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
+
+import com.example.app.MemberManager;
 import com.example.domain.MemberVO;
 import com.example.repository.MemberDAO;
 import java.awt.BorderLayout;
-import javax.swing.JTable;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.GridLayout;
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.Vector;
+
 import javax.swing.JTextField;
+import java.awt.FlowLayout;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+
+import java.awt.Color;
+import javax.swing.SwingConstants;
+import javax.swing.JButton;
 import javax.swing.ButtonGroup;
+import javax.swing.JTable;
+import java.awt.Font;
 
 public class AdminView extends JFrame implements Viewable {
+
 	public static final String VIEW_NAME = "admin";
 
 	private MemberDAO memberDAO = MemberDAO.getInstance();
 
-	private Vector<String> columnNames;
-
 	private CardLayout cardLayout;
 	private Container container;
+	private MemberManager frame;
 
 	private JPanel panelAdmin;
 	private JPanel panelNorth;
 	private JPanel panelWest;
 	private JPanel panelSouth;
-	private JLabel lblNewLabel;
-	private JPanel panel;
-	private JPanel panel_1;
-	private JPanel panel_2;
-	private JPanel panel_3;
-	private JPanel panel_4;
+	private JLabel lblUserManager;
+	private JPanel panelUpdateId;
+	private JPanel panelUpdatePasswd;
+	private JPanel panelUpdateName;
+	private JPanel panelUpdateEmail;
+	private JPanel panelUpdateRecvEmail;
 	private JLabel lblUpdateId;
 	private JTextField tfUpdateId;
 	private JLabel lblUpdatePasswd;
@@ -48,24 +57,24 @@ public class AdminView extends JFrame implements Viewable {
 	private JLabel lblUpdateName;
 	private JTextField tfUpdateName;
 	private JLabel lblUpdateEmail;
+	private JLabel lblUpdateRecvEmail;
 	private JTextField tfUpdateEmail;
-	private JRadioButton rdbtnNewRadioButton;
-	private JRadioButton rdbtnNewRadioButton_1;
-	private ButtonGroup buttonGroup;
+	private JPanel panel;
+	private JRadioButton rdbtnRecvYes;
+	private JRadioButton rdbtnRecvNo;
 	private JButton btnShowTotal;
 	private JButton btnInsertUser;
 	private JButton btnUpdateUser;
 	private JButton btnDeleteUser;
-	private JPanel panel_5;
-	private JPanel panel_6;
-	private JLabel lblNewLabel_5;
+	private ButtonGroup g;
 	private JButton btnLogout;
 
 	private JTable table;
 
-	public AdminView(CardLayout cardLayout, Container container) {
+	public AdminView(CardLayout cardLayout, Container container, MemberManager frame) {
 		this.cardLayout = cardLayout;
 		this.container = container;
+		this.frame = frame;
 
 		init();
 		setComponents();
@@ -80,136 +89,209 @@ public class AdminView extends JFrame implements Viewable {
 	private void init() {
 		panelAdmin = new JPanel();
 
-		columnNames = new Vector<>();
-		columnNames.add("아이디");
-		columnNames.add("비밀번호");
-		columnNames.add("이름");
-		columnNames.add("이메일");
-		columnNames.add("메일수신여부");
-		columnNames.add("가입날짜");
-
 		panelNorth = new JPanel();
+		lblUserManager = new JLabel("관리자 계정 - 회원관리");
+
 		panelWest = new JPanel();
-		panelSouth = new JPanel();
 
-		lblNewLabel = new JLabel("관리자 계정 - 회원정보 수정");
-
-		panel = new JPanel();
-		panel_1 = new JPanel();
-		panel_2 = new JPanel();
-		panel_3 = new JPanel();
-		panel_4 = new JPanel();
-
-		lblUpdateId = new JLabel("ID");
+		panelUpdateId = new JPanel();
 		tfUpdateId = new JTextField();
+		lblUpdateId = new JLabel("ID");
+
+		panelUpdatePasswd = new JPanel();
 		lblUpdatePasswd = new JLabel("P/W");
 		tfUpdatePasswd = new JTextField();
-		lblUpdateName = new JLabel("Name");
+
+		panelUpdateName = new JPanel();
+		lblUpdateName = new JLabel("NAME");
 		tfUpdateName = new JTextField();
-		lblUpdateEmail = new JLabel("Email");
+
+		panelUpdateEmail = new JPanel();
+		lblUpdateEmail = new JLabel("EMAIL");
 		tfUpdateEmail = new JTextField();
 
-		panel_5 = new JPanel();
-		lblNewLabel_5 = new JLabel("메일수신");
-		panel_6 = new JPanel();
-		buttonGroup = new ButtonGroup();
-		rdbtnNewRadioButton = new JRadioButton("예");
-		rdbtnNewRadioButton_1 = new JRadioButton("아니오");
+		panelUpdateRecvEmail = new JPanel();
+		lblUpdateRecvEmail = new JLabel("메일 수신");
+		panel = new JPanel();
+		g = new ButtonGroup();
+		rdbtnRecvYes = new JRadioButton("예");
+		rdbtnRecvNo = new JRadioButton("아니오");
 
-		btnShowTotal = new JButton("전체보기");
+		panelSouth = new JPanel();
+		btnShowTotal = new JButton("전체 보기");
 		btnInsertUser = new JButton("추가");
 		btnUpdateUser = new JButton("수정");
 		btnDeleteUser = new JButton("삭제");
 		btnLogout = new JButton("로그아웃");
 
-		table = new JTable(null, columnNames);
 	}
 
 	private void setComponents() {
-		this.panelAdmin.setLayout(new BorderLayout());
+		panelAdmin.setLayout(new BorderLayout());
 
-		container.add(this.panelNorth, BorderLayout.NORTH);
-		this.panelNorth.add(this.lblNewLabel);
+		panelAdmin.add(this.panelNorth, BorderLayout.NORTH);
+		panelNorth.add(lblUserManager);
+		lblUserManager.setFont(new Font("굴림", Font.BOLD, 15));
 
-		container.add(this.panelWest, BorderLayout.WEST);
-		this.panelWest.setLayout(new GridLayout(5, 1, 0, 0));
+		panelAdmin.add(this.panelWest, BorderLayout.WEST);
+		panelWest.setLayout(new GridLayout(5, 1, 0, 0));
 
-		this.panelWest.add(this.panel);
-		this.panel.setLayout(new GridLayout(2, 1, 0, 0));
-		this.lblUpdateId.setHorizontalAlignment(SwingConstants.CENTER);
+		panelWest.add(panelUpdateId);
+		panelUpdateId.setLayout(new GridLayout(2, 1, 0, 0));
+		lblUpdateId.setHorizontalAlignment(SwingConstants.CENTER);
 
-		this.panel.add(this.lblUpdateId);
+		panelUpdateId.add(this.lblUpdateId);
 
-		this.panel.add(this.tfUpdateId);
+		panelUpdateId.add(this.tfUpdateId);
 
-		this.panelWest.add(this.panel_1);
-		this.panel_1.setLayout(new GridLayout(2, 1, 0, 0));
-		this.lblUpdatePasswd.setHorizontalAlignment(SwingConstants.CENTER);
+		panelWest.add(panelUpdatePasswd);
+		panelUpdatePasswd.setLayout(new GridLayout(2, 1, 0, 0));
 
-		this.panel_1.add(this.lblUpdatePasswd);
+		lblUpdatePasswd.setHorizontalAlignment(SwingConstants.CENTER);
+		panelUpdatePasswd.add(lblUpdatePasswd);
 
-		this.panel_1.add(this.tfUpdatePasswd);
+		panelUpdatePasswd.add(tfUpdatePasswd);
+		tfUpdatePasswd.setColumns(10);
 
-		this.panelWest.add(this.panel_2);
-		this.panel_2.setLayout(new GridLayout(2, 1, 0, 0));
-		this.lblUpdateName.setHorizontalAlignment(SwingConstants.CENTER);
+		panelWest.add(panelUpdateName);
+		panelUpdateName.setLayout(new GridLayout(2, 1, 0, 0));
 
-		this.panel_2.add(this.lblUpdateName);
+		lblUpdateName.setHorizontalAlignment(SwingConstants.CENTER);
+		panelUpdateName.add(lblUpdateName);
 
-		this.panel_2.add(this.tfUpdateName);
+		panelUpdateName.add(tfUpdateName);
+		tfUpdateName.setColumns(10);
 
-		this.panelWest.add(this.panel_3);
-		this.panel_3.setLayout(new GridLayout(2, 1, 0, 0));
-		this.lblUpdateEmail.setHorizontalAlignment(SwingConstants.CENTER);
+		panelWest.add(panelUpdateEmail);
+		panelUpdateEmail.setLayout(new GridLayout(2, 1, 0, 0));
 
-		this.panel_3.add(this.lblUpdateEmail);
+		lblUpdateEmail.setHorizontalAlignment(SwingConstants.CENTER);
+		panelUpdateEmail.add(lblUpdateEmail);
 
-		this.panel_3.add(this.tfUpdateEmail);
+		tfUpdateEmail.setColumns(10);
+		panelUpdateEmail.add(tfUpdateEmail);
 
-		this.panelWest.add(this.panel_4);
-		this.panel_4.setLayout(new GridLayout(2, 1, 0, 0));
+		panelWest.add(panelUpdateRecvEmail);
+		panelUpdateRecvEmail.setLayout(new GridLayout(2, 1, 0, 0));
 
-		this.panel_4.add(this.panel_5);
+		lblUpdateRecvEmail.setHorizontalAlignment(SwingConstants.CENTER);
+		panelUpdateRecvEmail.add(lblUpdateRecvEmail);
 
-		this.panel_5.add(this.lblNewLabel_5);
-		this.panel_6.setBackground(SystemColor.window);
+		panel.setBackground(Color.WHITE);
+		panelUpdateRecvEmail.add(panel);
+		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
-		this.panel_4.add(this.panel_6);
-		this.rdbtnNewRadioButton.setBackground(SystemColor.window);
-		this.panel_6.add(this.rdbtnNewRadioButton);
-		this.buttonGroup.add(this.rdbtnNewRadioButton);
-		this.rdbtnNewRadioButton_1.setBackground(SystemColor.window);
-		this.panel_6.add(this.rdbtnNewRadioButton_1);
-		this.buttonGroup.add(this.rdbtnNewRadioButton_1);
+		this.g.add(rdbtnRecvYes);
+		this.g.add(rdbtnRecvNo);
 
-		container.add(new JScrollPane(table), BorderLayout.CENTER);
-		// 화면 갱신
+		rdbtnRecvYes.setBackground(Color.WHITE);
+		panel.add(rdbtnRecvYes);
+		rdbtnRecvNo.setBackground(Color.WHITE);
+		rdbtnRecvNo.setSelected(true);
+		panel.add(rdbtnRecvNo);
 
-		container.add(this.panelSouth, BorderLayout.SOUTH);
-		this.panelSouth.add(this.btnShowTotal);
-		this.panelSouth.add(this.btnInsertUser);
-		this.panelSouth.add(this.btnUpdateUser);
-		this.panelSouth.add(this.btnDeleteUser);
-		this.panelSouth.add(this.btnLogout);
+		panelAdmin.add(this.panelSouth, BorderLayout.SOUTH);
+		panelSouth.add(btnShowTotal);
+		panelSouth.add(btnInsertUser);
+		panelSouth.add(btnUpdateUser);
+		panelSouth.add(btnDeleteUser);
+		panelSouth.add(btnLogout);
 
-		setVisible(true);
 	}
 
 	private void addListener() {
 		btnShowTotal.addActionListener(e -> {
 			showTotal();
 		});
+
+		btnInsertUser.addActionListener(e -> {
+			insertUser();
+			showTotal();
+		});
+
+		btnUpdateUser.addActionListener(e -> {
+			updateUser();
+			showTotal();
+		});
+
+		btnDeleteUser.addActionListener(e -> {
+			deleteUser();
+			showTotal();
+		});
+
+		btnLogout.addActionListener(e -> {
+			goToLoginView();
+			initializeUpdate();
+		});
+	}
+
+	private void goToLoginView() {
+		table.setVisible(false);
+		frame.setSize(LoginView.WIDTH, LoginView.HEIGHT);
+		cardLayout.show(container, LoginView.VIEW_NAME);
+	}
+
+	private void deleteUser() {
+		String id = tfUpdateId.getText();
+		memberDAO.deleteById(id);
+		JOptionPane.showMessageDialog(frame, id + "계정을 삭제했습니다.", "Message", JOptionPane.INFORMATION_MESSAGE);
+		initializeUpdate();
+	}
+
+	private void updateUser() {
+		String id = tfUpdateId.getText();
+
+		if (memberDAO.getCountById(id) > 0) {
+			MemberVO member = new MemberVO();
+			member.setId(id);
+			member.setPasswd(tfUpdatePasswd.getText());
+			member.setName(tfUpdateName.getText());
+			member.setEmail(tfUpdateEmail.getText());
+			member.setRecvEmail(rdbtnRecvYes.isSelected() ? "Y" : "N");
+			member.setRegDate(memberDAO.getMemberById(id).getRegDate());
+
+			memberDAO.updateById(id, member);
+			JOptionPane.showMessageDialog(frame, id + "계정을 수정했습니다.", "Message", JOptionPane.INFORMATION_MESSAGE);
+			initializeUpdate();
+		} else {
+			JOptionPane.showMessageDialog(panelAdmin, "수정할 내용을 입력해주세요", "", JOptionPane.INFORMATION_MESSAGE);
+		}
+	}
+
+	private void insertUser() {
+		MemberVO member = new MemberVO();
+		String id = tfUpdateId.getText().trim();
+		String passwd = tfUpdatePasswd.getText();
+		String name = tfUpdateName.getText().trim();
+		String email = tfUpdateEmail.getText().trim();
+		String recvEmail = rdbtnRecvYes.isSelected() ? "Y" : "N";
+
+		member.setId(id);
+		member.setPasswd(passwd);
+		member.setName(name);
+		member.setEmail(email);
+		member.setRecvEmail(recvEmail);
+		member.setRegDate(new Timestamp(System.currentTimeMillis()));
+
+		memberDAO.insert(member);
+		JOptionPane.showMessageDialog(frame, id + "계정을 추가했습니다.", "Message", JOptionPane.INFORMATION_MESSAGE);
+		initializeUpdate();
+		showTotal();
+	}
+
+	private void initializeUpdate() {
+		tfUpdateId.setText("");
+		tfUpdatePasswd.setText("");
+		tfUpdateName.setText("");
+		tfUpdateEmail.setText("");
+		rdbtnRecvNo.setSelected(true);
 	}
 
 	private void showTotal() {
+
 		List<MemberVO> list = memberDAO.getMembers();
 
-		// 벡터로 2차배열처럼 만들기. 벡터안에 벡터
-		// List<MemberVO> - > Vector<Vector<Object>> 로 변환하기
-
 		Vector<Vector<Object>> vector = new Vector<>();
-
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일");
 
 		for (MemberVO member : list) {
 			Vector<Object> rowVector = new Vector<>();
@@ -218,9 +300,23 @@ public class AdminView extends JFrame implements Viewable {
 			rowVector.add(member.getName());
 			rowVector.add(member.getEmail());
 			rowVector.add(member.getRecvEmail());
-			rowVector.add(sdf.format(member.getRegDate()));
+			rowVector.add(member.getRegDate());
+
+			vector.add(rowVector);
 		}
 
-	}
+		Vector<String> columnNames = new Vector<>();
+		columnNames.add("아이디");
+		columnNames.add("비밀번호");
+		columnNames.add("이름");
+		columnNames.add("이메일");
+		columnNames.add("메일수신");
+		columnNames.add("가입날짜");
 
+		table = new JTable(vector, columnNames);
+
+		panelAdmin.add(new JScrollPane(table), BorderLayout.CENTER);
+
+		frame.setVisible(true);
+	}
 }

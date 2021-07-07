@@ -17,6 +17,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
+import com.example.app.MemberManager;
 import com.example.domain.MemberVO;
 import com.example.repository.MemberDAO;
 import java.awt.SystemColor;
@@ -24,12 +25,15 @@ import java.awt.SystemColor;
 public class SignInView implements Viewable {
 
 	public static final String VIEW_NAME = "sign in";
+	public static final int WIDTH = 340;
+	public static final int HEIGHT = 700;
 
 	private MemberDAO memberDAO = MemberDAO.getInstance();
 
 	private CardLayout cardLayout;
 	private Container container;
 	private JPanel panelSignIn;
+	private MemberManager frame;
 
 	private JLabel lblSignInId;
 	private JTextField tfSignInId;
@@ -51,9 +55,10 @@ public class SignInView implements Viewable {
 	private JButton btnInsertAccount;
 	private JButton btnGoBackToLogin;
 
-	public SignInView(CardLayout cardLayout, Container container) {
+	public SignInView(CardLayout cardLayout, Container container, MemberManager frame) {
 		this.cardLayout = cardLayout;
 		this.container = container;
+		this.frame = frame;
 
 		init();
 		setComponents();
@@ -93,6 +98,7 @@ public class SignInView implements Viewable {
 
 	private void setComponents() {
 		this.panelSignIn.setLayout(null);
+		
 		this.panelSignIn.add(this.lblSignInId);
 		this.lblSignInId.setFont(new Font("맑은 고딕", Font.BOLD, 12));
 		this.lblSignInId.setBounds(65, 28, 57, 15);
@@ -183,8 +189,7 @@ public class SignInView implements Viewable {
 		});
 		
 		btnGoBackToLogin.addActionListener(e ->{
-			cardLayout.show(container, "login");
-
+			goToLoginView();
 			initializeSignIn();
 		});
 
@@ -237,6 +242,11 @@ public class SignInView implements Viewable {
 
 	} // addListener
 
+	private void goToLoginView() {
+		frame.setSize(LoginView.WIDTH, LoginView.HEIGHT);
+		cardLayout.show(container, LoginView.VIEW_NAME);
+	}
+
 	private void insertAccountError() {
 		JOptionPane.showMessageDialog(container, "아이디는 필수 입력 요소입니다.", "Error", JOptionPane.WARNING_MESSAGE);
 	}
@@ -258,8 +268,7 @@ public class SignInView implements Viewable {
 
 		memberDAO.insert(member);
 
-		cardLayout.show(container, "login");
-
+		goToLoginView();
 		initializeSignIn();
 	}
 

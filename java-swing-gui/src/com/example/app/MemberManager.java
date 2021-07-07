@@ -36,28 +36,26 @@ public class MemberManager extends JFrame {
 	private void setContentPane() {
 		container.setLayout(cardLayout);
 
-		loginView = new LoginView(cardLayout, container); // LoginView 클래스 객체 생성// frame 필요하면 매개변수 this
+		loginView = new LoginView(cardLayout, container, this); // LoginView 클래스 객체 생성// frame 필요하면 매개변수 this
 		container.add(loginView.getView(), LoginView.VIEW_NAME); // 로그인패널 객체 호출해서 컨테이너에 조립
 
-		signInView = new SignInView(cardLayout, container);
+		signInView = new SignInView(cardLayout, container, this);
 		container.add(signInView.getView(), SignInView.VIEW_NAME);
 
-		profileView = new ProfileView(cardLayout, container);
+		profileView = new ProfileView(cardLayout, container, this);
 		container.add(profileView.getView(), ProfileView.VIEW_NAME);
-		saveAsMap("profileView", profileView);
+		SharedData.saveAsMap("profileView", profileView);
 		
-		adminView = new AdminView(cardLayout, container);
+		adminView = new AdminView(cardLayout, container, this);
 		container.add(adminView.getView(), AdminView.VIEW_NAME);
 		
 	}
 
-	private void saveAsMap(String key, Object object) {
-		SharedData.MAP.put(key, object);
-	}
+
 
 	private void setFrame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(360, 700);
+		setSize(LoginView.WIDTH, LoginView.HEIGHT);
 		setLocationByPlatform(true);
 
 		cardLayout.show(container, LoginView.VIEW_NAME); // 프로그램 시작 첫화면

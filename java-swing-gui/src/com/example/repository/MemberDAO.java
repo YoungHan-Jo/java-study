@@ -167,7 +167,7 @@ public class MemberDAO {
 
 	// =====================================================updateById()======================================================
 
-	public void updateById(MemberVO memberVO) {
+	public void updateById(String id, MemberVO memberVO) {
 		Connection con = null; // 접속
 		PreparedStatement pstmt = null; // sql 문장 객체 타입
 
@@ -186,7 +186,7 @@ public class MemberDAO {
 			pstmt.setString(3, memberVO.getEmail());
 			pstmt.setString(4, memberVO.getRecvEmail());
 			pstmt.setTimestamp(5, memberVO.getRegDate());
-			pstmt.setString(6, memberVO.getId());
+			pstmt.setString(6, id);
 
 			// 4단계. sql 문장 실행
 			pstmt.executeUpdate();
@@ -398,7 +398,7 @@ public class MemberDAO {
 		member.setRecvEmail("N");
 		member.setRegDate(new Timestamp(System.currentTimeMillis()));
 		
-		dao.updateById(member);
+		dao.updateById("user10", member);
 		
 		MemberVO dbMemberVO = dao.getMemberById(member.getId());
 		System.out.println(dbMemberVO.toString());

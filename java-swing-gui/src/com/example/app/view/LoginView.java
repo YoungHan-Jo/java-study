@@ -15,6 +15,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import com.example.app.MemberManager;
 import com.example.domain.MemberVO;
 import com.example.domain.SharedData;
 import com.example.repository.MemberDAO;
@@ -22,13 +23,15 @@ import com.example.repository.MemberDAO;
 public class LoginView implements Viewable { // panelLogin 패널에 다 넣기
 
 	public static final String VIEW_NAME = "login";
-
+	public static final int WIDTH = 340;
+	public static final int HEIGHT = 350;
+	
 	private MemberDAO memberDAO = MemberDAO.getInstance();
 
 	private CardLayout cardLayout;
 	private Container container;
 	private JPanel panelLogin;
-//	private MemberManager frame;
+	private MemberManager frame;
 
 	private JLabel lblLoginId;
 	private JLabel lblLoginPasswd;
@@ -38,10 +41,11 @@ public class LoginView implements Viewable { // panelLogin 패널에 다 넣기
 	private JButton btnLogin;
 	private JButton btnSignIn;
 
-	public LoginView(CardLayout cardLayout, Container container) { // 프레임 필요하면 , MemberManager frame 추가해서
+	public LoginView(CardLayout cardLayout, Container container, MemberManager frame) { // 프레임 필요하면 , MemberManager
+																						// frame 추가해서
 		this.cardLayout = cardLayout;
 		this.container = container;
-//		this.frame = frame;
+		this.frame = frame;
 
 		init(); // 멤버초기화 메소드
 		setComponents(); // 화면 구성
@@ -110,7 +114,7 @@ public class LoginView implements Viewable { // panelLogin 패널에 다 넣기
 		});
 
 		btnSignIn.addActionListener(e -> {
-			cardLayout.show(container, SignInView.VIEW_NAME);
+			goToSignInView();
 			initializeLogin();
 		});
 
@@ -131,6 +135,8 @@ public class LoginView implements Viewable { // panelLogin 패널에 다 넣기
 
 	} // end of addListener
 
+
+
 	private void processLogin() {
 		String id = tfLoginId.getText().trim();
 		String passwd = new String(pfLoginPasswd.getPassword());
@@ -142,12 +148,14 @@ public class LoginView implements Viewable { // panelLogin 패널에 다 넣기
 					if (passwd.equals(member.getPasswd())) {
 
 						if (id.equals("admin")) {
-							cardLayout.show(container, AdminView.VIEW_NAME);
+							goToAdminView();
+
 						} else {
 							ProfileView profileView = (ProfileView) SharedData.MAP.get("profileView");
 							profileView.paintProfile(member);
-							
-							cardLayout.show(container, ProfileView.VIEW_NAME);
+
+							goToProfileView();
+
 						}
 
 						initializeLogin();
@@ -163,6 +171,21 @@ public class LoginView implements Viewable { // panelLogin 패널에 다 넣기
 		} else
 			lblWrongUser.setText("아이디를 입력해주세요.");
 
+	}
+
+	private void goToAdminView() {
+		frame.setSize(700, 350);
+		cardLayout.show(container, AdminView.VIEW_NAME);
+	}
+
+	private void goToProfileView() {
+		frame.setSize(ProfileView.WIDTH, ProfileView.HEIGHT);
+		cardLayout.show(container, ProfileView.VIEW_NAME);
+	}
+	
+	private void goToSignInView() {
+		frame.setSize(SignInView.WIDTH, SignInView.HEIGHT);
+		cardLayout.show(container, SignInView.VIEW_NAME);
 	}
 
 	private void initializeLogin() {

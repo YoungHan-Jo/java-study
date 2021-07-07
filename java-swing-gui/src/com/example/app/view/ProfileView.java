@@ -7,9 +7,11 @@ import java.awt.Font;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import com.example.app.MemberManager;
 import com.example.domain.MemberVO;
 import com.example.repository.MemberDAO;
 import java.awt.SystemColor;
@@ -17,11 +19,14 @@ import java.awt.SystemColor;
 public class ProfileView implements Viewable {
 
 	public static final String VIEW_NAME = "profile";
+	public static final int WIDTH = 340;
+	public static final int HEIGHT = 550;
 
 	private MemberDAO memberDAO = MemberDAO.getInstance();
 
 	private CardLayout cardLayout;
 	private Container container;
+	private MemberManager frame;
 
 	private JPanel panelProfile;
 
@@ -42,9 +47,10 @@ public class ProfileView implements Viewable {
 	private JButton btnLogout;
 	private JButton btnDeleteUser;
 
-	public ProfileView(CardLayout cardLayout, Container container) {
+	public ProfileView(CardLayout cardLayout, Container container, MemberManager frame) {
 		this.cardLayout = cardLayout;
 		this.container = container;
+		this.frame = frame;
 
 		init();
 		setComponents();
@@ -176,14 +182,19 @@ public class ProfileView implements Viewable {
 
 	private void addListener() {
 		btnLogout.addActionListener(e -> {
-			cardLayout.show(container, "login");
+			goToLoginView();
 		});
 		
 		btnDeleteUser.addActionListener(e -> {
-			
+			memberDAO.deleteById(lblGetId.getText());
+			goToLoginView();
+			JOptionPane.showMessageDialog(frame, "탈퇴했습니다.", "Message", JOptionPane.INFORMATION_MESSAGE);
 		});
-	
+	}
+
+	private void goToLoginView() {
+		frame.setSize(LoginView.WIDTH, LoginView.HEIGHT);
+		cardLayout.show(container, LoginView.VIEW_NAME);
 	}
 	
-
 }
