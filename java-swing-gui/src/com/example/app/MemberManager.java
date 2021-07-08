@@ -4,6 +4,9 @@ import java.awt.CardLayout;
 import java.awt.Container;
 
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 
 import com.example.app.view.AdminView;
 import com.example.app.view.LoginView;
@@ -21,16 +24,45 @@ public class MemberManager extends JFrame {
 	CardLayout cardLayout;
 	Container container;
 
+	JMenuItem item;
+
 	public MemberManager() {
 		super("회원관리 프로그램");
 		init();
+		setMenu();
 		setContentPane();
+		addListener();
 		setFrame();
 	}
 
 	private void init() {
 		container = getContentPane();
 		cardLayout = new CardLayout();
+	}
+
+	private void setMenu() {
+		JMenuBar menuBar = new JMenuBar();
+
+		JMenu menu1 = new JMenu("파일");
+
+		item = new JMenuItem("끝내기");
+
+		menu1.add(item);
+
+		JMenu menu2 = new JMenu("도움말");
+
+		JMenuItem item1 = new JMenuItem("도움말 보기");
+		JMenuItem item2 = new JMenuItem("피드백 보내기");
+		JMenuItem item3 = new JMenuItem("메모장 정보");
+
+		menu2.add(item1);
+		menu2.add(item2);
+		menu2.add(item3);
+
+		menuBar.add(menu1);
+		menuBar.add(menu2);
+
+		setJMenuBar(menuBar);
 	}
 
 	private void setContentPane() {
@@ -45,13 +77,17 @@ public class MemberManager extends JFrame {
 		profileView = new ProfileView(cardLayout, container, this);
 		container.add(profileView.getView(), ProfileView.VIEW_NAME);
 		SharedData.saveAsMap("profileView", profileView);
-		
+
 		adminView = new AdminView(cardLayout, container, this);
 		container.add(adminView.getView(), AdminView.VIEW_NAME);
-		
+
 	}
 
-
+	private void addListener() {
+		item.addActionListener(e -> {
+			System.exit(0);
+		});
+	}
 
 	private void setFrame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

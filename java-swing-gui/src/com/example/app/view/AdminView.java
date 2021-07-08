@@ -29,6 +29,7 @@ import javax.swing.JButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JTable;
 import java.awt.Font;
+import java.awt.SystemColor;
 
 public class AdminView extends JFrame implements Viewable {
 
@@ -115,7 +116,9 @@ public class AdminView extends JFrame implements Viewable {
 		panel = new JPanel();
 		g = new ButtonGroup();
 		rdbtnRecvYes = new JRadioButton("예");
+		rdbtnRecvYes.setForeground(SystemColor.desktop);
 		rdbtnRecvNo = new JRadioButton("아니오");
+		rdbtnRecvNo.setForeground(SystemColor.desktop);
 
 		panelSouth = new JPanel();
 		btnShowTotal = new JButton("전체 보기");
@@ -177,16 +180,16 @@ public class AdminView extends JFrame implements Viewable {
 		lblUpdateRecvEmail.setHorizontalAlignment(SwingConstants.CENTER);
 		panelUpdateRecvEmail.add(lblUpdateRecvEmail);
 
-		panel.setBackground(Color.WHITE);
+		panel.setBackground(SystemColor.control);
 		panelUpdateRecvEmail.add(panel);
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
 		this.g.add(rdbtnRecvYes);
 		this.g.add(rdbtnRecvNo);
 
-		rdbtnRecvYes.setBackground(Color.WHITE);
+		rdbtnRecvYes.setBackground(SystemColor.control);
 		panel.add(rdbtnRecvYes);
-		rdbtnRecvNo.setBackground(Color.WHITE);
+		rdbtnRecvNo.setBackground(SystemColor.control);
 		rdbtnRecvNo.setSelected(true);
 		panel.add(rdbtnRecvNo);
 
@@ -233,22 +236,60 @@ public class AdminView extends JFrame implements Viewable {
 
 	private void deleteUser() {
 		String id = tfUpdateId.getText();
+		int result = JOptionPane.showConfirmDialog(frame, id + "회원정보를 삭제하시겠습니까?", "회원정보 삭제", JOptionPane.YES_NO_OPTION,
+				JOptionPane.WARNING_MESSAGE);
+
+		switch (result) {
+		case JOptionPane.CANCEL_OPTION:
+		case JOptionPane.NO_OPTION:
+			return;
+		}
+
 		memberDAO.deleteById(id);
 		JOptionPane.showMessageDialog(frame, id + "계정을 삭제했습니다.", "Message", JOptionPane.INFORMATION_MESSAGE);
 		initializeUpdate();
 	}
 
 	private void updateUser() {
-		String id = tfUpdateId.getText();
+		String id = tfUpdateId.getText().trim();
+
+		int result = JOptionPane.showConfirmDialog(frame, id + "회원정보를 수정하시겠습니까?", "회원정보 수정", JOptionPane.YES_NO_OPTION,
+				JOptionPane.WARNING_MESSAGE);
+
+		switch (result) {
+		case JOptionPane.CANCEL_OPTION:
+		case JOptionPane.NO_OPTION:
+			return;
+		}
+
+		String passwd = tfUpdatePasswd.getText().trim();
+		String name = tfUpdateName.getText().trim();
+		String email = tfUpdateEmail.getText().trim();
+		String recvEmail = rdbtnRecvYes.isSelected() ? "Y" : "N";
+
+		MemberVO originalMember = memberDAO.getMemberById(id);
+
+		MemberVO member = new MemberVO();
+		member.setId(id);
+		if (passwd.length() == 0)
+			member.setPasswd(originalMember.getPasswd());
+		else
+			member.setPasswd(passwd);
+
+		if (name.length() == 0)
+			member.setName(originalMember.getName());
+		else
+			member.setName(name);
+
+		if (email.length() == 0)
+			member.setEmail(originalMember.getEmail());
+		else
+			member.setEmail(email);
+
+		member.setRecvEmail(recvEmail);
+		member.setRegDate(originalMember.getRegDate());
 
 		if (memberDAO.getCountById(id) > 0) {
-			MemberVO member = new MemberVO();
-			member.setId(id);
-			member.setPasswd(tfUpdatePasswd.getText());
-			member.setName(tfUpdateName.getText());
-			member.setEmail(tfUpdateEmail.getText());
-			member.setRecvEmail(rdbtnRecvYes.isSelected() ? "Y" : "N");
-			member.setRegDate(memberDAO.getMemberById(id).getRegDate());
 
 			memberDAO.updateById(id, member);
 			JOptionPane.showMessageDialog(frame, id + "계정을 수정했습니다.", "Message", JOptionPane.INFORMATION_MESSAGE);
@@ -291,19 +332,7 @@ public class AdminView extends JFrame implements Viewable {
 
 		List<MemberVO> list = memberDAO.getMembers();
 
-		Vector<Vector<Object>> vector = new Vector<>();
-
-		for (MemberVO member : list) {
-			Vector<Object> rowVector = new Vector<>();
-			rowVector.add(member.getId());
-			rowVector.add(member.getPasswd());
-			rowVector.add(member.getName());
-			rowVector.add(member.getEmail());
-			rowVector.add(member.getRecvEmail());
-			rowVector.add(member.getRegDate());
-
-			vector.add(rowVector);
-		}
+		Vector<Vector<Object>> vector = getVectorFromList(list);
 
 		Vector<String> columnNames = new Vector<>();
 		columnNames.add("아이디");
@@ -318,5 +347,24 @@ public class AdminView extends JFrame implements Viewable {
 		panelAdmin.add(new JScrollPane(table), BorderLayout.CENTER);
 
 		frame.setVisible(true);
+	}
+
+	private Vector<Vector<Object>> getVectorFromList(List<MemberVO> list) {
+
+		Vector<Vector<Object>> vector = new Vector<>();
+
+		for (MemberVO member : list) {
+			Vector<Object> rowVector = new Vector<>();
+			rowVector.add(member.getId());
+			rowVector.add(member.getPasswd());
+			rowVector.add(member.getName());
+			rowVector.add(member.getEmail());
+			rowVector.add(member.getRecvEmail());
+			rowVector.add(member.getRegDate());
+
+			vector.add(rowVector);
+		}
+
+		return vector;
 	}
 }
