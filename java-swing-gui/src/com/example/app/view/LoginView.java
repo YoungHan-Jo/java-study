@@ -25,7 +25,7 @@ public class LoginView implements Viewable { // panelLogin 패널에 다 넣기
 	public static final String VIEW_NAME = "login";
 	public static final int WIDTH = 340;
 	public static final int HEIGHT = 350;
-	
+
 	private MemberDAO memberDAO = MemberDAO.getInstance();
 
 	private CardLayout cardLayout;
@@ -135,8 +135,6 @@ public class LoginView implements Viewable { // panelLogin 패널에 다 넣기
 
 	} // end of addListener
 
-
-
 	private void processLogin() {
 		String id = tfLoginId.getText().trim();
 		String passwd = new String(pfLoginPasswd.getPassword());
@@ -182,7 +180,7 @@ public class LoginView implements Viewable { // panelLogin 패널에 다 넣기
 		frame.setSize(ProfileView.WIDTH, ProfileView.HEIGHT);
 		cardLayout.show(container, ProfileView.VIEW_NAME);
 	}
-	
+
 	private void goToSignInView() {
 		frame.setSize(SignInView.WIDTH, SignInView.HEIGHT);
 		cardLayout.show(container, SignInView.VIEW_NAME);
