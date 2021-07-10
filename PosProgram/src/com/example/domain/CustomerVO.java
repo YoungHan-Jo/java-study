@@ -11,12 +11,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CustomerVO {
 	
-	private int cno;
+	private String cno;
 	private int adult;
 	private int kid;
 	private String orderMenu;
 	private int payment;
-	private Timestamp admission;
+	private String admission;
 	private String tableNum;
 
 }

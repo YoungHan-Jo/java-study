@@ -8,19 +8,25 @@ import java.util.Calendar;
 import javax.swing.JPanel;
 
 import com.example.app.StoreManager;
+import com.example.domain.CustomerVO;
+import com.example.repository.CustomerDAO;
+
 import java.awt.BorderLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 import java.awt.Font;
 
 import javax.swing.SwingConstants;
 
 import javax.swing.JTextField;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Time;
+import java.sql.Timestamp;
 
 import javax.swing.JTextArea;
 
@@ -31,9 +37,20 @@ import javax.swing.border.MatteBorder;
 
 public class MainView implements Viewable, Runnable {
 
+	CustomerDAO customerDAO = CustomerDAO.getInstance();
+
 	public static final String VIEW_NAME = "main";
 	public static final int WIDTH = 1160;
 	public static final int HEIGHT = 700;
+
+	public static final int CHARGE_ADULT = 14000;
+	public static final int CHARGE_KID = 8000;
+
+	public static final int CHARGE_SOJU = 4000;
+	public static final int CHARGE_BEER = 4000;
+	public static final int CHARGE_BEVERAGE = 2000;
+	public static final int CHARGE_SOUP = 2000;
+	public static final int CHARGE_DESSERT = 4000;
 
 	private Thread thread;
 
@@ -132,6 +149,24 @@ public class MainView implements Viewable, Runnable {
 	private JButton btnSoupDown;
 	private JButton btnDessertDown;
 	private JLabel lblSelectedNum;
+	private JLabel lblCno1;
+	private JLabel lblGetCno1;
+	private JLabel lblCno2;
+	private JLabel lblCno3;
+	private JLabel lblCno4;
+	private JLabel lblCno5;
+	private JLabel lblCno6;
+	private JLabel lblCno7;
+	private JLabel lblCno8;
+	private JLabel lblGetCno2;
+	private JLabel lblGetCno3;
+	private JLabel lblGetCno4;
+	private JLabel lblGetCno5;
+	private JLabel lblGetCno6;
+	private JLabel lblGetCno7;
+	private JLabel lblGetCno8;
+	private JLabel lblGetCno;
+	private JTextField tfGetCno;
 
 	public MainView(CardLayout cardLayout, Container container, StoreManager frame) {
 		this.cardLayout = cardLayout;
@@ -288,6 +323,7 @@ public class MainView implements Viewable, Runnable {
 	private void setComponents() {
 
 		setClock();
+		clearTableBorder();
 
 		panelMain.setSize(WIDTH, HEIGHT);
 		panelMain.setLayout(new BorderLayout(0, 0));
@@ -312,7 +348,6 @@ public class MainView implements Viewable, Runnable {
 		panelTableView.setPreferredSize(new Dimension(850, 300));
 		panelTableView.setLayout(null);
 
-		panelTable1.setBorder(UIManager.getBorder("DesktopIcon.border"));
 		panelTable1.setBounds(61, 76, 143, 190);
 		panelTableView.add(panelTable1);
 		panelTable1.setLayout(new BorderLayout(0, 0));
@@ -323,12 +358,20 @@ public class MainView implements Viewable, Runnable {
 		lblAdmission1.setFont(new Font("굴림", Font.PLAIN, 13));
 		lblAdmission1.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelTableHeader1.add(lblAdmission1, BorderLayout.SOUTH);
+
+		lblCno1 = new JLabel("손님번호");
+		lblCno1.setFont(new Font("굴림", Font.PLAIN, 12));
+		panelTableHeader1.add(lblCno1, BorderLayout.WEST);
+
+		lblGetCno1 = new JLabel("");
+		lblGetCno1.setFont(new Font("굴림", Font.PLAIN, 12));
+		lblGetCno1.setHorizontalAlignment(SwingConstants.CENTER);
+		panelTableHeader1.add(lblGetCno1, BorderLayout.CENTER);
 		lblCharge1.setFont(new Font("굴림", Font.BOLD, 12));
 		lblCharge1.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelTable1.add(lblCharge1, BorderLayout.SOUTH);
 		panelTable1.add(taTable1, BorderLayout.CENTER);
 
-		panelTable2.setBorder(UIManager.getBorder("DesktopIcon.border"));
 		panelTable2.setBounds(256, 76, 143, 190);
 		panelTableView.add(panelTable2);
 		panelTable2.setLayout(new BorderLayout(0, 0));
@@ -339,12 +382,20 @@ public class MainView implements Viewable, Runnable {
 		lblAdmission2.setFont(new Font("굴림", Font.PLAIN, 13));
 		lblAdmission2.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelTableHeader2.add(lblAdmission2, BorderLayout.SOUTH);
+
+		lblCno2 = new JLabel("손님번호");
+		lblCno2.setFont(new Font("굴림", Font.PLAIN, 12));
+		panelTableHeader2.add(lblCno2, BorderLayout.WEST);
+
+		lblGetCno2 = new JLabel("");
+		lblGetCno2.setHorizontalAlignment(SwingConstants.CENTER);
+		lblGetCno2.setFont(new Font("굴림", Font.PLAIN, 12));
+		panelTableHeader2.add(lblGetCno2, BorderLayout.CENTER);
 		lblCharge2.setFont(new Font("굴림", Font.BOLD, 12));
 		lblCharge2.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelTable2.add(lblCharge2, BorderLayout.SOUTH);
 		panelTable2.add(taTable2, BorderLayout.CENTER);
 
-		panelTable3.setBorder(UIManager.getBorder("DesktopIcon.border"));
 		panelTable3.setBounds(444, 76, 143, 190);
 		panelTableView.add(panelTable3);
 		panelTable3.setLayout(new BorderLayout(0, 0));
@@ -355,12 +406,20 @@ public class MainView implements Viewable, Runnable {
 		lblAdmission3.setFont(new Font("굴림", Font.PLAIN, 13));
 		lblAdmission3.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelTableHeader3.add(lblAdmission3, BorderLayout.SOUTH);
+
+		lblCno3 = new JLabel("손님번호");
+		lblCno3.setFont(new Font("굴림", Font.PLAIN, 12));
+		panelTableHeader3.add(lblCno3, BorderLayout.WEST);
+
+		lblGetCno3 = new JLabel("");
+		lblGetCno3.setHorizontalAlignment(SwingConstants.CENTER);
+		lblGetCno3.setFont(new Font("굴림", Font.PLAIN, 12));
+		panelTableHeader3.add(lblGetCno3, BorderLayout.CENTER);
 		lblCharge3.setFont(new Font("굴림", Font.BOLD, 12));
 		lblCharge3.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelTable3.add(lblCharge3, BorderLayout.SOUTH);
 		panelTable3.add(taTable3, BorderLayout.CENTER);
 
-		panelTable4.setBorder(UIManager.getBorder("DesktopIcon.border"));
 		panelTable4.setBounds(640, 76, 143, 190);
 		panelTableView.add(panelTable4);
 		panelTable4.setLayout(new BorderLayout(0, 0));
@@ -371,12 +430,20 @@ public class MainView implements Viewable, Runnable {
 		lblAdmission4.setFont(new Font("굴림", Font.PLAIN, 13));
 		lblAdmission4.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelTableHeader4.add(lblAdmission4, BorderLayout.SOUTH);
+
+		lblCno4 = new JLabel("손님번호");
+		lblCno4.setFont(new Font("굴림", Font.PLAIN, 12));
+		panelTableHeader4.add(lblCno4, BorderLayout.WEST);
+
+		lblGetCno4 = new JLabel("");
+		lblGetCno4.setHorizontalAlignment(SwingConstants.CENTER);
+		lblGetCno4.setFont(new Font("굴림", Font.PLAIN, 12));
+		panelTableHeader4.add(lblGetCno4, BorderLayout.CENTER);
 		lblCharge4.setFont(new Font("굴림", Font.BOLD, 12));
 		lblCharge4.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelTable4.add(lblCharge4, BorderLayout.SOUTH);
 		panelTable4.add(taTable4, BorderLayout.CENTER);
 
-		panelTable5.setBorder(UIManager.getBorder("DesktopIcon.border"));
 		panelTable5.setBounds(61, 338, 143, 190);
 		panelTableView.add(panelTable5);
 		panelTable5.setLayout(new BorderLayout(0, 0));
@@ -387,13 +454,21 @@ public class MainView implements Viewable, Runnable {
 		lblAdmission5.setFont(new Font("굴림", Font.PLAIN, 13));
 		lblAdmission5.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelTableHeader5.add(lblAdmission5, BorderLayout.SOUTH);
+
+		lblCno5 = new JLabel("손님번호");
+		lblCno5.setFont(new Font("굴림", Font.PLAIN, 12));
+		panelTableHeader5.add(lblCno5, BorderLayout.WEST);
+
+		lblGetCno5 = new JLabel("");
+		lblGetCno5.setHorizontalAlignment(SwingConstants.CENTER);
+		lblGetCno5.setFont(new Font("굴림", Font.PLAIN, 12));
+		panelTableHeader5.add(lblGetCno5, BorderLayout.CENTER);
 		lblCharge5.setFont(new Font("굴림", Font.BOLD, 12));
 		lblCharge5.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelTable5.add(lblCharge5, BorderLayout.SOUTH);
 
 		panelTable5.add(taTable5, BorderLayout.CENTER);
 
-		panelTable6.setBorder(UIManager.getBorder("DesktopIcon.border"));
 		panelTable6.setBounds(256, 338, 143, 190);
 		panelTableView.add(panelTable6);
 		panelTable6.setLayout(new BorderLayout(0, 0));
@@ -404,13 +479,21 @@ public class MainView implements Viewable, Runnable {
 		lblAdmission6.setFont(new Font("굴림", Font.PLAIN, 13));
 		lblAdmission6.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelTableHeader6.add(lblAdmission6, BorderLayout.SOUTH);
+
+		lblCno6 = new JLabel("손님번호");
+		lblCno6.setFont(new Font("굴림", Font.PLAIN, 12));
+		panelTableHeader6.add(lblCno6, BorderLayout.WEST);
+
+		lblGetCno6 = new JLabel("");
+		lblGetCno6.setHorizontalAlignment(SwingConstants.CENTER);
+		lblGetCno6.setFont(new Font("굴림", Font.PLAIN, 12));
+		panelTableHeader6.add(lblGetCno6, BorderLayout.CENTER);
 		lblCharge6.setFont(new Font("굴림", Font.BOLD, 12));
 		lblCharge6.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelTable6.add(lblCharge6, BorderLayout.SOUTH);
 
 		panelTable6.add(taTable6, BorderLayout.CENTER);
 
-		panelTable7.setBorder(UIManager.getBorder("DesktopIcon.border"));
 		panelTable7.setBounds(444, 338, 143, 190);
 		panelTableView.add(panelTable7);
 		panelTable7.setLayout(new BorderLayout(0, 0));
@@ -421,12 +504,20 @@ public class MainView implements Viewable, Runnable {
 		lblAdmission7.setFont(new Font("굴림", Font.PLAIN, 13));
 		lblAdmission7.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelTableHeader7.add(lblAdmission7, BorderLayout.SOUTH);
+
+		lblCno7 = new JLabel("손님번호");
+		lblCno7.setFont(new Font("굴림", Font.PLAIN, 12));
+		panelTableHeader7.add(lblCno7, BorderLayout.WEST);
+
+		lblGetCno7 = new JLabel("");
+		lblGetCno7.setHorizontalAlignment(SwingConstants.CENTER);
+		lblGetCno7.setFont(new Font("굴림", Font.PLAIN, 12));
+		panelTableHeader7.add(lblGetCno7, BorderLayout.CENTER);
 		lblCharge7.setFont(new Font("굴림", Font.BOLD, 12));
 		lblCharge7.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelTable7.add(lblCharge7, BorderLayout.SOUTH);
 		panelTable7.add(taTable7, BorderLayout.CENTER);
 
-		panelTable8.setBorder(UIManager.getBorder("DesktopIcon.border"));
 		panelTable8.setBounds(640, 338, 143, 190);
 		panelTableView.add(panelTable8);
 		panelTable8.setLayout(new BorderLayout(0, 0));
@@ -437,6 +528,15 @@ public class MainView implements Viewable, Runnable {
 		lblAdmission8.setFont(new Font("굴림", Font.PLAIN, 13));
 		lblAdmission8.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelTableHeader8.add(lblAdmission8, BorderLayout.SOUTH);
+
+		lblCno8 = new JLabel("손님번호");
+		lblCno8.setFont(new Font("굴림", Font.PLAIN, 12));
+		panelTableHeader8.add(lblCno8, BorderLayout.WEST);
+
+		lblGetCno8 = new JLabel("");
+		lblGetCno8.setHorizontalAlignment(SwingConstants.CENTER);
+		lblGetCno8.setFont(new Font("굴림", Font.PLAIN, 12));
+		panelTableHeader8.add(lblGetCno8, BorderLayout.CENTER);
 		lblCharge8.setFont(new Font("굴림", Font.BOLD, 12));
 		lblCharge8.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelTable8.add(lblCharge8, BorderLayout.SOUTH);
@@ -548,11 +648,23 @@ public class MainView implements Viewable, Runnable {
 		btnDessertDown.setBounds(237, 381, 44, 23);
 		panelOrder.add(btnDessertDown);
 
-		lblSelectedNum = new JLabel("0");
+		lblSelectedNum = new JLabel("");
 		lblSelectedNum.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSelectedNum.setFont(new Font("Dialog", Font.BOLD, 20));
 		lblSelectedNum.setBounds(88, 31, 32, 28);
 		panelOrder.add(lblSelectedNum);
+
+		lblGetCno = new JLabel("손님번호");
+		lblGetCno.setBounds(61, 66, 55, 18);
+		panelOrder.add(lblGetCno);
+
+		tfGetCno = new JTextField();
+		tfGetCno.setText("");
+		tfGetCno.setEnabled(false);
+		tfGetCno.setHorizontalAlignment(SwingConstants.TRAILING);
+		tfGetCno.setColumns(10);
+		tfGetCno.setBounds(134, 64, 44, 22);
+		panelOrder.add(tfGetCno);
 
 		taTable1.setEnabled(false);
 		taTable2.setEnabled(false);
@@ -563,6 +675,17 @@ public class MainView implements Viewable, Runnable {
 		taTable7.setEnabled(false);
 		taTable8.setEnabled(false);
 
+	}
+
+	private void clearTableBorder() {
+		panelTable1.setBorder(UIManager.getBorder("DesktopIcon.border"));
+		panelTable2.setBorder(UIManager.getBorder("DesktopIcon.border"));
+		panelTable3.setBorder(UIManager.getBorder("DesktopIcon.border"));
+		panelTable4.setBorder(UIManager.getBorder("DesktopIcon.border"));
+		panelTable5.setBorder(UIManager.getBorder("DesktopIcon.border"));
+		panelTable6.setBorder(UIManager.getBorder("DesktopIcon.border"));
+		panelTable7.setBorder(UIManager.getBorder("DesktopIcon.border"));
+		panelTable8.setBorder(UIManager.getBorder("DesktopIcon.border"));
 	}
 
 	private void setClock() {
@@ -576,41 +699,172 @@ public class MainView implements Viewable, Runnable {
 
 		setBtnUpDownListener();
 
-		taTable1.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				JTextArea ta = (JTextArea) e.getSource();
+		selectTableListener();
 
-				lblSelectedNum.setText("1");
+		clickAdmissionListener();
+
+		btnAdmissionCancel.addActionListener(e -> {
+			String cno = tfGetCno.getText();
+
+			if (cno.equals("")) {
+				JOptionPane.showMessageDialog(btnAdmissionCancel, "이미 공석입니다", "Message",
+						JOptionPane.INFORMATION_MESSAGE);
+			} else {
+				int result = JOptionPane.showConfirmDialog(btnAdmissionCancel, "입장취소 하겠습니까?", "Confirm",
+						JOptionPane.YES_NO_OPTION);
+
+				if (result == JOptionPane.YES_OPTION) {
+					customerDAO.deleteCustomerByCno(cno);
+					clearTable();
+					clearOrderBoard();
+				} else
+					return;
 			}
-		});
-		
-		taTable2.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				JTextArea ta = (JTextArea) e.getSource();
 
-				lblSelectedNum.setText("2");
-			}
 		});
 
+	}// end of addListener
+
+	private void clearOrderBoard() {
+		tfGetCno.setText("");
+		tfAdults.setText("0");
+		tfKids.setText("0");
+		btnAdmission.setEnabled(true);
+		tfSoju.setText("0");
+		tfBeer.setText("0");
+		tfBeverage.setText("0");
+		tfSoup.setText("0");
+		tfDessert.setText("0");
+
+	}
+
+	private void clearTable() {
+		String num = lblSelectedNum.getText();
+
+		switch (num) {
+		case "1":
+			lblGetCno1.setText("");
+			lblAdmission1.setText("공석");
+			lblAdmission1.setForeground(Color.black);
+			taTable1.setText("");
+			lblCharge1.setText("0");
+			lblCharge1.setForeground(Color.black);
+			break;
+		case "2":
+			lblGetCno2.setText("");
+			lblAdmission2.setText("공석");
+			lblAdmission2.setForeground(Color.black);
+			taTable2.setText("");
+			lblCharge2.setText("0");
+			lblCharge2.setForeground(Color.black);
+			break;
+		}
+	}
+
+	private void clickAdmissionListener() {
 		btnAdmission.addActionListener(e -> {
 			String adult = tfAdults.getText();
 			String kid = tfKids.getText();
-
 			String tableNum = lblSelectedNum.getText();
+			String currentTime = String.valueOf(new Timestamp(System.currentTimeMillis()));
+			String admission;
+			String cno;
+			String ta = "성인 \t" + adult + "명\n" + "어린이\t" + kid + "명\n";
 
-			String ta = "어른 \t" + adult + "명\n" +
-						"어린이\t" + kid + "명\n";
-			
+			CustomerVO customerVO = new CustomerVO();
+			customerVO.setAdult(Integer.parseInt(adult));
+			customerVO.setKid(Integer.parseInt(kid));
+			customerVO.setAdmission(currentTime);
+			customerVO.setTableNum(tableNum);
+
+			if (lblSelectedNum.getText().equals("")) {
+				JOptionPane.showMessageDialog(btnAdmission, "테이블을 선택해주세요", "Error", JOptionPane.ERROR_MESSAGE);
+			} else {
+				customerDAO.insertCustomer(customerVO);
+				btnAdmission.setEnabled(false);
+			}
+			admission = customerVO.getAdmission();
+
+			cno = customerDAO.getCnoByAdmission(admission);
+
+			tfGetCno.setText(cno);
+
+			int charge = Integer.parseInt(adult) * CHARGE_ADULT + Integer.parseInt(kid) * CHARGE_KID;
+
 			switch (tableNum) {
 			case "1":
+				lblGetCno1.setText(cno);
 				lblAdmission1.setText(String.valueOf(new Time(System.currentTimeMillis())));
 				lblAdmission1.setForeground(Color.blue);
 				taTable1.setText(ta);
+				lblCharge1.setText(String.valueOf(charge));
+				lblCharge1.setForeground(Color.red);
+				break;
+			case "2":
+				lblGetCno2.setText(cno);
+				lblAdmission2.setText(String.valueOf(new Time(System.currentTimeMillis())));
+				lblAdmission2.setForeground(Color.blue);
+				taTable2.setText(ta);
+				lblCharge2.setText(String.valueOf(charge));
+				lblCharge2.setForeground(Color.red);
+				break;
 			}
 
 		});
+	}// clickAdmissionListener
+
+	private void selectTableListener() {
+		taTable1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				clearTableBorder();
+				ifSelectEmptyTable(lblAdmission1);
+				panelTable1.setBorder(BorderFactory.createLineBorder(Color.red, 3));
+				lblSelectedNum.setText("1");
+
+				ifSelectTableAgain(lblGetCno1);
+
+			}
+
+		});
+
+		taTable2.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				clearTableBorder();
+				ifSelectEmptyTable(lblAdmission2);
+				panelTable2.setBorder(BorderFactory.createLineBorder(Color.red, 3));
+				lblSelectedNum.setText("2");
+
+				ifSelectTableAgain(lblGetCno2);
+			}
+		});
+	}// selectTableListener
+
+	private void ifSelectTableAgain(JLabel lblGetCno) {
+		int adult;
+		int kid;
+
+		if (lblGetCno.getText().equals("")) {
+			btnAdmission.setEnabled(true);
+		} else {
+			tfGetCno.setText(lblGetCno.getText());
+			adult = customerDAO.getAdultByCno(tfGetCno.getText());
+			tfAdults.setText(String.valueOf(adult));
+			kid = customerDAO.getKidByCno(tfGetCno.getText());
+			tfKids.setText(String.valueOf(kid));
+			btnAdmission.setEnabled(false);
+		}
+	}
+
+	private void ifSelectEmptyTable(JLabel lblAdmission) {
+		if (lblAdmission.getText().equals("공석")) {
+			btnAdmission.setEnabled(true);
+			tfGetCno.setText("");
+			tfAdults.setText("0");
+			tfKids.setText("0");
+		} else
+			return;
 	}
 
 	private void setBtnUpDownListener() {
