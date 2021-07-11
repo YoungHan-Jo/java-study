@@ -145,7 +145,7 @@ public class CustomerDAO {
 
 	}
 
-	public int getAdultByCno(String cno) {
+	public int getAdultsByCno(String cno) {
 		int adult = 0;
 
 		Connection con = null;
@@ -177,7 +177,7 @@ public class CustomerDAO {
 		return adult;
 	}
 
-	public int getKidByCno(String cno) {
+	public int getKidsByCno(String cno) {
 		int kid = 0;
 
 		Connection con = null;

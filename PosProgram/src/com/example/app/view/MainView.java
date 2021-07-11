@@ -9,7 +9,9 @@ import javax.swing.JPanel;
 
 import com.example.app.StoreManager;
 import com.example.domain.CustomerVO;
+import com.example.domain.OrderListVO;
 import com.example.repository.CustomerDAO;
+import com.example.repository.OrderListDAO;
 
 import java.awt.BorderLayout;
 import javax.swing.JLabel;
@@ -38,6 +40,7 @@ import javax.swing.border.MatteBorder;
 public class MainView implements Viewable, Runnable {
 
 	CustomerDAO customerDAO = CustomerDAO.getInstance();
+	OrderListDAO orderListDAO = OrderListDAO.getInstance();
 
 	public static final String VIEW_NAME = "main";
 	public static final int WIDTH = 1160;
@@ -81,7 +84,7 @@ public class MainView implements Viewable, Runnable {
 	private JTextField tfSoup;
 	private JLabel lblDessert;
 	private JTextField tfDessert;
-	private JButton btnRenewOrder;
+	private JButton btnOrder;
 	private JButton btnAdmissionCancel;
 	private JButton btnPayment;
 	private JPanel panelTableView;
@@ -167,6 +170,7 @@ public class MainView implements Viewable, Runnable {
 	private JLabel lblGetCno8;
 	private JLabel lblGetCno;
 	private JTextField tfGetCno;
+	private JButton btnOrderCancel;
 
 	public MainView(CardLayout cardLayout, Container container, StoreManager frame) {
 		this.cardLayout = cardLayout;
@@ -314,7 +318,7 @@ public class MainView implements Viewable, Runnable {
 		tfDessert = new JTextField();
 		tfDessert.setText("0");
 		tfDessert.setHorizontalAlignment(SwingConstants.TRAILING);
-		btnRenewOrder = new JButton("주문 갱신");
+		btnOrder = new JButton("주문");
 		btnAdmissionCancel = new JButton("입장 취소");
 		btnPayment = new JButton("결제하기");
 
@@ -548,104 +552,104 @@ public class MainView implements Viewable, Runnable {
 		panelOrder.setLayout(null);
 		lblUpdateTable.setBounds(132, 31, 98, 28);
 		panelOrder.add(lblUpdateTable);
-		lblAdults.setBounds(61, 96, 55, 18);
+		lblAdults.setBounds(40, 95, 55, 18);
 		panelOrder.add(lblAdults);
-		lblKids.setBounds(61, 126, 55, 18);
+		lblKids.setBounds(40, 125, 55, 18);
 		panelOrder.add(lblKids);
-		tfAdults.setBounds(134, 94, 44, 22);
+		tfAdults.setBounds(113, 93, 44, 22);
 		panelOrder.add(tfAdults);
 		tfAdults.setColumns(10);
 		tfKids.setColumns(10);
-		tfKids.setBounds(134, 124, 44, 22);
+		tfKids.setBounds(113, 123, 44, 22);
 		panelOrder.add(tfKids);
 		btnAdmission.setBounds(38, 171, 98, 28);
 		panelOrder.add(btnAdmission);
-		lblSoju.setBounds(61, 251, 55, 18);
+		lblSoju.setBounds(40, 250, 55, 18);
 		panelOrder.add(lblSoju);
-		lblBeer.setBounds(61, 286, 55, 18);
+		lblBeer.setBounds(40, 285, 55, 18);
 		panelOrder.add(lblBeer);
 		tfSoju.setColumns(10);
-		tfSoju.setBounds(134, 249, 44, 22);
+		tfSoju.setBounds(113, 248, 44, 22);
 		panelOrder.add(tfSoju);
 		tfBeer.setColumns(10);
-		tfBeer.setBounds(134, 284, 44, 22);
+		tfBeer.setBounds(113, 283, 44, 22);
 		panelOrder.add(tfBeer);
-		lblBeverage.setBounds(61, 319, 55, 18);
+		lblBeverage.setBounds(40, 318, 55, 18);
 		panelOrder.add(lblBeverage);
-		lblSoup.setBounds(61, 351, 55, 18);
+		lblSoup.setBounds(40, 350, 55, 18);
 		panelOrder.add(lblSoup);
 		tfBeverage.setColumns(10);
-		tfBeverage.setBounds(134, 317, 44, 22);
+		tfBeverage.setBounds(113, 316, 44, 22);
 		panelOrder.add(tfBeverage);
 		tfSoup.setColumns(10);
-		tfSoup.setBounds(134, 349, 44, 22);
+		tfSoup.setBounds(113, 348, 44, 22);
 		panelOrder.add(tfSoup);
-		lblDessert.setBounds(61, 384, 55, 18);
+		lblDessert.setBounds(40, 383, 55, 18);
 		panelOrder.add(lblDessert);
 		tfDessert.setColumns(10);
-		tfDessert.setBounds(134, 382, 44, 22);
+		tfDessert.setBounds(113, 381, 44, 22);
 		panelOrder.add(tfDessert);
-		btnRenewOrder.setBounds(162, 422, 98, 28);
-		panelOrder.add(btnRenewOrder);
+		btnOrder.setBounds(38, 426, 98, 28);
+		panelOrder.add(btnOrder);
 		btnAdmissionCancel.setBounds(162, 171, 98, 28);
 		panelOrder.add(btnAdmissionCancel);
 		btnPayment.setBounds(162, 512, 98, 28);
 		panelOrder.add(btnPayment);
 
 		btnAdultsUp = new JButton("🔺");
-		btnAdultsUp.setBounds(190, 94, 44, 23);
+		btnAdultsUp.setBounds(169, 93, 44, 23);
 		panelOrder.add(btnAdultsUp);
 
 		btnAdultsDown = new JButton("🔻");
-		btnAdultsDown.setBounds(237, 94, 44, 23);
+		btnAdultsDown.setBounds(216, 93, 44, 23);
 		panelOrder.add(btnAdultsDown);
 
 		btnKidsUp = new JButton("🔺");
-		btnKidsUp.setBounds(190, 123, 44, 23);
+		btnKidsUp.setBounds(169, 122, 44, 23);
 		panelOrder.add(btnKidsUp);
 
 		btnSojuUp = new JButton("🔺");
-		btnSojuUp.setBounds(190, 248, 44, 23);
+		btnSojuUp.setBounds(169, 247, 44, 23);
 		panelOrder.add(btnSojuUp);
 
 		btnBeerUp = new JButton("🔺");
-		btnBeerUp.setBounds(190, 281, 44, 23);
+		btnBeerUp.setBounds(169, 280, 44, 23);
 		panelOrder.add(btnBeerUp);
 
 		btnBeverageUp = new JButton("🔺");
-		btnBeverageUp.setBounds(190, 316, 44, 23);
+		btnBeverageUp.setBounds(169, 315, 44, 23);
 		panelOrder.add(btnBeverageUp);
 
 		btnSoupUp = new JButton("🔺");
-		btnSoupUp.setBounds(190, 349, 44, 23);
+		btnSoupUp.setBounds(169, 348, 44, 23);
 		panelOrder.add(btnSoupUp);
 
 		btnDessertUp = new JButton("🔺");
-		btnDessertUp.setBounds(190, 381, 44, 23);
+		btnDessertUp.setBounds(169, 380, 44, 23);
 		panelOrder.add(btnDessertUp);
 
 		btnKidsDown = new JButton("🔻");
-		btnKidsDown.setBounds(237, 123, 44, 23);
+		btnKidsDown.setBounds(216, 122, 44, 23);
 		panelOrder.add(btnKidsDown);
 
 		btnSojuDown = new JButton("🔻");
-		btnSojuDown.setBounds(237, 248, 44, 23);
+		btnSojuDown.setBounds(216, 247, 44, 23);
 		panelOrder.add(btnSojuDown);
 
 		btnBeerDown = new JButton("🔻");
-		btnBeerDown.setBounds(237, 281, 44, 23);
+		btnBeerDown.setBounds(216, 280, 44, 23);
 		panelOrder.add(btnBeerDown);
 
 		btnBeverageDown = new JButton("🔻");
-		btnBeverageDown.setBounds(237, 316, 44, 23);
+		btnBeverageDown.setBounds(216, 315, 44, 23);
 		panelOrder.add(btnBeverageDown);
 
 		btnSoupDown = new JButton("🔻");
-		btnSoupDown.setBounds(237, 349, 44, 23);
+		btnSoupDown.setBounds(216, 348, 44, 23);
 		panelOrder.add(btnSoupDown);
 
 		btnDessertDown = new JButton("🔻");
-		btnDessertDown.setBounds(237, 381, 44, 23);
+		btnDessertDown.setBounds(216, 380, 44, 23);
 		panelOrder.add(btnDessertDown);
 
 		lblSelectedNum = new JLabel("");
@@ -655,7 +659,7 @@ public class MainView implements Viewable, Runnable {
 		panelOrder.add(lblSelectedNum);
 
 		lblGetCno = new JLabel("손님번호");
-		lblGetCno.setBounds(61, 66, 55, 18);
+		lblGetCno.setBounds(40, 65, 55, 18);
 		panelOrder.add(lblGetCno);
 
 		tfGetCno = new JTextField();
@@ -663,8 +667,12 @@ public class MainView implements Viewable, Runnable {
 		tfGetCno.setEnabled(false);
 		tfGetCno.setHorizontalAlignment(SwingConstants.TRAILING);
 		tfGetCno.setColumns(10);
-		tfGetCno.setBounds(134, 64, 44, 22);
+		tfGetCno.setBounds(113, 63, 44, 22);
 		panelOrder.add(tfGetCno);
+
+		btnOrderCancel = new JButton("주문 취소");
+		btnOrderCancel.setBounds(162, 426, 98, 28);
+		panelOrder.add(btnOrderCancel);
 
 		taTable1.setEnabled(false);
 		taTable2.setEnabled(false);
@@ -703,6 +711,201 @@ public class MainView implements Viewable, Runnable {
 
 		clickAdmissionListener();
 
+		clickAdmissionCancelListener();
+
+		clickBtnOrderListener();
+
+		clickBtnOrderCancelListener();
+
+	}// end of addListener
+
+	private void clickBtnOrderCancelListener() {
+
+		btnOrderCancel.addActionListener(e -> {
+			takeOrders(-1);
+			clearMenuBoard();
+			paintTable();
+		});
+	}
+
+	private void clickBtnOrderListener() {
+		btnOrder.addActionListener(e -> {
+			takeOrders(1);
+			clearMenuBoard();
+			paintTable();
+		});
+	}
+
+	private void paintTable() {
+
+		String tableNum = lblSelectedNum.getText();
+
+		switch (tableNum) {
+		case "1":
+			paintTextArea(taTable1);
+			paintlblCharge(lblCharge1);
+			break;
+		case "2":
+			paintTextArea(taTable2);
+			paintlblCharge(lblCharge2);
+			break;
+		case "3":
+			paintTextArea(taTable3);
+			paintlblCharge(lblCharge3);
+			break;
+		case "4":
+			paintTextArea(taTable4);
+			paintlblCharge(lblCharge4);
+			break;
+		case "5":
+			paintTextArea(taTable5);
+			paintlblCharge(lblCharge5);
+			break;
+		case "6":
+			paintTextArea(taTable6);
+			paintlblCharge(lblCharge6);
+			break;
+		case "7":
+			paintTextArea(taTable7);
+			paintlblCharge(lblCharge7);
+			break;
+		case "8":
+			paintTextArea(taTable8);
+			paintlblCharge(lblCharge8);
+			break;
+		}
+	}
+
+	private void paintlblCharge(JLabel lblCharge) {
+		int adults = Integer.parseInt(tfAdults.getText());
+		int kids = Integer.parseInt(tfKids.getText());
+
+		int soju = orderListDAO.getQuantityByCno(tfGetCno.getText(), lblSoju.getText());
+		int beer = orderListDAO.getQuantityByCno(tfGetCno.getText(), lblBeer.getText());
+		int beverage = orderListDAO.getQuantityByCno(tfGetCno.getText(), lblBeverage.getText());
+		int soup = orderListDAO.getQuantityByCno(tfGetCno.getText(), lblSoup.getText());
+		int dessert = orderListDAO.getQuantityByCno(tfGetCno.getText(), lblDessert.getText());
+
+		int charge = adults * CHARGE_ADULT + kids * CHARGE_KID + soju * CHARGE_SOJU + beer * CHARGE_BEER
+				+ beverage * CHARGE_BEVERAGE + soup * CHARGE_SOUP + dessert * CHARGE_DESSERT;
+		lblCharge.setText(String.valueOf(charge));
+	}
+
+	private void paintTextArea(JTextArea taTable) {
+
+		int adults = Integer.parseInt(tfAdults.getText());
+		int kids = Integer.parseInt(tfKids.getText());
+
+		int soju = orderListDAO.getQuantityByCno(tfGetCno.getText(), lblSoju.getText());
+		int beer = orderListDAO.getQuantityByCno(tfGetCno.getText(), lblBeer.getText());
+		int beverage = orderListDAO.getQuantityByCno(tfGetCno.getText(), lblBeverage.getText());
+		int soup = orderListDAO.getQuantityByCno(tfGetCno.getText(), lblSoup.getText());
+		int dessert = orderListDAO.getQuantityByCno(tfGetCno.getText(), lblDessert.getText());
+
+		String ta = "성인\t" + adults + "명\n" + "어린이\t" + kids + "명\n" + "소주\t" + soju + "병\n" + "맥주\t" + beer + "병\n"
+				+ "음료수\t" + beverage + "병\n" + "된장찌개\t" + soup + "개\n" + "냉면\t" + dessert + "개\n";
+
+		taTable.setText(ta);
+	}
+
+	private void clearMenuBoard() {
+		tfSoju.setText("0");
+		tfBeer.setText("0");
+		tfBeverage.setText("0");
+		tfSoup.setText("0");
+		tfDessert.setText("0");
+	}
+
+	private void takeOrders(int i) {
+		String cno = tfGetCno.getText();
+		String menu;
+		int quantity;
+		int price;
+		String orderTime = String.valueOf(new Timestamp(System.currentTimeMillis()));
+
+		if (!tfSoju.getText().equals("0")) {
+			menu = "소주";
+			quantity = i * Integer.parseInt(tfSoju.getText());
+			price = CHARGE_SOJU * quantity;
+
+			OrderListVO orderListVO = new OrderListVO();
+			orderListVO.setCno(cno);
+			orderListVO.setMenu(menu);
+			orderListVO.setQuantity(quantity);
+			orderListVO.setPrice(price);
+			orderListVO.setOrderTime(orderTime);
+
+			orderListDAO.insertOrderList(orderListVO);
+		}
+
+		if (!tfBeer.getText().equals("0")) {
+			menu = "맥주";
+			quantity = i * Integer.parseInt(tfBeer.getText());
+			price = CHARGE_BEER * quantity;
+
+			OrderListVO orderListVO = new OrderListVO();
+			orderListVO.setCno(cno);
+			orderListVO.setMenu(menu);
+			orderListVO.setQuantity(quantity);
+			orderListVO.setPrice(price);
+			orderListVO.setOrderTime(orderTime);
+
+			orderListDAO.insertOrderList(orderListVO);
+		}
+
+		if (!tfBeverage.getText().equals("0")) {
+			menu = "음료수";
+			quantity = i * Integer.parseInt(tfBeverage.getText());
+			price = CHARGE_BEVERAGE * quantity;
+
+			OrderListVO orderListVO = new OrderListVO();
+			orderListVO.setCno(cno);
+			orderListVO.setMenu(menu);
+			orderListVO.setQuantity(quantity);
+			orderListVO.setPrice(price);
+			orderListVO.setOrderTime(orderTime);
+
+			orderListDAO.insertOrderList(orderListVO);
+		}
+
+		if (!tfSoup.getText().equals("0")) {
+			menu = "된장찌개";
+			quantity = i * Integer.parseInt(tfSoup.getText());
+			price = CHARGE_SOUP * quantity;
+
+			OrderListVO orderListVO = new OrderListVO();
+			orderListVO.setCno(cno);
+			orderListVO.setMenu(menu);
+			orderListVO.setQuantity(quantity);
+			orderListVO.setPrice(price);
+			orderListVO.setOrderTime(orderTime);
+
+			orderListDAO.insertOrderList(orderListVO);
+		}
+
+		if (!tfDessert.getText().equals("0")) {
+			menu = "냉면";
+			quantity = i * Integer.parseInt(tfDessert.getText());
+			price = CHARGE_DESSERT * quantity;
+
+			OrderListVO orderListVO = new OrderListVO();
+			orderListVO.setCno(cno);
+			orderListVO.setMenu(menu);
+			orderListVO.setQuantity(quantity);
+			orderListVO.setPrice(price);
+			orderListVO.setOrderTime(orderTime);
+
+			orderListDAO.insertOrderList(orderListVO);
+		}
+
+		if (i == 1) {
+			JOptionPane.showMessageDialog(btnOrder, "주문완료", "Message", JOptionPane.INFORMATION_MESSAGE);
+		} else if (i == -1) {
+			JOptionPane.showMessageDialog(btnOrder, "주문취소 완료", "Message", JOptionPane.INFORMATION_MESSAGE);
+		}
+	}
+
+	private void clickAdmissionCancelListener() {
 		btnAdmissionCancel.addActionListener(e -> {
 			String cno = tfGetCno.getText();
 
@@ -722,26 +925,21 @@ public class MainView implements Viewable, Runnable {
 			}
 
 		});
-
-	}// end of addListener
+	}
 
 	private void clearOrderBoard() {
 		tfGetCno.setText("");
 		tfAdults.setText("0");
 		tfKids.setText("0");
 		btnAdmission.setEnabled(true);
-		tfSoju.setText("0");
-		tfBeer.setText("0");
-		tfBeverage.setText("0");
-		tfSoup.setText("0");
-		tfDessert.setText("0");
 
+		clearMenuBoard();
 	}
 
 	private void clearTable() {
-		String num = lblSelectedNum.getText();
+		String tableNum = lblSelectedNum.getText();
 
-		switch (num) {
+		switch (tableNum) {
 		case "1":
 			lblGetCno1.setText("");
 			lblAdmission1.setText("공석");
@@ -763,17 +961,17 @@ public class MainView implements Viewable, Runnable {
 
 	private void clickAdmissionListener() {
 		btnAdmission.addActionListener(e -> {
-			String adult = tfAdults.getText();
-			String kid = tfKids.getText();
+			String adults = tfAdults.getText();
+			String kids = tfKids.getText();
 			String tableNum = lblSelectedNum.getText();
 			String currentTime = String.valueOf(new Timestamp(System.currentTimeMillis()));
 			String admission;
 			String cno;
-			String ta = "성인 \t" + adult + "명\n" + "어린이\t" + kid + "명\n";
+			String ta = "성인 \t" + adults + "명\n" + "어린이\t" + kids + "명\n";
 
 			CustomerVO customerVO = new CustomerVO();
-			customerVO.setAdult(Integer.parseInt(adult));
-			customerVO.setKid(Integer.parseInt(kid));
+			customerVO.setAdult(Integer.parseInt(adults));
+			customerVO.setKid(Integer.parseInt(kids));
 			customerVO.setAdmission(currentTime);
 			customerVO.setTableNum(tableNum);
 
@@ -789,7 +987,7 @@ public class MainView implements Viewable, Runnable {
 
 			tfGetCno.setText(cno);
 
-			int charge = Integer.parseInt(adult) * CHARGE_ADULT + Integer.parseInt(kid) * CHARGE_KID;
+			int charge = Integer.parseInt(adults) * CHARGE_ADULT + Integer.parseInt(kids) * CHARGE_KID;
 
 			switch (tableNum) {
 			case "1":
@@ -823,9 +1021,7 @@ public class MainView implements Viewable, Runnable {
 				lblSelectedNum.setText("1");
 
 				ifSelectTableAgain(lblGetCno1);
-
 			}
-
 		});
 
 		taTable2.addMouseListener(new MouseAdapter() {
@@ -849,9 +1045,9 @@ public class MainView implements Viewable, Runnable {
 			btnAdmission.setEnabled(true);
 		} else {
 			tfGetCno.setText(lblGetCno.getText());
-			adult = customerDAO.getAdultByCno(tfGetCno.getText());
+			adult = customerDAO.getAdultsByCno(tfGetCno.getText());
 			tfAdults.setText(String.valueOf(adult));
-			kid = customerDAO.getKidByCno(tfGetCno.getText());
+			kid = customerDAO.getKidsByCno(tfGetCno.getText());
 			tfKids.setText(String.valueOf(kid));
 			btnAdmission.setEnabled(false);
 		}
@@ -869,30 +1065,65 @@ public class MainView implements Viewable, Runnable {
 
 	private void setBtnUpDownListener() {
 		btnAdultsUp.addActionListener(e -> {
-			int num = Integer.parseInt(tfAdults.getText());
-			num += 1;
-			tfAdults.setText(String.valueOf(num));
+			btnUpCondition(tfAdults);
 		});
 		btnAdultsDown.addActionListener(e -> {
-			int num = Integer.parseInt(tfAdults.getText());
-			if (num > 0) {
-				num -= 1;
-				tfAdults.setText(String.valueOf(num));
-			} else
-				return;
+			btnDownCondition(tfAdults);
 		});
 		btnKidsUp.addActionListener(e -> {
-			int num = Integer.parseInt(tfKids.getText());
-			num += 1;
-			tfKids.setText(String.valueOf(num));
+			btnUpCondition(tfKids);
 		});
 		btnKidsDown.addActionListener(e -> {
-			int num = Integer.parseInt(tfKids.getText());
-			if (num > 0) {
-				num -= 1;
-				tfKids.setText(String.valueOf(num));
-			} else
-				return;
+			btnDownCondition(tfKids);
 		});
+		btnSojuUp.addActionListener(e -> {
+			btnUpCondition(tfSoju);
+		});
+		btnSojuDown.addActionListener(e -> {
+			btnDownCondition(tfSoju);
+		});
+		btnBeerUp.addActionListener(e -> {
+			btnUpCondition(tfBeer);
+		});
+		btnBeerDown.addActionListener(e -> {
+			btnDownCondition(tfBeer);
+		});
+		btnBeverageUp.addActionListener(e -> {
+			btnUpCondition(tfBeverage);
+		});
+		btnBeverageDown.addActionListener(e -> {
+			btnDownCondition(tfBeverage);
+		});
+		btnSoupUp.addActionListener(e -> {
+			btnUpCondition(tfSoup);
+		});
+		btnSoupDown.addActionListener(e -> {
+			btnDownCondition(tfSoup);
+		});
+		btnDessertUp.addActionListener(e -> {
+			btnUpCondition(tfDessert);
+		});
+		btnDessertDown.addActionListener(e -> {
+			btnDownCondition(tfDessert);
+		});
+	}
+
+	private void btnDownCondition(JTextField tf) {
+		int num = Integer.parseInt(tf.getText());
+		if (num > 0) {
+			num -= 1;
+			tf.setText(String.valueOf(num));
+		} else
+			return;
+	}
+
+	private void btnUpCondition(JTextField tf) {
+		if (tf.getText().equals("")) {
+			tf.setText("1");
+		} else {
+			int num = Integer.parseInt(tf.getText());
+			num += 1;
+			tf.setText(String.valueOf(num));
+		}
 	}
 }

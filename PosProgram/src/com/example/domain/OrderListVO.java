@@ -7,13 +7,13 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CustomerVO {
+public class OrderListVO {
 
+	private String orderNum;
 	private String cno;
-	private int adult;
-	private int kid;
-	private int payment;
-	private String admission;
-	private String tableNum;
+	private String menu;
+	private int quantity;
+	private int price;
+	private String orderTime;
 
 }
