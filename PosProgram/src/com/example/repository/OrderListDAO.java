@@ -114,9 +114,6 @@ public class OrderListDAO {
 				quantity = rs.getInt("quantity");
 			}
 			
-			
-			
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

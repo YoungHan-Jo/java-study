@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
+import javax.swing.JLabel;
+
 import com.example.domain.CustomerVO;
 
 public class CustomerDAO {
@@ -207,6 +209,36 @@ public class CustomerDAO {
 			close(con, pstmt, rs);
 		}
 		return kid;
+	}
+
+	public void updatePayment(String cno, JLabel lblCharge) {
+
+		String payment = lblCharge.getText();
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			con = getConnection();
+
+			StringBuilder sql = new StringBuilder();
+			sql.append("UPDATE customer ");
+			sql.append(" SET payment = ? , exit_time = ?");
+			sql.append(" WHERE cno = ? ");
+
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setString(1, payment);
+			pstmt.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
+			pstmt.setString(3, cno);
+
+			pstmt.executeUpdate();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(con, pstmt);
+		}
+
 	}
 
 }

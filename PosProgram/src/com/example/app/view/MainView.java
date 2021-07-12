@@ -171,6 +171,10 @@ public class MainView implements Viewable, Runnable {
 	private JLabel lblGetCno;
 	private JTextField tfGetCno;
 	private JButton btnOrderCancel;
+	private JButton btnOpenStore;
+	private JButton btnCloseStore;
+	private JButton btnSalesManagement;
+	private JButton btnLogout;
 
 	public MainView(CardLayout cardLayout, Container container, StoreManager frame) {
 		this.cardLayout = cardLayout;
@@ -220,6 +224,18 @@ public class MainView implements Viewable, Runnable {
 		lblMainView = new JLabel("POS");
 
 		panelFooter = new JPanel();
+		
+		btnOpenStore = new JButton("영업 시작");
+		panelFooter.add(btnOpenStore);
+		
+		btnCloseStore = new JButton("영업 마감");
+		panelFooter.add(btnCloseStore);
+		
+		btnSalesManagement = new JButton("매출관리");
+		panelFooter.add(btnSalesManagement);
+		
+		btnLogout = new JButton("로그아웃");
+		panelFooter.add(btnLogout);
 		panelBody = new JPanel();
 		panelLeft = new JPanel();
 
@@ -717,7 +733,34 @@ public class MainView implements Viewable, Runnable {
 
 		clickBtnOrderCancelListener();
 
+		clickBtnPaymentListener();
+
 	}// end of addListener
+
+	private void clickBtnPaymentListener() {
+		btnPayment.addActionListener(e -> {
+
+			confirmPayment();
+			clearTable();
+			clearOrderBoard();
+		});
+	}
+
+	private void confirmPayment() {
+		String cno = tfGetCno.getText();
+		String tableNum = lblSelectedNum.getText();
+
+		switch (tableNum) {
+		case "1":
+			customerDAO.updatePayment(cno, lblCharge1);
+			break;
+		case "2":
+			customerDAO.updatePayment(cno, lblCharge2);
+			break;
+		}
+
+		JOptionPane.showMessageDialog(btnPayment, "결제 완료", "Message", JOptionPane.INFORMATION_MESSAGE);
+	}
 
 	private void clickBtnOrderCancelListener() {
 
