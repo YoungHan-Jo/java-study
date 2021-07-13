@@ -47,6 +47,8 @@ public class MainView implements Viewable {
 	OrderListDAO orderListDAO = OrderListDAO.getInstance();
 
 	public static final String VIEW_NAME = "main";
+	public static final int PANEL_LEFT_WIDTH = 1080;
+	public static final int PANEL_LEFT_HEIGHT = 1200;
 
 	public static final int CHARGE_ADULT = 14000;
 	public static final int CHARGE_KID = 8000;
@@ -145,17 +147,17 @@ public class MainView implements Viewable {
 
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(0, 0, 850, 630);
-		scrollPane.setBorder(new MatteBorder(0, 1, 1, 0, (Color) new Color(0, 0, 0)));
+		scrollPane.setBorder(new MatteBorder(0, 1, 0, 0, (Color) new Color(0, 0, 0)));
 
 		panelTables = new JPanel();
-		panelTables.setPreferredSize(new Dimension(850, 1200));
+		panelTables.setPreferredSize(new Dimension(PANEL_LEFT_WIDTH, PANEL_LEFT_HEIGHT));
 		panelTables.setBackground(Color.white);
 		scrollPane.setViewportView(panelTables);
 		panelTables.setLayout(null);
 
 		for (int i = 0; i < TABLE_NUMBER; ++i) {
-			int row = i / 4;
-			int column = i % 4;
+			int row = i / 5;
+			int column = i % 5;
 			int x = column * 195 + 60;
 			int y = row * 260 + 75;
 
@@ -199,7 +201,7 @@ public class MainView implements Viewable {
 
 		panelRight = new JPanel();
 		panelOrder = new JPanel();
-		panelOrder.setBorder(new MatteBorder(0, 1, 1, 0, (Color) new Color(0, 0, 0)));
+		panelOrder.setBorder(new MatteBorder(0, 1, 0, 0, (Color) new Color(0, 0, 0)));
 		lblUpdateTable = new JLabel("번 테이블");
 		lblUpdateTable.setHorizontalAlignment(SwingConstants.CENTER);
 		lblUpdateTable.setFont(new Font("Dialog", Font.BOLD, 20));
@@ -701,14 +703,16 @@ public class MainView implements Viewable {
 
 //		for (int i = 0; i < TABLE_NUMBER; ++i) {
 //
-//			ShareData.saveAsMap("index", i);
+//			ShareData.saveAsMap("index"+i, i);
 //
 //			taTableOrderList[i].addMouseListener(new MouseAdapter() {
 //
 //				@Override
 //				public void mouseClicked(MouseEvent e) {
 //
-//					int index = (int) ShareData.loadFromMap("index");
+//					int index = 0;
+//					for(int i = 0; i < TABLE_NUMBER; ++i)
+//						index = (int) ShareData.loadFromMap("index"+i);
 //
 //					clearTableBorder();
 //					ifSelectEmptyTable(lblTableAdmission[index]);
@@ -722,6 +726,7 @@ public class MainView implements Viewable {
 //				}
 //
 //			});
+//			
 //		}
 
 	}// selectTableListener

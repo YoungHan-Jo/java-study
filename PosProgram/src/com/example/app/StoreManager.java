@@ -21,8 +21,8 @@ import javax.swing.JButton;
 
 public class StoreManager extends JFrame implements Runnable {
 
-	public static final int WIDTH = 1160;
-	public static final int HEIGHT = 700;
+	public static final int WIDTH = 1400;
+	public static final int HEIGHT = 1000;
 
 	private MainView mainView;
 	private SalesManagementView salesManagementView;
@@ -139,6 +139,7 @@ public class StoreManager extends JFrame implements Runnable {
 		panelHeader.add(lblCurrentTime, BorderLayout.EAST);
 
 		container.add(panelFooter, BorderLayout.SOUTH);
+		panelFooter.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
 	}
 
 	private void setClock() {

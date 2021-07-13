@@ -15,5 +15,6 @@ public class CustomerVO {
 	private int payment;
 	private String admission;
 	private String tableNum;
+	private String exitTime;
 
 }

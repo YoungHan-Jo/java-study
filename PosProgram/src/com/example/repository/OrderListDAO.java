@@ -5,7 +5,10 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.example.domain.OrderListVO;
 import com.example.domain.OrderListVO;
 
 public class OrderListDAO {
@@ -120,6 +123,44 @@ public class OrderListDAO {
 			close(con, pstmt, rs);
 		}
 		return quantity;
+	}
+	
+	public List<OrderListVO> getOrderList() {
+		List<OrderListVO> list = new ArrayList<>();
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			con = getConnection();
+
+			StringBuilder sql = new StringBuilder();
+			sql.append("SELECT * ");
+			sql.append(" FROM orderlist ");
+
+			pstmt = con.prepareStatement(sql.toString());
+
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				OrderListVO orderListVO = new OrderListVO();
+				orderListVO.setOrderNum(rs.getString("order_num"));
+				orderListVO.setCno(rs.getString("cno"));
+				orderListVO.setMenu(rs.getString("menu"));
+				orderListVO.setQuantity(rs.getInt("quantity"));
+				orderListVO.setPrice(rs.getInt("price"));
+				orderListVO.setOrderTime(String.valueOf(rs.getTimestamp("order_time")));
+				
+				list.add(orderListVO);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return list;
 	}
 
 }

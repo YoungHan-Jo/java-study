@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JLabel;
 
@@ -239,6 +241,45 @@ public class CustomerDAO {
 			close(con, pstmt);
 		}
 
+	}
+
+	public List<CustomerVO> getCustomers() {
+		List<CustomerVO> list = new ArrayList<>();
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			con = getConnection();
+
+			StringBuilder sql = new StringBuilder();
+			sql.append("SELECT * ");
+			sql.append(" FROM CUSTOMER ");
+
+			pstmt = con.prepareStatement(sql.toString());
+
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				CustomerVO customerVO = new CustomerVO();
+				customerVO.setCno(rs.getString("cno"));
+				customerVO.setAdult(rs.getInt("adult"));
+				customerVO.setKid(rs.getInt("kid"));
+				customerVO.setPayment(rs.getInt("payment"));
+				customerVO.setAdmission(String.valueOf(rs.getTimestamp("admission")));
+				customerVO.setTableNum(rs.getString("table_num"));
+				customerVO.setExitTime(String.valueOf(rs.getTimestamp("exit_time")));
+				
+				list.add(customerVO);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return list;
 	}
 
 }
