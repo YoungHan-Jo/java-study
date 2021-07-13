@@ -41,14 +41,12 @@ import javax.swing.UIManager;
 import java.awt.Color;
 import javax.swing.border.MatteBorder;
 
-public class MainView implements Viewable, Runnable {
+public class MainView implements Viewable {
 
 	CustomerDAO customerDAO = CustomerDAO.getInstance();
 	OrderListDAO orderListDAO = OrderListDAO.getInstance();
 
 	public static final String VIEW_NAME = "main";
-	public static final int WIDTH = 1160;
-	public static final int HEIGHT = 700;
 
 	public static final int CHARGE_ADULT = 14000;
 	public static final int CHARGE_KID = 8000;
@@ -59,18 +57,14 @@ public class MainView implements Viewable, Runnable {
 	public static final int CHARGE_SOUP = 2000;
 	public static final int CHARGE_DESSERT = 4000;
 
-	public static final int TABLE_NUMBER = 15;
-
-	private Thread thread;
+	public static final int TABLE_NUMBER = 16;
 
 	private CardLayout cardLayout;
 	private Container container;
 	private StoreManager frame;
-	private JPanel panelMain;
-	private JPanel panelHeader;
-	private JPanel panelFooter;
-	private JPanel panelBody;
-	private JLabel lblMainView;
+
+	private JPanel panelMainView;
+
 	private JPanel panelLeft;
 	private JPanel panelRight;
 
@@ -107,7 +101,6 @@ public class MainView implements Viewable, Runnable {
 	private JButton btnAdmissionCancel;
 	private JButton btnPayment;
 
-	private JLabel lblCurrentTime;
 	private JButton btnAdultsUp;
 	private JButton btnAdultsDown;
 	private JButton btnKidsUp;
@@ -127,10 +120,6 @@ public class MainView implements Viewable, Runnable {
 	private JLabel lblGetCno;
 	private JTextField tfGetCno;
 	private JButton btnOrderCancel;
-	private JButton btnOpenStore;
-	private JButton btnCloseStore;
-	private JButton btnSalesManagement;
-	private JButton btnLogout;
 
 	List<JPanel> tableList = new ArrayList<>();
 
@@ -146,56 +135,12 @@ public class MainView implements Viewable, Runnable {
 
 	@Override
 	public JPanel getView() {
-		return panelMain;
-	}
-
-	@Override
-	public void run() {
-		while (true) {
-			Calendar cal = Calendar.getInstance();
-			String now = cal.get(Calendar.YEAR) + "년 "
-					+ ((cal.get(Calendar.MONTH) + 1) < 10 ? "0" + (cal.get(Calendar.MONTH) + 1)
-							: (cal.get(Calendar.MONTH) + 1))
-					+ "월 " + (cal.get(Calendar.DATE) < 10 ? "0" + cal.get(Calendar.DATE) : cal.get(Calendar.DATE))
-					+ "일 "
-					+ (cal.get(Calendar.HOUR_OF_DAY) < 10 ? "0" + cal.get(Calendar.HOUR_OF_DAY)
-							: cal.get(Calendar.HOUR_OF_DAY))
-					+ "시" + (cal.get(Calendar.MINUTE) < 10 ? "0" + cal.get(Calendar.MINUTE) : cal.get(Calendar.MINUTE))
-					+ "분" + (cal.get(Calendar.SECOND) < 10 ? "0" + cal.get(Calendar.SECOND) : cal.get(Calendar.SECOND))
-					+ "초 ";
-			lblCurrentTime.setText(now);
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
+		return panelMainView;
 	}
 
 	private void init() {
 
-		panelMain = new JPanel();
-
-		panelHeader = new JPanel();
-		panelHeader.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-
-		lblMainView = new JLabel("POS");
-
-		panelFooter = new JPanel();
-
-		btnOpenStore = new JButton("영업 시작");
-		panelFooter.add(btnOpenStore);
-
-		btnCloseStore = new JButton("영업 마감");
-		panelFooter.add(btnCloseStore);
-
-		btnSalesManagement = new JButton("매출관리");
-		panelFooter.add(btnSalesManagement);
-
-		btnLogout = new JButton("로그아웃");
-		panelFooter.add(btnLogout);
-
-		panelBody = new JPanel();
+		panelMainView = new JPanel();
 		panelLeft = new JPanel();
 
 		scrollPane = new JScrollPane();
@@ -295,31 +240,14 @@ public class MainView implements Viewable, Runnable {
 
 	private void setComponents() {
 
-		setClock();
 		clearTableBorder();
 
-		panelMain.setSize(WIDTH, HEIGHT);
-		panelMain.setLayout(new BorderLayout(0, 0));
-		panelMain.add(panelHeader, BorderLayout.NORTH);
-		panelMain.add(panelFooter, BorderLayout.SOUTH);
-		panelMain.add(panelBody, BorderLayout.CENTER);
-
-		panelHeader.setLayout(new BorderLayout(0, 0));
-		lblMainView.setFont(new Font("굴림", Font.BOLD, 25));
-		panelHeader.add(lblMainView, BorderLayout.CENTER);
-
-		lblCurrentTime = new JLabel("");
-		lblCurrentTime.setVerticalAlignment(SwingConstants.BOTTOM);
-		lblCurrentTime.setHorizontalAlignment(SwingConstants.TRAILING);
-		lblCurrentTime.setFont(new Font("굴림", Font.BOLD, 15));
-		panelHeader.add(lblCurrentTime, BorderLayout.EAST);
-
-		panelBody.setLayout(new BorderLayout(0, 0));
-		panelBody.add(panelLeft, BorderLayout.WEST);
+		panelMainView.setLayout(new BorderLayout(0, 0));
+		panelMainView.add(panelLeft, BorderLayout.WEST);
 		panelLeft.setLayout(new BorderLayout(0, 0));
 		panelLeft.add(scrollPane);
 
-		panelBody.add(panelRight, BorderLayout.CENTER);
+		panelMainView.add(panelRight, BorderLayout.CENTER);
 		panelRight.setLayout(new BorderLayout(0, 0));
 		panelRight.add(panelOrder, BorderLayout.CENTER);
 		panelOrder.setLayout(null);
@@ -453,24 +381,15 @@ public class MainView implements Viewable, Runnable {
 	}
 
 	private void clearTableBorder() {
-
 		for (int i = 0; i < TABLE_NUMBER; ++i)
 			panelTable[i].setBorder(UIManager.getBorder("DesktopIcon.border"));
-
-	}
-
-	private void setClock() {
-		if (thread == null) {
-			thread = new Thread(this);
-			thread.start();
-		}
 	}
 
 	private void addListener() {
 
-		setBtnUpDownListener();
-
 		selectTableListener();
+
+		setBtnUpDownListener();
 
 		clickAdmissionListener();
 
@@ -486,7 +405,6 @@ public class MainView implements Viewable, Runnable {
 
 	private void clickBtnPaymentListener() {
 		btnPayment.addActionListener(e -> {
-
 			confirmPayment();
 			clearTable();
 			clearOrderBoard();
@@ -503,7 +421,6 @@ public class MainView implements Viewable, Runnable {
 	}
 
 	private void clickBtnOrderCancelListener() {
-
 		btnOrderCancel.addActionListener(e -> {
 			takeOrders(-1);
 			clearMenuBoard();
@@ -525,7 +442,6 @@ public class MainView implements Viewable, Runnable {
 
 		paintTextArea(taTableOrderList[tableNum - 1]);
 		paintlblCharge(lblTableCharge[tableNum - 1]);
-
 	}
 
 	private void paintlblCharge(JLabel lblCharge) {
@@ -770,21 +686,41 @@ public class MainView implements Viewable, Runnable {
 			}
 		});
 
+		taTableOrderList[2].addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+
+				clearTableBorder();
+				ifSelectEmptyTable(lblTableAdmission[2]);
+				panelTable[2].setBorder(BorderFactory.createLineBorder(Color.red, 3));
+				lblSelectedNum.setText("3");
+
+				ifSelectTableAgain(lblTableGetCno[2]);
+			}
+		});
+
 //		for (int i = 0; i < TABLE_NUMBER; ++i) {
 //
-//		//	ShareData.saveAsMap("forIndex", i);
+//			ShareData.saveAsMap("index", i);
 //
 //			taTableOrderList[i].addMouseListener(new MouseAdapter() {
+//
 //				@Override
 //				public void mouseClicked(MouseEvent e) {
-//		//			int i = (int) ShareData.loadFromMap("forIndex");
-//					clearTableBorder();
-//					ifSelectEmptyTable(lblTableAdmission[i]);
-//					panelTable[i].setBorder(BorderFactory.createLineBorder(Color.red, 3));
-//					lblSelectedNum.setText(String.valueOf(i+1));
 //
-//					ifSelectTableAgain(lblTableGetCno[i]);
+//					int index = (int) ShareData.loadFromMap("index");
+//
+//					clearTableBorder();
+//					ifSelectEmptyTable(lblTableAdmission[index]);
+//					panelTable[index].setBorder(BorderFactory.createLineBorder(Color.red, 3));
+//					lblSelectedNum.setText(String.valueOf(index + 1));
+//
+//					ifSelectTableAgain(lblTableGetCno[index]);
+//
+//					System.out.println(index);
+//
 //				}
+//
 //			});
 //		}
 
