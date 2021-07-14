@@ -25,6 +25,7 @@ import javax.swing.JScrollPane;
 
 import java.awt.Color;
 import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.JButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JTable;
@@ -328,6 +329,8 @@ public class AdminView extends JFrame implements Viewable {
 		rdbtnRecvNo.setSelected(true);
 	}
 
+	DefaultTableModel model;
+
 	private void showTotal() {
 
 		List<MemberVO> list = memberDAO.getMembers();
@@ -341,8 +344,13 @@ public class AdminView extends JFrame implements Viewable {
 		columnNames.add("이메일");
 		columnNames.add("메일수신");
 		columnNames.add("가입날짜");
+		
+		if(model != null) 
+			model.setNumRows(0);;
+		
+		model = new DefaultTableModel(vector, columnNames);
 
-		table = new JTable(vector, columnNames);
+		table = new JTable(model);
 
 		panelAdmin.add(new JScrollPane(table), BorderLayout.CENTER);
 

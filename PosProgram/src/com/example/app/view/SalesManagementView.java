@@ -24,6 +24,8 @@ import javax.swing.border.MatteBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import java.awt.FlowLayout;
+import javax.swing.SwingConstants;
 
 public class SalesManagementView implements Viewable {
 
@@ -57,6 +59,12 @@ public class SalesManagementView implements Viewable {
 	private JLabel lblSearchByDate;
 	private JTextField tfSearchByDate;
 	private JButton btnSearchByDate;
+	private JLabel lblSalesTotal;
+	private JTextField tfSalesTotal;
+	private JLabel lblSalesMonth;
+	private JTextField tfSalesMonth;
+	private JLabel lblSalesDay;
+	private JTextField tfSalesDay;
 
 	public SalesManagementView(CardLayout cardLayout, Container container, StoreManager frame) {
 		this.cardLayout = cardLayout;
@@ -80,6 +88,13 @@ public class SalesManagementView implements Viewable {
 		panelLeft = new JPanel();
 
 		panelRight = new JPanel();
+
+		lblSalesTotal = new JLabel("전체 매출");
+		tfSalesTotal = new JTextField();
+		lblSalesMonth = new JLabel("이달 매출");
+		tfSalesMonth = new JTextField();
+		lblSalesDay = new JLabel("오늘 매출");
+		tfSalesDay = new JTextField();
 
 		panelJTable1 = new JPanel();
 
@@ -143,20 +158,76 @@ public class SalesManagementView implements Viewable {
 		tfSearchByDate.setColumns(10);
 		panelSearchRight.add(tfSearchByDate);
 		panelSearchRight.add(btnSearchByDate);
+
+		panelRight.setPreferredSize(new Dimension(2000, 500));
+		panelRight.setLayout(null);
+		lblSalesTotal.setBounds(40, 65, 55, 18);
+		panelRight.add(lblSalesTotal);
+
+		tfSalesTotal.setEnabled(false);
+		tfSalesTotal.setHorizontalAlignment(SwingConstants.TRAILING);
+		tfSalesTotal.setText(customerDAO.getSalesTotal());
+		tfSalesTotal.setBounds(113, 63, 114, 22);
+		panelRight.add(tfSalesTotal);
+		tfSalesTotal.setColumns(10);
+
+		lblSalesMonth.setBounds(40, 95, 55, 18);
+		panelRight.add(lblSalesMonth);
+
+		tfSalesMonth.setEnabled(false);
+		tfSalesMonth.setHorizontalAlignment(SwingConstants.TRAILING);
+		tfSalesMonth.setText(customerDAO.getSalesMonth());
+		tfSalesMonth.setBounds(113, 93, 114, 22);
+		panelRight.add(tfSalesMonth);
+		tfSalesMonth.setColumns(10);
+
+		lblSalesDay.setBounds(40, 125, 55, 18);
+		panelRight.add(lblSalesDay);
+
+		tfSalesDay.setEnabled(false);
+		tfSalesDay.setHorizontalAlignment(SwingConstants.TRAILING);
+		tfSalesDay.setText(customerDAO.getSalesDay());
+		tfSalesDay.setBounds(113, 123, 114, 22);
+		panelRight.add(tfSalesDay);
+		tfSalesDay.setColumns(10);
+
 	}
 
 	private void addListener() {
 		btnShowTotal.addActionListener(e -> {
 
-			getCustomer();
-			getOrderList();
-			
+			List<CustomerVO> customerList = customerDAO.getCustomers();
+			getCustomer(customerList);
+
+			List<OrderListVO> orderList = orderListDAO.getOrderList();
+			getOrderList(orderList);
 		});
+
+		btnSearchByCno.addActionListener(e -> {
+			String cno = tfSearchByCno.getText();
+
+			List<CustomerVO> customerList = customerDAO.getCustomerByCno(cno);
+			getCustomer(customerList);
+
+			List<OrderListVO> orderList = orderListDAO.getOrderListByCno(cno);
+			getOrderList(orderList);
+
+		});
+
+		btnSearchByDate.addActionListener(e -> {
+			String date = tfSearchByDate.getText();
+
+			List<CustomerVO> customerList = customerDAO.getCustomerByDate(date);
+			getCustomer(customerList);
+
+			List<OrderListVO> orderList = orderListDAO.getOrderListByDate(date);
+			getOrderList(orderList);
+
+		});
+
 	}
 
-	public void getOrderList() {
-
-		List<OrderListVO> orderList = orderListDAO.getOrderList();
+	public void getOrderList(List<OrderListVO> orderList) {
 
 		Vector<Vector<Object>> vector = getOrderListVectorFromList(orderList);
 
@@ -169,14 +240,16 @@ public class SalesManagementView implements Viewable {
 		columnNamesOrderList.add("주문시간");
 
 		tmGetOrderLists = new DefaultTableModel(vector, columnNamesOrderList);
-		tmGetOrderLists.fireTableDataChanged();
 
 		table2 = new JTable(tmGetOrderLists);
-		panelJTable2.add(new JScrollPane(table2), BorderLayout.CENTER);
+		tmGetOrderLists.fireTableDataChanged();
+		JScrollPane jsPane = new JScrollPane(table2);
+		panelJTable2.add(jsPane, BorderLayout.CENTER);
+
+		frame.setVisible(true);
 	}
 
-	private void getCustomer() {
-		List<CustomerVO> customerList = customerDAO.getCustomers();
+	private void getCustomer(List<CustomerVO> customerList) {
 
 		Vector<Vector<Object>> vector = getCustomerVectorFromList(customerList);
 
@@ -192,14 +265,15 @@ public class SalesManagementView implements Viewable {
 		tmGetCustomers = new DefaultTableModel(vector, columnNamesCustomer);
 
 		table1 = new JTable(tmGetCustomers);
+		tmGetCustomers.fireTableDataChanged();
 		panelJTable1.add(new JScrollPane(table1), BorderLayout.CENTER);
 
-		tmGetCustomers.fireTableDataChanged();
+		frame.setVisible(true);
 	}
 
 	private Vector<Vector<Object>> getOrderListVectorFromList(List<OrderListVO> list) {
 		Vector<Vector<Object>> vector = new Vector<>();
-
+		vector.clear();
 		for (OrderListVO orderList : list) {
 			Vector<Object> rowVector = new Vector<>();
 			rowVector.add(orderList.getOrderNum());
@@ -231,5 +305,4 @@ public class SalesManagementView implements Viewable {
 		}
 		return vector;
 	}
-
 }

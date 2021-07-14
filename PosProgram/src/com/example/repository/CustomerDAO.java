@@ -281,4 +281,181 @@ public class CustomerDAO {
 		return list;
 	}
 
+	public List<CustomerVO> getCustomerByCno(String cno) {
+		List<CustomerVO> list = new ArrayList<>();
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			con = getConnection();
+
+			StringBuilder sql = new StringBuilder();
+			sql.append("SELECT * ");
+			sql.append(" FROM CUSTOMER ");
+			sql.append(" WHERE cno = ? ");
+
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setString(1, cno);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				CustomerVO customerVO = new CustomerVO();
+				customerVO.setCno(rs.getString("cno"));
+				customerVO.setAdult(rs.getInt("adult"));
+				customerVO.setKid(rs.getInt("kid"));
+				customerVO.setPayment(rs.getInt("payment"));
+				customerVO.setAdmission(String.valueOf(rs.getTimestamp("admission")));
+				customerVO.setTableNum(rs.getString("table_num"));
+				customerVO.setExitTime(String.valueOf(rs.getTimestamp("exit_time")));
+
+				list.add(customerVO);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return list;
+	}
+
+	public List<CustomerVO> getCustomerByDate(String date) {
+		List<CustomerVO> list = new ArrayList<>();
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			con = getConnection();
+
+			StringBuilder sql = new StringBuilder();
+			sql.append("SELECT * ");
+			sql.append(" FROM customer ");
+			sql.append(" WHERE to_char(admission,'YYYYMMDD') = ? ");
+
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setString(1, date);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				CustomerVO customerVO = new CustomerVO();
+				customerVO.setCno(rs.getString("cno"));
+				customerVO.setAdult(rs.getInt("adult"));
+				customerVO.setKid(rs.getInt("kid"));
+				customerVO.setPayment(rs.getInt("payment"));
+				customerVO.setAdmission(String.valueOf(rs.getTimestamp("admission")));
+				customerVO.setTableNum(rs.getString("table_num"));
+				customerVO.setExitTime(String.valueOf(rs.getTimestamp("exit_time")));
+
+				list.add(customerVO);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return list;
+	}
+
+	public String getSalesTotal() {
+		String salesTotal = "";
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			con = getConnection();
+
+			StringBuilder sql = new StringBuilder();
+			sql.append("SELECT sum(payment) as total");
+			sql.append(" FROM customer ");
+
+			pstmt = con.prepareStatement(sql.toString());
+
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				salesTotal = String.valueOf(rs.getInt("total"));
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(con, pstmt, rs);
+		}
+
+		return salesTotal;
+	}
+	
+	public String getSalesMonth() {
+		String salesMonth = "";
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			con = getConnection();
+
+			StringBuilder sql = new StringBuilder();
+			sql.append("SELECT sum(payment) as total");
+			sql.append(" FROM customer ");
+			sql.append(" WHERE TO_CHAR(exit_time,'YYYYMM') = TO_CHAR(SYSDATE,'YYYYMM') ");
+
+			pstmt = con.prepareStatement(sql.toString());
+
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				salesMonth = String.valueOf(rs.getInt("total"));
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(con, pstmt, rs);
+		}
+
+		return salesMonth;
+	}
+	
+	public String getSalesDay() {
+		String salesDay = "";
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			con = getConnection();
+
+			StringBuilder sql = new StringBuilder();
+			sql.append("SELECT sum(payment) as total");
+			sql.append(" FROM customer ");
+			sql.append(" WHERE TO_CHAR(exit_time,'YYYYMMDD') = TO_CHAR(SYSDATE,'YYYYMMDD') ");
+
+			pstmt = con.prepareStatement(sql.toString());
+
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				salesDay = String.valueOf(rs.getInt("total"));
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(con, pstmt, rs);
+		}
+
+		return salesDay;
+	}
+
 }

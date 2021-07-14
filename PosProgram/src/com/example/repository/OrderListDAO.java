@@ -162,5 +162,85 @@ public class OrderListDAO {
 		}
 		return list;
 	}
+	
+	public List<OrderListVO> getOrderListByCno(String cno) {
+		List<OrderListVO> list = new ArrayList<>();
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			con = getConnection();
+
+			StringBuilder sql = new StringBuilder();
+			sql.append("SELECT * ");
+			sql.append(" FROM orderlist ");
+			sql.append(" WHERE cno = ? ");
+
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setString(1, cno);
+
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				OrderListVO orderListVO = new OrderListVO();
+				orderListVO.setOrderNum(rs.getString("order_num"));
+				orderListVO.setCno(rs.getString("cno"));
+				orderListVO.setMenu(rs.getString("menu"));
+				orderListVO.setQuantity(rs.getInt("quantity"));
+				orderListVO.setPrice(rs.getInt("price"));
+				orderListVO.setOrderTime(String.valueOf(rs.getTimestamp("order_time")));
+				
+				list.add(orderListVO);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return list;
+	}
+	
+	public List<OrderListVO> getOrderListByDate(String date) {
+		List<OrderListVO> list = new ArrayList<>();
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			con = getConnection();
+
+			StringBuilder sql = new StringBuilder();
+			sql.append("SELECT * ");
+			sql.append(" FROM orderlist ");
+			sql.append(" WHERE to_char(order_time,'YYYYMMDD') = ?  ");
+
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setString(1, date);
+
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				OrderListVO orderListVO = new OrderListVO();
+				orderListVO.setOrderNum(rs.getString("order_num"));
+				orderListVO.setCno(rs.getString("cno"));
+				orderListVO.setMenu(rs.getString("menu"));
+				orderListVO.setQuantity(rs.getInt("quantity"));
+				orderListVO.setPrice(rs.getInt("price"));
+				orderListVO.setOrderTime(String.valueOf(rs.getTimestamp("order_time")));
+				
+				list.add(orderListVO);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return list;
+	}
 
 }
