@@ -146,7 +146,6 @@ public class CustomerDAO {
 		} finally {
 			close(con, pstmt);
 		}
-
 	}
 
 	public int getAdultsByCno(String cno) {
@@ -260,8 +259,8 @@ public class CustomerDAO {
 			pstmt = con.prepareStatement(sql.toString());
 
 			rs = pstmt.executeQuery();
-			
-			while(rs.next()) {
+
+			while (rs.next()) {
 				CustomerVO customerVO = new CustomerVO();
 				customerVO.setCno(rs.getString("cno"));
 				customerVO.setAdult(rs.getInt("adult"));
@@ -270,7 +269,7 @@ public class CustomerDAO {
 				customerVO.setAdmission(String.valueOf(rs.getTimestamp("admission")));
 				customerVO.setTableNum(rs.getString("table_num"));
 				customerVO.setExitTime(String.valueOf(rs.getTimestamp("exit_time")));
-				
+
 				list.add(customerVO);
 			}
 

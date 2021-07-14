@@ -39,6 +39,8 @@ import javax.swing.JTextArea;
 import javax.swing.UIManager;
 
 import java.awt.Color;
+import java.awt.Component;
+
 import javax.swing.border.MatteBorder;
 
 public class MainView implements Viewable {
@@ -59,7 +61,7 @@ public class MainView implements Viewable {
 	public static final int CHARGE_SOUP = 2000;
 	public static final int CHARGE_DESSERT = 4000;
 
-	public static final int TABLE_NUMBER = 16;
+	public static final int TABLE_NUMBER = 12;
 
 	private CardLayout cardLayout;
 	private Container container;
@@ -168,14 +170,17 @@ public class MainView implements Viewable {
 			panelTable[i].setLayout(new BorderLayout(0, 0));
 
 			panelTableHeader[i] = new JPanel();
+			panelTableHeader[i].setName("panelHeader");
 			panelTable[i].add(panelTableHeader[i], BorderLayout.NORTH);
 			panelTableHeader[i].setLayout(new BorderLayout(0, 0));
 
 			lblTableNum[i] = new JLabel(String.valueOf(i + 1));
+			lblTableNum[i].setName("lblTableNum");
 			lblTableNum[i].setFont(new Font("굴림", Font.BOLD, 20));
 			panelTableHeader[i].add(lblTableNum[i], BorderLayout.NORTH);
 
 			lblTableAdmission[i] = new JLabel("공석");
+			lblTableAdmission[i].setName("lblTableAdmission"); // 컴포넌트에 이름 주기
 			lblTableAdmission[i].setFont(new Font("굴림", Font.PLAIN, 13));
 			lblTableAdmission[i].setHorizontalAlignment(SwingConstants.RIGHT);
 			panelTableHeader[i].add(lblTableAdmission[i], BorderLayout.SOUTH);
@@ -185,6 +190,7 @@ public class MainView implements Viewable {
 			panelTableHeader[i].add(lblTableCno[i], BorderLayout.WEST);
 
 			lblTableGetCno[i] = new JLabel("");
+			lblTableGetCno[i].setName("lblTableGetCno");
 			lblTableGetCno[i].setFont(new Font("굴림", Font.PLAIN, 12));
 			panelTableHeader[i].add(lblTableGetCno[i], BorderLayout.EAST);
 
@@ -593,7 +599,6 @@ public class MainView implements Viewable {
 				} else
 					return;
 			}
-
 		});
 	}
 
@@ -615,7 +620,6 @@ public class MainView implements Viewable {
 		taTableOrderList[tableNum - 1].setText("");
 		lblTableCharge[tableNum - 1].setText("0");
 		lblTableCharge[tableNum - 1].setForeground(Color.black);
-
 	}
 
 	private void clickAdmissionListener() {
@@ -662,74 +666,55 @@ public class MainView implements Viewable {
 
 	private void selectTableListener() {
 
-		taTableOrderList[0].addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
+		for (index = 0; index < TABLE_NUMBER; index++) {
 
-				clearTableBorder();
-				ifSelectEmptyTable(lblTableAdmission[0]);
-				panelTable[0].setBorder(BorderFactory.createLineBorder(Color.red, 3));
-				lblSelectedNum.setText("1");
+			taTableOrderList[index].addMouseListener(new MouseAdapter() {
 
-				ifSelectTableAgain(lblTableGetCno[0]);
-			}
-		});
+				@Override
+				public void mouseClicked(MouseEvent e) {
 
-		taTableOrderList[1].addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
+					clearTableBorder();
 
-				clearTableBorder();
-				ifSelectEmptyTable(lblTableAdmission[1]);
-				panelTable[1].setBorder(BorderFactory.createLineBorder(Color.red, 3));
-				lblSelectedNum.setText("2");
+					JTextArea ta = (JTextArea) e.getSource();
+					JPanel panelParent = (JPanel) ta.getParent();
+					panelParent.setBorder(BorderFactory.createLineBorder(Color.red, 3));
 
-				ifSelectTableAgain(lblTableGetCno[1]);
-			}
-		});
+					Component[] components = panelParent.getComponents();
 
-		taTableOrderList[2].addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
+					for (Component component : components) {
 
-				clearTableBorder();
-				ifSelectEmptyTable(lblTableAdmission[2]);
-				panelTable[2].setBorder(BorderFactory.createLineBorder(Color.red, 3));
-				lblSelectedNum.setText("3");
+						if (component instanceof JPanel) {
+							JPanel panelChild = (JPanel) component;
 
-				ifSelectTableAgain(lblTableGetCno[2]);
-			}
-		});
+							Component[] panel = panelChild.getComponents();
 
-//		for (int i = 0; i < TABLE_NUMBER; ++i) {
-//
-//			ShareData.saveAsMap("index"+i, i);
-//
-//			taTableOrderList[i].addMouseListener(new MouseAdapter() {
-//
-//				@Override
-//				public void mouseClicked(MouseEvent e) {
-//
-//					int index = 0;
-//					for(int i = 0; i < TABLE_NUMBER; ++i)
-//						index = (int) ShareData.loadFromMap("index"+i);
-//
-//					clearTableBorder();
-//					ifSelectEmptyTable(lblTableAdmission[index]);
-//					panelTable[index].setBorder(BorderFactory.createLineBorder(Color.red, 3));
-//					lblSelectedNum.setText(String.valueOf(index + 1));
-//
-//					ifSelectTableAgain(lblTableGetCno[index]);
-//
-//					System.out.println(index);
-//
-//				}
-//
-//			});
-//			
-//		}
+							for (Component panelLabel : panel) {
+								if (panelLabel instanceof JLabel) {
+									JLabel label = (JLabel) panelLabel;
+									String labelName = label.getName();
+									if (labelName != null && labelName.equals("lblTableAdmission")) {
+										ifSelectEmptyTable(label);
+									}
+
+									if (labelName != null && labelName.equals("lblTableNum")) {
+										String tableNum = label.getText();
+										lblSelectedNum.setText(tableNum);
+									}
+									if (labelName != null && labelName.equals("lblTableGetCno")) {
+										ifSelectTableAgain(label);
+									}
+								}
+							}
+						}
+					} // for
+				}
+			});
+
+		} // for
 
 	}// selectTableListener
+
+	private int index = 0;
 
 	private void ifSelectTableAgain(JLabel lblGetCno) {
 		int adult;

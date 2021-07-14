@@ -22,6 +22,8 @@ import java.awt.BorderLayout;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.MatteBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
 
 public class SalesManagementView implements Viewable {
 
@@ -40,10 +42,21 @@ public class SalesManagementView implements Viewable {
 	private JTable table1;
 	private JTable table2;
 	private JPanel panelJTable2;
-	private JPanel panelEmptySpace;
+	private JPanel panelSearchByCno;
 
 	private JPanel panelJTable1;
 	private DefaultTableModel tmGetCustomers;
+	private DefaultTableModel tmGetOrderLists;
+	private JPanel panelSearchLeft;
+	private JButton btnShowTotal;
+	private JPanel panelSearchCenter;
+	private JPanel panelSearchRight;
+	private JLabel lblSearchByCno;
+	private JTextField tfSearchByCno;
+	private JButton btnSearchByCno;
+	private JLabel lblSearchByDate;
+	private JTextField tfSearchByDate;
+	private JButton btnSearchByDate;
 
 	public SalesManagementView(CardLayout cardLayout, Container container, StoreManager frame) {
 		this.cardLayout = cardLayout;
@@ -63,39 +76,85 @@ public class SalesManagementView implements Viewable {
 	private void init() {
 
 		panelSalesManagement = new JPanel();
-		panelSalesManagement.setLayout(new BorderLayout(0, 0));
-		panelSalesManagement.setSize(MainView.PANEL_LEFT_WIDTH, MainView.PANEL_LEFT_HEIGHT);
 
 		panelLeft = new JPanel();
-		panelSalesManagement.add(panelLeft, BorderLayout.WEST);
 
 		panelRight = new JPanel();
-		panelSalesManagement.add(panelRight, BorderLayout.CENTER);
-
-		panelLeft.setLayout(new BorderLayout(0, 0));
 
 		panelJTable1 = new JPanel();
+
+		panelJTable2 = new JPanel();
+
+		panelSearchByCno = new JPanel();
+
+		panelSearchLeft = new JPanel();
+
+		btnShowTotal = new JButton("전체보기");
+
+		panelSearchCenter = new JPanel();
+
+		lblSearchByCno = new JLabel("손님번호로 검색");
+
+		tfSearchByCno = new JTextField();
+
+		btnSearchByCno = new JButton("검색");
+
+		panelSearchRight = new JPanel();
+
+		lblSearchByDate = new JLabel("날짜로 검색");
+
+		tfSearchByDate = new JTextField();
+
+		btnSearchByDate = new JButton("검색");
+	}
+
+	private void setComponents() {
+
+		panelSalesManagement.setLayout(new BorderLayout(0, 0));
+		panelSalesManagement.setSize(MainView.PANEL_LEFT_WIDTH, MainView.PANEL_LEFT_HEIGHT);
+		panelSalesManagement.add(panelLeft, BorderLayout.WEST);
+		panelSalesManagement.add(panelRight, BorderLayout.CENTER);
+		panelLeft.setLayout(new BorderLayout(0, 0));
+
 		panelJTable1.setLayout(new BorderLayout(0, 0));
 		panelJTable1.setBorder(new MatteBorder(0, 1, 1, 1, (Color) new Color(0, 0, 0)));
 		panelJTable1.setPreferredSize(new Dimension(1080, 400));
 		panelLeft.add(panelJTable1, BorderLayout.NORTH);
 
-		getCustomer();
-
-		panelEmptySpace = new JPanel();
-		panelEmptySpace.setBorder(new MatteBorder(0, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		panelEmptySpace.setPreferredSize(new Dimension(1080, 30));
-		panelLeft.add(panelEmptySpace, BorderLayout.CENTER);
-
-		getOrderList();
-
-	}
-
-	private void getOrderList() {
-		panelJTable2 = new JPanel();
 		panelJTable2.setLayout(new BorderLayout(0, 0));
 		panelJTable2.setBorder(new MatteBorder(0, 1, 1, 1, (Color) new Color(0, 0, 0)));
 		panelLeft.add(panelJTable2, BorderLayout.SOUTH);
+
+		panelSearchByCno.setBorder(new MatteBorder(0, 1, 1, 1, (Color) new Color(0, 0, 0)));
+		panelLeft.add(panelSearchByCno, BorderLayout.CENTER);
+		panelSearchByCno.setLayout(new BorderLayout(0, 0));
+		panelSearchByCno.add(panelSearchLeft, BorderLayout.WEST);
+		panelSearchLeft.add(btnShowTotal);
+
+		panelSearchByCno.add(panelSearchCenter, BorderLayout.CENTER);
+		panelSearchCenter.add(lblSearchByCno);
+
+		panelSearchCenter.add(tfSearchByCno);
+		tfSearchByCno.setColumns(10);
+		panelSearchCenter.add(btnSearchByCno);
+
+		panelSearchByCno.add(panelSearchRight, BorderLayout.EAST);
+		panelSearchRight.add(lblSearchByDate);
+		tfSearchByDate.setColumns(10);
+		panelSearchRight.add(tfSearchByDate);
+		panelSearchRight.add(btnSearchByDate);
+	}
+
+	private void addListener() {
+		btnShowTotal.addActionListener(e -> {
+
+			getCustomer();
+			getOrderList();
+			
+		});
+	}
+
+	public void getOrderList() {
 
 		List<OrderListVO> orderList = orderListDAO.getOrderList();
 
@@ -109,9 +168,10 @@ public class SalesManagementView implements Viewable {
 		columnNamesOrderList.add("주문가격");
 		columnNamesOrderList.add("주문시간");
 
-		tmGetCustomers = new DefaultTableModel(vector, columnNamesOrderList);
+		tmGetOrderLists = new DefaultTableModel(vector, columnNamesOrderList);
+		tmGetOrderLists.fireTableDataChanged();
 
-		table2 = new JTable(tmGetCustomers);
+		table2 = new JTable(tmGetOrderLists);
 		panelJTable2.add(new JScrollPane(table2), BorderLayout.CENTER);
 	}
 
@@ -133,6 +193,8 @@ public class SalesManagementView implements Viewable {
 
 		table1 = new JTable(tmGetCustomers);
 		panelJTable1.add(new JScrollPane(table1), BorderLayout.CENTER);
+
+		tmGetCustomers.fireTableDataChanged();
 	}
 
 	private Vector<Vector<Object>> getOrderListVectorFromList(List<OrderListVO> list) {
@@ -149,7 +211,6 @@ public class SalesManagementView implements Viewable {
 
 			vector.add(rowVector);
 		}
-
 		return vector;
 	}
 
@@ -168,16 +229,7 @@ public class SalesManagementView implements Viewable {
 
 			vector.add(rowVector);
 		}
-
 		return vector;
-	}
-
-	private void setComponents() {
-
-	}
-
-	private void addListener() {
-
 	}
 
 }
