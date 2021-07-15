@@ -61,7 +61,7 @@ public class MainView implements Viewable {
 	public static final int CHARGE_SOUP = 2000;
 	public static final int CHARGE_DESSERT = 4000;
 
-	public static final int TABLE_NUMBER = 12;
+	public static final int TABLE_NUMBER = 20;
 
 	private CardLayout cardLayout;
 	private Container container;
@@ -124,6 +124,11 @@ public class MainView implements Viewable {
 	private JLabel lblGetCno;
 	private JTextField tfGetCno;
 	private JButton btnOrderCancel;
+	
+	private JLabel lblNumOfTables;
+	private JLabel lblGetNumOfTables;
+	private JButton btnTableUp;
+	private JButton btnTableDown;
 
 	List<JPanel> tableList = new ArrayList<>();
 
@@ -148,15 +153,14 @@ public class MainView implements Viewable {
 		panelLeft = new JPanel();
 
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 0, 850, 630);
-		scrollPane.setBorder(new MatteBorder(0, 1, 0, 0, (Color) new Color(0, 0, 0)));
 
 		panelTables = new JPanel();
-		panelTables.setPreferredSize(new Dimension(PANEL_LEFT_WIDTH, PANEL_LEFT_HEIGHT));
-		panelTables.setBackground(Color.white);
-		scrollPane.setViewportView(panelTables);
-		panelTables.setLayout(null);
-
+		
+		lblNumOfTables = new JLabel("테이블 수");
+		lblGetNumOfTables = new JLabel(String.valueOf(TABLE_NUMBER));
+		btnTableUp = new JButton("🔺");
+		btnTableDown = new JButton("🔻");
+				
 		for (int i = 0; i < TABLE_NUMBER; ++i) {
 			int row = i / 5;
 			int column = i % 5;
@@ -207,53 +211,77 @@ public class MainView implements Viewable {
 
 		panelRight = new JPanel();
 		panelOrder = new JPanel();
-		panelOrder.setBorder(new MatteBorder(0, 1, 0, 0, (Color) new Color(0, 0, 0)));
 		lblUpdateTable = new JLabel("번 테이블");
-		lblUpdateTable.setHorizontalAlignment(SwingConstants.CENTER);
-		lblUpdateTable.setFont(new Font("Dialog", Font.BOLD, 20));
 		lblAdults = new JLabel("성인");
 		lblKids = new JLabel("어린이");
 		tfAdults = new JTextField();
-		tfAdults.setHorizontalAlignment(SwingConstants.TRAILING);
-		tfAdults.setText("0");
 		tfKids = new JTextField();
-		tfKids.setHorizontalAlignment(SwingConstants.TRAILING);
-		tfKids.setText("0");
 		btnAdmission = new JButton("입장");
 		lblSoju = new JLabel("소주");
 		lblBeer = new JLabel("맥주");
 		tfSoju = new JTextField();
-		tfSoju.setText("0");
-		tfSoju.setHorizontalAlignment(SwingConstants.TRAILING);
 		tfBeer = new JTextField();
-		tfBeer.setText("0");
-		tfBeer.setHorizontalAlignment(SwingConstants.TRAILING);
 		lblBeverage = new JLabel("음료수");
 		lblSoup = new JLabel("된장찌개");
 		tfBeverage = new JTextField();
-		tfBeverage.setText("0");
-		tfBeverage.setHorizontalAlignment(SwingConstants.TRAILING);
 		tfSoup = new JTextField();
-		tfSoup.setText("0");
-		tfSoup.setHorizontalAlignment(SwingConstants.TRAILING);
 		lblDessert = new JLabel("냉면");
 		tfDessert = new JTextField();
-		tfDessert.setText("0");
-		tfDessert.setHorizontalAlignment(SwingConstants.TRAILING);
 		btnOrder = new JButton("주문");
 		btnAdmissionCancel = new JButton("입장 취소");
 		btnPayment = new JButton("결제하기");
 
+		btnAdultsUp = new JButton("🔺");
+		btnAdultsDown = new JButton("🔻");
+		btnKidsUp = new JButton("🔺");
+		btnSojuUp = new JButton("🔺");
+		btnBeerUp = new JButton("🔺");
+		btnBeverageUp = new JButton("🔺");
+		btnSoupUp = new JButton("🔺");
+		btnDessertUp = new JButton("🔺");
+		btnKidsDown = new JButton("🔻");
+		btnSojuDown = new JButton("🔻");
+		btnBeerDown = new JButton("🔻");
+		btnBeverageDown = new JButton("🔻");
+		btnSoupDown = new JButton("🔻");
+		btnDessertDown = new JButton("🔻");
+		lblSelectedNum = new JLabel("");
+		lblGetCno = new JLabel("손님번호");
+		tfGetCno = new JTextField();
+		btnOrderCancel = new JButton("주문 취소");
 	}
 
 	private void setComponents() {
 
 		clearTableBorder();
+		
+		scrollPane.setBounds(0, 0, 850, 630);
+		scrollPane.setBorder(new MatteBorder(0, 1, 0, 0, (Color) new Color(0, 0, 0)));
+		panelTables.setPreferredSize(new Dimension(PANEL_LEFT_WIDTH, PANEL_LEFT_HEIGHT));
+		panelTables.setBackground(Color.white);
+		scrollPane.setViewportView(panelTables);
+		panelTables.setLayout(null);
 
 		panelMainView.setLayout(new BorderLayout(0, 0));
 		panelMainView.add(panelLeft, BorderLayout.WEST);
 		panelLeft.setLayout(new BorderLayout(0, 0));
 		panelLeft.add(scrollPane);
+		
+		lblNumOfTables.setFont(new Font("Dialog", Font.BOLD, 20));
+		lblNumOfTables.setBounds(12, 12, 92, 18);
+		panelTables.add(lblNumOfTables);
+		
+		btnTableUp.setBounds(189, 7, 44, 28);
+		panelTables.add(btnTableUp);
+		
+		btnTableDown.setBounds(245, 7, 44, 28);
+		panelTables.add(btnTableDown);
+		
+		
+		lblGetNumOfTables.setHorizontalAlignment(SwingConstants.TRAILING);
+		lblGetNumOfTables.setFont(new Font("Dialog", Font.BOLD, 20));
+		lblGetNumOfTables.setBounds(116, 12, 55, 18);
+		panelTables.add(lblGetNumOfTables);
 
 		panelMainView.add(panelRight, BorderLayout.CENTER);
 		panelRight.setLayout(new BorderLayout(0, 0));
@@ -304,74 +332,72 @@ public class MainView implements Viewable {
 		panelOrder.add(btnAdmissionCancel);
 		btnPayment.setBounds(162, 512, 98, 28);
 		panelOrder.add(btnPayment);
-
-		btnAdultsUp = new JButton("🔺");
+		lblUpdateTable.setHorizontalAlignment(SwingConstants.CENTER);
+		lblUpdateTable.setFont(new Font("Dialog", Font.BOLD, 20));
+		panelOrder.setBorder(new MatteBorder(0, 1, 0, 0, (Color) new Color(0, 0, 0)));
+		tfAdults.setHorizontalAlignment(SwingConstants.TRAILING);
+		tfAdults.setText("0");
+		tfKids.setHorizontalAlignment(SwingConstants.TRAILING);
+		tfKids.setText("0");
+		tfSoju.setText("0");
+		tfSoju.setHorizontalAlignment(SwingConstants.TRAILING);
+		tfBeer.setText("0");
+		tfBeer.setHorizontalAlignment(SwingConstants.TRAILING);
+		tfBeverage.setText("0");
+		tfBeverage.setHorizontalAlignment(SwingConstants.TRAILING);
+		tfSoup.setText("0");
+		tfSoup.setHorizontalAlignment(SwingConstants.TRAILING);
+		tfDessert.setText("0");
+		tfDessert.setHorizontalAlignment(SwingConstants.TRAILING);
 		btnAdultsUp.setBounds(169, 93, 44, 23);
 		panelOrder.add(btnAdultsUp);
 
-		btnAdultsDown = new JButton("🔻");
 		btnAdultsDown.setBounds(216, 93, 44, 23);
 		panelOrder.add(btnAdultsDown);
 
-		btnKidsUp = new JButton("🔺");
 		btnKidsUp.setBounds(169, 122, 44, 23);
 		panelOrder.add(btnKidsUp);
 
-		btnSojuUp = new JButton("🔺");
 		btnSojuUp.setBounds(169, 247, 44, 23);
 		panelOrder.add(btnSojuUp);
 
-		btnBeerUp = new JButton("🔺");
 		btnBeerUp.setBounds(169, 280, 44, 23);
 		panelOrder.add(btnBeerUp);
 
-		btnBeverageUp = new JButton("🔺");
 		btnBeverageUp.setBounds(169, 315, 44, 23);
 		panelOrder.add(btnBeverageUp);
 
-		btnSoupUp = new JButton("🔺");
 		btnSoupUp.setBounds(169, 348, 44, 23);
 		panelOrder.add(btnSoupUp);
 
-		btnDessertUp = new JButton("🔺");
 		btnDessertUp.setBounds(169, 380, 44, 23);
 		panelOrder.add(btnDessertUp);
 
-		btnKidsDown = new JButton("🔻");
 		btnKidsDown.setBounds(216, 122, 44, 23);
 		panelOrder.add(btnKidsDown);
 
-		btnSojuDown = new JButton("🔻");
 		btnSojuDown.setBounds(216, 247, 44, 23);
 		panelOrder.add(btnSojuDown);
 
-		btnBeerDown = new JButton("🔻");
 		btnBeerDown.setBounds(216, 280, 44, 23);
 		panelOrder.add(btnBeerDown);
 
-		btnBeverageDown = new JButton("🔻");
 		btnBeverageDown.setBounds(216, 315, 44, 23);
 		panelOrder.add(btnBeverageDown);
 
-		btnSoupDown = new JButton("🔻");
 		btnSoupDown.setBounds(216, 348, 44, 23);
 		panelOrder.add(btnSoupDown);
 
-		btnDessertDown = new JButton("🔻");
 		btnDessertDown.setBounds(216, 380, 44, 23);
 		panelOrder.add(btnDessertDown);
 
-		lblSelectedNum = new JLabel("");
 		lblSelectedNum.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSelectedNum.setFont(new Font("Dialog", Font.BOLD, 20));
 		lblSelectedNum.setBounds(88, 31, 32, 28);
 		panelOrder.add(lblSelectedNum);
 
-		lblGetCno = new JLabel("손님번호");
 		lblGetCno.setBounds(40, 65, 55, 18);
 		panelOrder.add(lblGetCno);
-
-		tfGetCno = new JTextField();
 		tfGetCno.setText("");
 		tfGetCno.setEnabled(false);
 		tfGetCno.setHorizontalAlignment(SwingConstants.TRAILING);
@@ -379,7 +405,6 @@ public class MainView implements Viewable {
 		tfGetCno.setBounds(113, 63, 44, 22);
 		panelOrder.add(tfGetCno);
 
-		btnOrderCancel = new JButton("주문 취소");
 		btnOrderCancel.setBounds(162, 426, 98, 28);
 		panelOrder.add(btnOrderCancel);
 
@@ -408,8 +433,48 @@ public class MainView implements Viewable {
 		clickBtnOrderCancelListener();
 
 		clickBtnPaymentListener();
+		
+		clickBtnTableUpDown();
 
 	}// end of addListener
+
+	private void clickBtnTableUpDown() {
+		btnTableUp.addActionListener(e->{
+			int num = Integer.parseInt(lblGetNumOfTables.getText());
+			if(num >= TABLE_NUMBER) {
+				return;
+			}else {
+				num += 1;
+				lblGetNumOfTables.setText(String.valueOf(num));
+			}
+			changeTables(num);
+		});
+		
+		btnTableDown.addActionListener(e->{
+			int num = Integer.parseInt(lblGetNumOfTables.getText());
+			if(num <=1) {
+				return;
+			}else {
+				num -= 1;
+				lblGetNumOfTables.setText(String.valueOf(num));
+			}
+			
+			changeTables(num);
+		});
+		
+	}
+
+	private void changeTables(int num) {
+		
+		for(int i = 0; i < num; ++i) {
+			panelTable[i].setVisible(true);
+		}
+		
+		for(int i = num; i<TABLE_NUMBER; ++i) {
+			panelTable[i].setVisible(false);
+		}
+		
+	}
 
 	private void clickBtnPaymentListener() {
 		btnPayment.addActionListener(e -> {
@@ -715,6 +780,8 @@ public class MainView implements Viewable {
 	}// selectTableListener
 
 	private int index = 0;
+	
+
 
 	private void ifSelectTableAgain(JLabel lblGetCno) {
 		int adult;

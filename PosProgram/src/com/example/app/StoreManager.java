@@ -90,31 +90,22 @@ public class StoreManager extends JFrame implements Runnable {
 		panelHeader = new JPanel();
 		lblTitle = new JLabel("POS");
 		panelFooter = new JPanel();
-		panelFooter.setLayout(new BorderLayout(0, 0));
 
 		panelFooterCenter = new JPanel();
-		panelFooter.add(panelFooterCenter, BorderLayout.CENTER);
 
 		btnGoToMain = new JButton("메인으로");
-		panelFooterCenter.add(btnGoToMain);
 
 		panelFooterRight = new JPanel();
-		panelFooter.add(panelFooterRight, BorderLayout.EAST);
 
 		btnCloseStore = new JButton("영업마감");
-		panelFooterRight.add(btnCloseStore);
 
 		btnLogout = new JButton("로그아웃");
-		panelFooterRight.add(btnLogout);
 
 		panelFooterLeft = new JPanel();
-		panelFooter.add(panelFooterLeft, BorderLayout.WEST);
 
 		btnOpenStore = new JButton("영업시작");
-		panelFooterLeft.add(btnOpenStore);
 
 		btnSalesManagement = new JButton("매출관리");
-		panelFooterLeft.add(btnSalesManagement);
 
 	}
 
@@ -140,6 +131,17 @@ public class StoreManager extends JFrame implements Runnable {
 
 		container.add(panelFooter, BorderLayout.SOUTH);
 		panelFooter.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
+
+		panelFooter.setLayout(new BorderLayout(0, 0));
+		panelFooter.add(panelFooterCenter, BorderLayout.CENTER);
+		panelFooterCenter.add(btnGoToMain);
+		panelFooter.add(panelFooterRight, BorderLayout.EAST);
+		panelFooterRight.add(btnCloseStore);
+		panelFooterRight.add(btnLogout);
+		panelFooter.add(panelFooterLeft, BorderLayout.WEST);
+		panelFooterLeft.add(btnOpenStore);
+		panelFooterLeft.add(btnSalesManagement);
+
 	}
 
 	private void setClock() {
