@@ -201,6 +201,11 @@ public class SalesManagementView implements Viewable {
 
 			List<OrderListVO> orderList = orderListDAO.getOrderList();
 			getOrderList(orderList);
+			
+			tfSalesTotal.setText(customerDAO.getSalesTotal());
+			tfSalesMonth.setText(customerDAO.getSalesMonth());
+			tfSalesDay.setText(customerDAO.getSalesDay());
+			
 		});
 
 		btnSearchByCno.addActionListener(e -> {
