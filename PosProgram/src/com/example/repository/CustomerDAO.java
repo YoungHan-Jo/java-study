@@ -63,6 +63,58 @@ public class CustomerDAO {
 
 	} // close()
 
+	public int getCountAll() {
+
+		int count = 0;
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			con = getConnection();
+
+			StringBuilder sql = new StringBuilder();
+			sql.append("SELECT COUNT(*) AS cnt ");
+			sql.append(" FROM customer ");
+
+			pstmt = con.prepareStatement(sql.toString());
+
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				count = rs.getInt("cnt");
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return count;
+	}
+
+	public void deleteAll() {
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			con = getConnection();
+
+			StringBuilder sql = new StringBuilder();
+			sql.append(" DELETE FROM customer ");
+
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.executeUpdate();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(con, pstmt);
+		}
+	}
+
 	public void insertCustomer(CustomerVO customerVO) {
 
 		Connection con = null;
@@ -393,7 +445,7 @@ public class CustomerDAO {
 
 		return salesTotal;
 	}
-	
+
 	public String getSalesMonth() {
 		String salesMonth = "";
 
@@ -425,7 +477,7 @@ public class CustomerDAO {
 
 		return salesMonth;
 	}
-	
+
 	public String getSalesDay() {
 		String salesDay = "";
 
