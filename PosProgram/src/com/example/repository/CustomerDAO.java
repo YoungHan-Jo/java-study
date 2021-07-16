@@ -143,7 +143,7 @@ public class CustomerDAO {
 
 	}
 
-	public String getCnoByAdmission(String admission) {
+	public String getCnoByAdmission(String admission, String tableNum) {
 
 		String cno = "";
 
@@ -158,9 +158,11 @@ public class CustomerDAO {
 			sql.append("SELECT cno ");
 			sql.append(" FROM customer ");
 			sql.append(" WHERE admission = ? ");
+			sql.append(" AND table_num = ? ");
 
 			pstmt = con.prepareStatement(sql.toString());
 			pstmt.setString(1, admission);
+			pstmt.setString(2, tableNum);
 
 			rs = pstmt.executeQuery();
 
@@ -264,9 +266,7 @@ public class CustomerDAO {
 		return kid;
 	}
 
-	public void updatePayment(String cno, JLabel lblCharge) {
-
-		String payment = lblCharge.getText();
+	public void updatePayment(String cno, String payment) {
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -331,6 +331,48 @@ public class CustomerDAO {
 			close(con, pstmt, rs);
 		}
 		return list;
+	}
+
+	public CustomerVO getCustomerByAdmissionAndTNum(String admission, String tableNum) {
+		CustomerVO customerVO = null;
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			con = getConnection();
+
+			StringBuilder sql = new StringBuilder();
+			sql.append("SELECT * ");
+			sql.append(" FROM CUSTOMER ");
+			sql.append(" WHERE admission = ? ");
+			sql.append(" AND table_num = ? ");
+
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setString(1, admission);
+			pstmt.setString(2, tableNum);
+
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				customerVO = new CustomerVO();
+				customerVO.setCno(rs.getString("cno"));
+				customerVO.setAdult(rs.getInt("adult"));
+				customerVO.setKid(rs.getInt("kid"));
+				customerVO.setPayment(rs.getInt("payment"));
+				customerVO.setAdmission(String.valueOf(rs.getTimestamp("admission")));
+				customerVO.setTableNum(rs.getString("table_num"));
+				customerVO.setExitTime(String.valueOf(rs.getTimestamp("exit_time")));
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(con, pstmt, rs);
+		}
+
+		return customerVO;
 	}
 
 	public List<CustomerVO> getCustomerByCno(String cno) {

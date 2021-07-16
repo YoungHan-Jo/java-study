@@ -60,6 +60,26 @@ public class OrderListDAO {
 		}
 
 	} // close()
+	
+	public void deleteAll() {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			con = getConnection();
+
+			StringBuilder sql = new StringBuilder();
+			sql.append(" DELETE FROM orderlist ");
+
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.executeUpdate();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(con, pstmt);
+		}
+	}
 
 	public void insertOrderList(OrderListVO orderListVO) {
 

@@ -487,8 +487,10 @@ public class MainView implements Viewable {
 	private void confirmPayment() {
 		String cno = tfGetCno.getText();
 		int tableNum = Integer.valueOf(lblSelectedNum.getText());
-
-		customerDAO.updatePayment(cno, lblTableCharge[tableNum - 1]);
+		String payment = lblTableCharge[tableNum - 1].getText();
+	
+		
+		customerDAO.updatePayment(cno, payment);
 
 		JOptionPane.showMessageDialog(btnPayment, "결제 완료", "Message", JOptionPane.INFORMATION_MESSAGE);
 	}
@@ -711,7 +713,7 @@ public class MainView implements Viewable {
 			}
 			admission = customerVO.getAdmission();
 
-			cno = customerDAO.getCnoByAdmission(admission);
+			cno = customerDAO.getCnoByAdmission(admission, tableNum);
 
 			tfGetCno.setText(cno);
 
