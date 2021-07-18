@@ -1,6 +1,5 @@
 package java0715;
 
-import java.io.IOException;
 import java.io.InputStream;
 
 public class Ex1 {
