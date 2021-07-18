@@ -34,7 +34,7 @@ public class Ex7 {
 			while ((data = in.read()) != -1) { // int형식으로 리턴, -1를 표현하기 위해
 				out.write(data);
 			}
-			
+
 			System.out.println("파일 복사 완료.");
 
 		} catch (Exception e) {
