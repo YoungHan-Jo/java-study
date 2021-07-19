@@ -27,15 +27,7 @@ public class MemberDAOTests {
 		memberVO01 = new MemberVO("aaa", "1234", "홍길동", "aa@a.com", "Y", new Timestamp(System.currentTimeMillis()));
 		memberVO02 = new MemberVO("bbb", "1234", "성춘향", "bb@b.com", "N", new Timestamp(System.currentTimeMillis()));
 
-	}
-
-	@Test
-	public void testDeleteAll() {
 		memberDAO.deleteAll();
-
-		int count = memberDAO.getCountAll();
-
-		assertEquals(0, count); // 메서드 검증. Assert 클래스
 	}
 
 	@Test
@@ -61,9 +53,15 @@ public class MemberDAOTests {
 	} // testConnection
 
 	@Test
-	public void testInsertAndDeleteById() {
-		memberDAO.deleteAll(); // 독립적으로 수행하기 위해 비우고 새로 테스트
+	public void testDeleteAll() {
 
+		int count = memberDAO.getCountAll();
+
+		assertEquals(0, count); // 메서드 검증. Assert 클래스
+	}
+
+	@Test
+	public void testInsertAndDeleteById() {
 
 		memberDAO.insert(memberVO01);
 		assertEquals(1, memberDAO.getCountAll());
@@ -80,16 +78,16 @@ public class MemberDAOTests {
 
 	@Test
 	public void testUpdateById() {
-		memberDAO.deleteAll();
 
 		memberDAO.insert(memberVO01);
-		
-		MemberVO updateMember = new MemberVO("aaa", "4567", "이몽룡", "aa11@a.com", "N", new Timestamp(System.currentTimeMillis()));
+
+		MemberVO updateMember = new MemberVO("aaa", "4567", "이몽룡", "aa11@a.com", "N",
+				new Timestamp(System.currentTimeMillis()));
 
 		memberDAO.updateById(updateMember);
-	
+
 		MemberVO dbMember = memberDAO.getMemberById(updateMember.getId());
-		
+
 		assertEquals(updateMember.getName(), dbMember.getName());
 		assertEquals(updateMember.getEmail(), dbMember.getEmail());
 

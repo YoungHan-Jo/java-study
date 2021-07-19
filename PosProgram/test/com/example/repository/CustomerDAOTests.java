@@ -38,6 +38,9 @@ public class CustomerDAOTests {
 		customerDAO = CustomerDAO.getInstance();
 		orderListDAO = OrderListDAO.getInstance();
 
+		orderListDAO.deleteAll(); // 무결성 제약조건
+		customerDAO.deleteAll();
+
 		admission = String.valueOf(new Timestamp(System.currentTimeMillis()));
 
 		customerVO01 = new CustomerVO();
@@ -76,8 +79,6 @@ public class CustomerDAOTests {
 
 	@Test
 	public void testDeleteAllAndGetCountAll() { // delete 테스트
-		orderListDAO.deleteAll(); // 무결성 제약조건
-		customerDAO.deleteAll();
 
 		int count = customerDAO.getCountAll();
 
@@ -87,8 +88,6 @@ public class CustomerDAOTests {
 
 	@Test
 	public void testInsertCustomer() { // insert 테스트
-		orderListDAO.deleteAll(); // 무결성 제약조건
-		customerDAO.deleteAll();
 
 		customerDAO.insertCustomer(customerVO01);
 		customerDAO.insertCustomer(customerVO02);
@@ -101,8 +100,6 @@ public class CustomerDAOTests {
 
 	@Test
 	public void testGetCustomerByAdmissionAndTNum() { // select 테스트
-		orderListDAO.deleteAll(); // 무결성 제약조건
-		customerDAO.deleteAll();
 
 		customerDAO.insertCustomer(customerVO01);
 		customerDAO.insertCustomer(customerVO02);
@@ -116,8 +113,6 @@ public class CustomerDAOTests {
 
 	@Test
 	public void testUpdatePayment() { // update 테스트
-		orderListDAO.deleteAll(); // 무결성 제약조건
-		customerDAO.deleteAll();
 
 		customerDAO.insertCustomer(customerVO01);
 		customerDAO.insertCustomer(customerVO02);
@@ -137,8 +132,6 @@ public class CustomerDAOTests {
 
 	@Test
 	public void testGetCnoByAdmission() {
-		orderListDAO.deleteAll(); // 무결성 제약조건
-		customerDAO.deleteAll();
 
 		customerDAO.insertCustomer(customerVO01);
 		customerDAO.insertCustomer(customerVO02);
@@ -153,8 +146,6 @@ public class CustomerDAOTests {
 
 	@Test
 	public void testDeleteCustomerByCno() {
-		orderListDAO.deleteAll(); // 무결성 제약조건
-		customerDAO.deleteAll();
 
 		customerDAO.insertCustomer(customerVO01);
 		customerDAO.insertCustomer(customerVO02);
@@ -171,8 +162,6 @@ public class CustomerDAOTests {
 
 	@Test
 	public void testGetAdultsByCno() {
-		orderListDAO.deleteAll(); // 무결성 제약조건
-		customerDAO.deleteAll();
 
 		customerDAO.insertCustomer(customerVO01);
 		customerDAO.insertCustomer(customerVO02);
@@ -189,8 +178,6 @@ public class CustomerDAOTests {
 
 	@Test
 	public void testGetKidsByCno() {
-		orderListDAO.deleteAll(); // 무결성 제약조건
-		customerDAO.deleteAll();
 
 		customerDAO.insertCustomer(customerVO01);
 		customerDAO.insertCustomer(customerVO02);
@@ -207,8 +194,6 @@ public class CustomerDAOTests {
 
 	@Test
 	public void testGetCustomers() {
-		orderListDAO.deleteAll(); // 무결성 제약조건
-		customerDAO.deleteAll();
 
 		customerDAO.insertCustomer(customerVO01);
 		customerDAO.insertCustomer(customerVO02);
@@ -225,8 +210,6 @@ public class CustomerDAOTests {
 
 	@Test
 	public void testGetCustomerByCno() {
-		orderListDAO.deleteAll(); // 무결성 제약조건
-		customerDAO.deleteAll();
 
 		customerDAO.insertCustomer(customerVO01);
 		customerDAO.insertCustomer(customerVO02);
