@@ -124,7 +124,7 @@ public class MainView implements Viewable {
 	private JLabel lblGetCno;
 	private JTextField tfGetCno;
 	private JButton btnOrderCancel;
-	
+
 	private JLabel lblNumOfTables;
 	private JLabel lblGetNumOfTables;
 	private JButton btnTableUp;
@@ -155,12 +155,12 @@ public class MainView implements Viewable {
 		scrollPane = new JScrollPane();
 
 		panelTables = new JPanel();
-		
+
 		lblNumOfTables = new JLabel("테이블 수");
 		lblGetNumOfTables = new JLabel(String.valueOf(TABLE_NUMBER));
 		btnTableUp = new JButton("🔺");
 		btnTableDown = new JButton("🔻");
-				
+
 		for (int i = 0; i < TABLE_NUMBER; ++i) {
 			int row = i / 5;
 			int column = i % 5;
@@ -254,7 +254,7 @@ public class MainView implements Viewable {
 	private void setComponents() {
 
 		clearTableBorder();
-		
+
 		scrollPane.setBounds(0, 0, 850, 630);
 		scrollPane.setBorder(new MatteBorder(0, 1, 0, 0, (Color) new Color(0, 0, 0)));
 		panelTables.setPreferredSize(new Dimension(PANEL_LEFT_WIDTH, PANEL_LEFT_HEIGHT));
@@ -266,18 +266,17 @@ public class MainView implements Viewable {
 		panelMainView.add(panelLeft, BorderLayout.WEST);
 		panelLeft.setLayout(new BorderLayout(0, 0));
 		panelLeft.add(scrollPane);
-		
+
 		lblNumOfTables.setFont(new Font("Dialog", Font.BOLD, 20));
 		lblNumOfTables.setBounds(12, 12, 92, 18);
 		panelTables.add(lblNumOfTables);
-		
+
 		btnTableUp.setBounds(189, 7, 44, 28);
 		panelTables.add(btnTableUp);
-		
+
 		btnTableDown.setBounds(245, 7, 44, 28);
 		panelTables.add(btnTableDown);
-		
-		
+
 		lblGetNumOfTables.setHorizontalAlignment(SwingConstants.TRAILING);
 		lblGetNumOfTables.setFont(new Font("Dialog", Font.BOLD, 20));
 		lblGetNumOfTables.setBounds(116, 12, 55, 18);
@@ -433,47 +432,47 @@ public class MainView implements Viewable {
 		clickBtnOrderCancelListener();
 
 		clickBtnPaymentListener();
-		
+
 		clickBtnTableUpDown();
 
 	}// end of addListener
 
 	private void clickBtnTableUpDown() {
-		btnTableUp.addActionListener(e->{
+		btnTableUp.addActionListener(e -> {
 			int num = Integer.parseInt(lblGetNumOfTables.getText());
-			if(num >= TABLE_NUMBER) {
+			if (num >= TABLE_NUMBER) {
 				return;
-			}else {
+			} else {
 				num += 1;
 				lblGetNumOfTables.setText(String.valueOf(num));
 			}
 			changeTables(num);
 		});
-		
-		btnTableDown.addActionListener(e->{
+
+		btnTableDown.addActionListener(e -> {
 			int num = Integer.parseInt(lblGetNumOfTables.getText());
-			if(num <=1) {
+			if (num <= 1) {
 				return;
-			}else {
+			} else {
 				num -= 1;
 				lblGetNumOfTables.setText(String.valueOf(num));
 			}
-			
+
 			changeTables(num);
 		});
-		
+
 	}
 
 	private void changeTables(int num) {
-		
-		for(int i = 0; i < num; ++i) {
+
+		for (int i = 0; i < num; ++i) {
 			panelTable[i].setVisible(true);
 		}
-		
-		for(int i = num; i<TABLE_NUMBER; ++i) {
+
+		for (int i = num; i < TABLE_NUMBER; ++i) {
 			panelTable[i].setVisible(false);
 		}
-		
+
 	}
 
 	private void clickBtnPaymentListener() {
@@ -488,8 +487,7 @@ public class MainView implements Viewable {
 		String cno = tfGetCno.getText();
 		int tableNum = Integer.valueOf(lblSelectedNum.getText());
 		String payment = lblTableCharge[tableNum - 1].getText();
-	
-		
+
 		customerDAO.updatePayment(cno, payment);
 
 		JOptionPane.showMessageDialog(btnPayment, "결제 완료", "Message", JOptionPane.INFORMATION_MESSAGE);
@@ -746,18 +744,18 @@ public class MainView implements Viewable {
 					JPanel panelParent = (JPanel) ta.getParent();
 					panelParent.setBorder(BorderFactory.createLineBorder(Color.red, 3));
 
-					Component[] components = panelParent.getComponents();
+					Component[] componentsChild = panelParent.getComponents();
 
-					for (Component component : components) {
+					for (Component component : componentsChild) {
 
 						if (component instanceof JPanel) {
 							JPanel panelChild = (JPanel) component;
 
-							Component[] panel = panelChild.getComponents();
+							Component[] componentsGrandChild = panelChild.getComponents();
 
-							for (Component panelLabel : panel) {
-								if (panelLabel instanceof JLabel) {
-									JLabel label = (JLabel) panelLabel;
+							for (Component LabelGrandChild : componentsGrandChild) {
+								if (LabelGrandChild instanceof JLabel) {
+									JLabel label = (JLabel) LabelGrandChild;
 									String labelName = label.getName();
 									if (labelName != null && labelName.equals("lblTableAdmission")) {
 										ifSelectEmptyTable(label);
@@ -782,8 +780,6 @@ public class MainView implements Viewable {
 	}// selectTableListener
 
 	private int index = 0;
-	
-
 
 	private void ifSelectTableAgain(JLabel lblGetCno) {
 		int adult;
