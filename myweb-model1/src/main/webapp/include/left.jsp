@@ -7,12 +7,13 @@
 		<ul class="collapsible">
 			<li>
 				<div class="collapsible-header waves-effect waves-teal">
-					<i class="material-icons">filter_drama</i>회원정보
+					<i class="material-icons">filter_drama</i>내정보
 				</div>
 				<div class="collapsible-body">
 					<ul>
-						<li>회원정보 수정</li>
-						<li>회원정보 삭제</li>
+						<li>비밀번호 변경</li>
+						<li>내정보 수정</li>
+						<li>회원탈퇴</li>
 					</ul>
 				</div>
 			</li>
@@ -22,8 +23,8 @@
 				</div>
 				<div class="collapsible-body">
 					<ul>
-						<li><a href="/board/boardList.jsp">일반 게시판</a></li>
-						<li>자료실 게시판</li>
+						<li><a href="/board/boardList.jsp">게시판</a></li>
+						<li>자료실</li>
 					</ul>
 				</div>
 			</li>

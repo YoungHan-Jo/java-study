@@ -1,13 +1,9 @@
-// init collapsible
-var elems = document.querySelectorAll('.collapsible');
-var instances = M.Collapsible.init(elems, {});
+//when document loaded
+$(document).ready(function() {
+	// sidenav init 컴포넌트 초기화
+	$('.sidenav').sidenav();
 
+	//collapsible init 컴포넌트 초기화
+	$('.collapsible').collapsible();
+});
 
-
-(function ($) {
-  $(function () {
-
-    $('.sidenav').sidenav();
-
-  }); // end of document ready
-})(jQuery); // end of jQuery name space
