@@ -9,11 +9,10 @@
 <body>
 <h1>exForm1.jsp 페이지</h1>
 <hr>
-<form action="exPro1.jsp" method="post">
-	이름 : <input type="text" name="name"><br>
-	나이 : <input type="text" name="age"><br>
-	<input type="submit" value="전송">
-</form>
-
+	<form action="exPro1.jsp" method="post">
+		이름: <input type="text" name="name"><br> 나이: <input
+			type="text" name="age"><br> <input type="submit"
+			value="전송">
+	</form>
 </body>
 </html>
