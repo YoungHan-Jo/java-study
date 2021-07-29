@@ -1,10 +1,8 @@
 package com.example.repository;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,71 +13,27 @@ import com.example.domain.MemberVO;
 public class MemberDAO {
 
 	// 싱글톤(singleton) 클래스 설계 : 객체만 한개만 공유해서 사용하기
-	private static MemberDAO instance = new MemberDAO();
+	private static MemberDAO instance;
 
 	public static MemberDAO getInstance() { // 외부에서 호출할때 이 메소드 사용
+		if(instance == null) {// 한 문장으로 instance 객체가 준비되지않을 때
+			instance = new MemberDAO();
+		}
 		return instance;
 	}
 
 	private MemberDAO() {
 	}
-
-// 오라클 DB접속
-//	private final String URL = "jdbc:oracle:thin:@localhost:1521:xe";
-//	private final String USER = "MYUSER";
-//	private final String PASSWD = "1234";
-
-	// MySQl DB접속
-	private final String URL = "jdbc:mysql://localhost:3306/jspdb?useUnicode=true&characterEncoding=utf8&allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Seoul";
-	private final String USER = "jspid";
-	private final String PASSWD = "jsppass";
-
-	private Connection getConnection() throws ClassNotFoundException, SQLException {// 호출하는곳에서 try 직접처리 하고 있기 때문에 던지기
-
-		Connection con = null;
-
-		Class.forName("com.mysql.cj.jdbc.Driver");
-
-		con = DriverManager.getConnection(URL, USER, PASSWD);
-
-		return con;
-	}
-
-	private void close(Connection con, PreparedStatement pstmt) {
-		close(con, pstmt, null);
-	}
-
-	private void close(Connection con, PreparedStatement pstmt, ResultSet rs) {
-		try { // catch 는
-			if (rs != null)
-				rs.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		try {
-			if (pstmt != null)
-				pstmt.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		try {
-			if (con != null)
-				con.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-	} // close()
+	
 
 //==============================================================insert()=====================================================
 	public void insert(MemberVO memberVO) {
-		
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
 		try {
-			con = getConnection();
+			con = JdbcUtils.getConnection();
 
 			String sql = "";
 			sql += "INSERT INTO member(id, passwd, name, birthday, gender, email, recv_email, reg_date) ";
@@ -101,10 +55,9 @@ public class MemberDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			close(con, pstmt);
+			JdbcUtils.close(con, pstmt);
 		}
 
-		
 	} // insert()
 
 	// ==========================================================deleteAll()============================================
@@ -114,7 +67,7 @@ public class MemberDAO {
 		PreparedStatement pstmt = null;
 
 		try {
-			con = getConnection();
+			con = JdbcUtils.getConnection();
 
 			String sql = "DELETE FROM member";
 
@@ -125,7 +78,7 @@ public class MemberDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			close(con, pstmt);
+			JdbcUtils.close(con, pstmt);
 		}
 
 	}
@@ -138,7 +91,7 @@ public class MemberDAO {
 		PreparedStatement pstmt = null;
 
 		try {
-			con = getConnection();
+			con = JdbcUtils.getConnection();
 
 			String sql = "";
 			sql += " DELETE FROM member ";
@@ -152,41 +105,40 @@ public class MemberDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			close(con, pstmt);
+			JdbcUtils.close(con, pstmt);
 		}
 
 	}// deleteById()
 
 	// =====================================================updateById()======================================================
 
-	public void updateById(String id, MemberVO memberVO) {
+	public void updateById(MemberVO memberVO) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
 		try {
-			con = getConnection();
+			con = JdbcUtils.getConnection();
 
 			StringBuilder sb = new StringBuilder(); // 쓰레기 객체(String으로 계속 만드는거) 방지.
 			sb.append(" UPDATE member ");
-			sb.append(" SET passwd = ?, name = ?, birthday = ?, gender = ?, email = ?, recv_email = ?, reg_date = ? ");
+			sb.append(" SET name = ?, birthday = ?, gender = ?, email = ?, recv_email = ?, reg_date = ? ");
 			sb.append(" WHERE id = ? ");
 
 			pstmt = con.prepareStatement(sb.toString());
-			pstmt.setString(1, memberVO.getPasswd());
-			pstmt.setString(2, memberVO.getName());
-			pstmt.setString(3, memberVO.getBirthday());
-			pstmt.setString(4, memberVO.getGender());
-			pstmt.setString(5, memberVO.getEmail());
-			pstmt.setString(6, memberVO.getRecvEmail());
-			pstmt.setTimestamp(7, memberVO.getRegDate());
-			pstmt.setString(8, id);
+			pstmt.setString(1, memberVO.getName());
+			pstmt.setString(2, memberVO.getBirthday());
+			pstmt.setString(3, memberVO.getGender());
+			pstmt.setString(4, memberVO.getEmail());
+			pstmt.setString(5, memberVO.getRecvEmail());
+			pstmt.setTimestamp(6, memberVO.getRegDate());
+			pstmt.setString(7, memberVO.getId());
 
 			pstmt.executeUpdate();
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			close(con, pstmt);
+			JdbcUtils.close(con, pstmt);
 		}
 	}// updateById()
 
@@ -200,7 +152,7 @@ public class MemberDAO {
 		ResultSet rs = null;
 
 		try {
-			con = getConnection();
+			con = JdbcUtils.getConnection();
 
 			String sql = "SELECT * FROM member WHERE id = ? ";
 
@@ -223,7 +175,7 @@ public class MemberDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			close(con, pstmt, rs);
+			JdbcUtils.close(con, pstmt, rs);
 		}
 
 		return memberVO;
@@ -239,7 +191,7 @@ public class MemberDAO {
 		ResultSet rs = null;
 
 		try {
-			con = getConnection();
+			con = JdbcUtils.getConnection();
 			String sql = "SELECT COUNT(*) AS cnt FROM member ";
 			pstmt = con.prepareStatement(sql);
 			rs = pstmt.executeQuery();
@@ -252,7 +204,7 @@ public class MemberDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			close(con, pstmt, rs);
+			JdbcUtils.close(con, pstmt, rs);
 		}
 
 		return count;
@@ -268,7 +220,7 @@ public class MemberDAO {
 		ResultSet rs = null;
 
 		try {
-			con = getConnection();
+			con = JdbcUtils.getConnection();
 			String sql = "";
 			sql += " SELECT COUNT(*) ";
 			sql += " FROM member ";
@@ -285,7 +237,7 @@ public class MemberDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			close(con, pstmt, rs);
+			JdbcUtils.close(con, pstmt, rs);
 		}
 		return count;
 	}
@@ -300,7 +252,7 @@ public class MemberDAO {
 		ResultSet rs = null;
 
 		try {
-			con = getConnection();
+			con = JdbcUtils.getConnection();
 			String sql = "SELECT * FROM member ORDER BY name ";
 			pstmt = con.prepareStatement(sql);
 			rs = pstmt.executeQuery();
@@ -322,7 +274,7 @@ public class MemberDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			close(con, pstmt, rs);
+			JdbcUtils.close(con, pstmt, rs);
 		}
 
 		return list;

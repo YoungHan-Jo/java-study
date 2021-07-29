@@ -21,7 +21,7 @@
 <script src="/resources/js/init.js"></script>
 
 <style>
-div.nav-content {
+/* div.nav-content {
 	display: none;
-}
+} */
 </style>

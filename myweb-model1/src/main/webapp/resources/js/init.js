@@ -5,5 +5,9 @@ $(document).ready(function() {
 
 	//collapsible init 컴포넌트 초기화
 	$('.collapsible').collapsible();
+	
+	// select init 셀렉트 초기화
+    $('select').formSelect();
+  
 });
 
