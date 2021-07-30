@@ -33,29 +33,37 @@
 							<h5>회원가입</h5>
 							<div class="divider" style="margin: 30px 0;"></div>
 
-							<form action="/member/joinPro.jsp" method="POST" id="frm">
+							<form action="/member/joinPro.jsp" method="POST" id="frm"
+								name="frm">
 								<div class="row">
-									<div class="input-field col s12">
+									<div class="input-field col s12 m9">
 										<i class="material-icons prefix">account_box</i> <input
-											id="id" type="text" name='id' class="validate"> <label
-											for="id">아이디</label> <span class="helper-text"
-											data-error="wrong" data-success="right">필수 정보입니다.</span>
+											id="id" type="text" name='id' data-length="20"> <label
+											for="id">아이디</label> <span class="helper-text"></span>
 									</div>
+
+									<div class="col s12 m3">
+										<button type="button"
+											class="waves-effect waves-light btn-small" id="btnIdDupChk">ID중복확인</button>
+									</div>
+
+
 								</div>
 
 								<div class="row">
 									<div class="input-field col s12">
 										<i class="material-icons prefix">lock</i> <input id="passwd"
-											type="password" name="passwd" class="validate"> <label
-											for="passwd">비밀번호</label> <span class="helper-text"
-											data-error="wrong" data-success="right">Helper text</span>
+											type="password" name="passwd" class="validate"
+											data-length="10"> <label for="passwd">비밀번호</label> <span
+											class="helper-text" data-error="비밀번호는 10글자까지만 가능합니다."
+											data-success="OK!">Helper text</span>
 									</div>
 
 									<div class="input-field col s12">
 										<i class="material-icons prefix">check</i> <input id="passwd2"
-											type="password" class="validate"> <label
+											type="password" data-length="10"> <label
 											for="passwd2">비밀번호 재확인</label> <span class="helper-text"
-											data-error="wrong" data-success="right">Helper text</span>
+											data-error="" data-success=""></span>
 									</div>
 								</div>
 
@@ -131,6 +139,44 @@
 	<!--  Scripts-->
 	<jsp:include page="/include/commonJs.jsp" />
 	<script>
+		// 입력 문자 개수 보이기 기능 활성화
+	    $('input#id, input#passwd, input#passwd2').characterCounter();
+	    
+		//아이디 중복확인 버튼
+		$('#btnIdDupChk').on('click',function(){
+			const id = $('#id').val();
+			
+			//id가 공백이면 '아이디입력하세요' 포커스 주기
+			if(id == ''){
+				alert('아이디를 입력하세요.');
+				$('#id').focus();
+				return;
+			}
+			
+			// id 중복확인 자식창 열기
+			open('/member/joinIdDupChk.jsp?id='+id,'idDupChk','width=500, height=400');
+			//open(주소, 창 이름, 부가설정)
+			
+		})
+		
+		$('#passwd2').on('focusout',function(){
+			const passwd = $('#passwd').val();
+			const passwd2 = $(this).val();
+			
+			if(passwd == passwd2){
+				var $span = $(this).closest('div.input-field').find('span.helper-text');
+				$span.html('비밀번호 일치함').css('color','green');
+				$(this).removeClass('invalid').addClass('valid');
+			}else{
+				var $span = $(this).closest('div.input-field').find('span.helper-text');
+				$span.html('비밀번호 일치하지하지 않음').css('color','red');
+				$(this).removeClass('valid').addClass('invalid');
+			}
+			
+		})
+	    
+	
+	
 		$('form#frm').on('submit',function(event){
 			
 			var id = $('#id').val();

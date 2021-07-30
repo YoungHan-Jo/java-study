@@ -1,5 +1,38 @@
+<%@page import="com.example.domain.Criteria"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="com.example.domain.BoardVO"%>
+<%@page import="java.util.List"%>
+<%@page import="com.example.repository.BoardDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+
+
+<%
+// 요청 페이지번호 가져오기
+String strPageNum = request.getParameter("pageNum");
+strPageNum = (strPageNum == null) ? "1" : strPageNum;
+int pageNum = Integer.parseInt(strPageNum);
+
+//요청 글 개수 가져오기
+String strAmount = request.getParameter("amount");
+strAmount = (strAmount == null) ? "10" : strAmount;
+int amount = Integer.parseInt(strAmount);
+
+//글 가져오기 조건객체 준비 후 값 설정
+Criteria cri = new Criteria(pageNum, amount);
+
+
+//DAO 객체준비
+BoardDAO boardDAO = BoardDAO.getInstance();
+
+// board 테이블에서 전체글 리스트로 가져오기
+List<BoardVO> list = boardDAO.getBoards(cri);
+
+// 전체 글 개수 가져오기
+
+int totalCount = boardDAO.getCountAll();
+%>
+
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -52,96 +85,37 @@ table tbody tr {
 										<th class="center-align">작성자</th>
 										<th class="center-align">작성일</th>
 										<th class="center-align">조회수</th>
-										<th class="center-align">추천</th>
 									</tr>
 								</thead>
 
 								<tbody>
+
+									<%
+									if (totalCount > 0) {
+
+										SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
+
+										for (BoardVO boardVO : list) {
+											String strRegDate = sdf.format(boardVO.getRegDate());
+									%>
 									<tr onclick="location.href='/board/boardContent.jsp'">
-										<td class="center-align">10</td>
-										<td>Lorem ipsum dolor sit amet, consectetur adipiscing
-											elit.</td>
-										<td class="center-align">Web Admin</td>
-										<td class="center-align">2021.05.11</td>
-										<td class="center-align">15000</td>
-										<td class="center-align">264</td>
+										<td class="center-align"><%=boardVO.getNum()%></td>
+										<td><%=boardVO.getSubject()%></td>
+										<td class="center-align"><%=boardVO.getMid()%></td>
+										<td class="center-align"><%=strRegDate%></td>
+										<td class="center-align"><%=boardVO.getReadcount()%></td>
 									</tr>
+									<%
+									}
+
+									} else { // 글이 없을 때
+									%>
 									<tr>
-										<td class="center-align">9</td>
-										<td>Vivamus viverra porttitor commodo.</td>
-										<td class="center-align">Web Admin</td>
-										<td class="center-align">2021.05.11</td>
-										<td class="center-align">150</td>
-										<td class="center-align">22</td>
+										<td class="center-align" colspan="5">게시글이 없습니다.</td>
 									</tr>
-									<tr>
-										<td class="center-align">8</td>
-										<td>In pulvinar fermentum erat a tincidunt. Nulla id
-											magna sit ...</td>
-										<td class="center-align">Sec Admin</td>
-										<td class="center-align">2021.05.11</td>
-										<td class="center-align">15000</td>
-										<td class="center-align">99</td>
-									</tr>
-									<tr>
-										<td class="center-align">7</td>
-										<td>Sed diam velit, dictum a iaculis sed, tempor sed mi.</td>
-										<td class="center-align">Host Admin</td>
-										<td class="center-align">2021.05.11</td>
-										<td class="center-align">150</td>
-										<td class="center-align">11</td>
-									</tr>
-									<tr>
-										<td class="center-align">6</td>
-										<td>Nullam ac dignissim diam. Mauris vitae magna ipsum,</td>
-										<td class="center-align">Host Admin</td>
-										<td class="center-align">2021.05.11</td>
-										<td class="center-align">15</td>
-										<td class="center-align">3</td>
-									</tr>
-									<tr>
-										<td class="center-align">5</td>
-										<td>eget vehicula metus. In euismod sollicitudin lorem
-											eu.</td>
-										<td class="center-align">Host Admin</td>
-										<td class="center-align">2021.05.11</td>
-										<td class="center-align">15000</td>
-										<td class="center-align">334</td>
-									</tr>
-									<tr>
-										<td class="center-align">4</td>
-										<td>Lorem ipsum dolor sit amet, consectetur adipiscing
-											elit.</td>
-										<td class="center-align">Sec Admin</td>
-										<td class="center-align">2021.05.11</td>
-										<td class="center-align">1500</td>
-										<td class="center-align">58</td>
-									</tr>
-									<tr>
-										<td class="center-align">3</td>
-										<td>Vivamus viverra porttitor commodo.</td>
-										<td class="center-align">Sec Admin</td>
-										<td class="center-align">2021.05.11</td>
-										<td class="center-align">15</td>
-										<td class="center-align">2</td>
-									</tr>
-									<tr>
-										<td class="center-align">2</td>
-										<td>In pulvinar fermentum erat a tincidunt. Nulla id
-											magna sit ...</td>
-										<td class="center-align">Web Admin</td>
-										<td class="center-align">2021.05.11</td>
-										<td class="center-align">15</td>
-										<td class="center-align">4</td>
-									</tr>
-									<tr>
-										<td class="center-align">1</td>
-										<td>Nullam ac dignissim diam. Mauris vitae magna ipsum,</td>
-										<td class="center-align">Web Admin</td>
-										<td class="center-align">2021.05.11</td>
-										<td class="center-align">150</td>
-										<td class="center-align">27</td>
-									</tr>
+									<%
+									}
+									%>
 								</tbody>
 							</table>
 
@@ -191,7 +165,6 @@ table tbody tr {
 								</div>
 							</form>
 
-
 						</div>
 					</div>
 				</div>
@@ -206,30 +179,10 @@ table tbody tr {
 	<jsp:include page="/include/bottom.jsp" />
 	<!-- end of footer area -->
 
-
 	<!--  Scripts-->
 	<jsp:include page="/include/commonJs.jsp" />
 	<script>
-		const sideNav = document.querySelector('.sidenav');
-		M.Sidenav.init(sideNav, {});
-
-		const ac = document.querySelector('.autocomplete');
-		M.Autocomplete.init(ac, {
-			data : {
-				'파리' : null,
-				'베네치아' : null,
-				'암스테르담' : null,
-				'부다페스트' : null,
-				'프랑크푸르트' : null,
-				'비엔나' : null,
-				'드라스덴' : null,
-				'프라하' : null,
-				'로마' : null
-			}
-		});
-
-		var selects = document.querySelectorAll('select');
-		M.FormSelect.init(selects, {});
+		
 	</script>
 </body>
 
