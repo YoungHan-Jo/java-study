@@ -32,9 +32,16 @@ MemberVO memberVO = memberDAO.getMemberById(id);
 <body>
 	<h1>메인화면</h1>
 	<hr>
-	
 	<%=memberVO.getId() %>님이 로그인 하였습니다.<br>
-	
+	<input type="button" value="로그아웃" id="logout" onclick="location.href='logout.jsp'"><br>
+	<a href="info.jsp">회원정보 조회</a><br>
+	<a href="update.jsp">회원정보 수정</a><br>
+	<a href="delete.jsp">회원정보 삭제</a><br>
+	<% 
+	if(id.equals("admin")){
+	%><a href="memberList.jsp">회원목록</a><br><%	
+	}
+	%>
 	
 </body>
 </html>

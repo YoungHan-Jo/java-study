@@ -22,6 +22,10 @@
 	<input type="submit" value="회원가입">
 	<input type="reset" value="초기화"> <!-- 감싸고 있는 폼을 전부 리셋 -->		
 	
+	<h3>
+		<a href='main.jsp'>메인으로</a>
+	</h3>
+	
 	</form>
 </body>
 </html>
