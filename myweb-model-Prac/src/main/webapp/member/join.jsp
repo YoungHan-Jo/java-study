@@ -31,11 +31,11 @@
 							<h5>회원가입</h5>
 							<div class="divider" style="margin: 30px 0;"></div>
 
-							<form action="" method="POST">
+							<form action="/myweb/member/joinPro.jsp" method="POST">
 								<div class="row">
 									<div class="input-field col s12">
 										<i class="material-icons prefix">account_box</i> <input
-											id="id" type="text" class="validate"> <label for="id">아이디</label>
+											id="id" type="text" name="id" class="validate"> <label for="id">아이디</label>
 										<span class="helper-text" data-error="wrong"
 											data-success="right">필수 정보입니다.</span>
 									</div>
@@ -44,7 +44,7 @@
 								<div class="row">
 									<div class="input-field col s12">
 										<i class="material-icons prefix">lock</i> <input id="passwd"
-											type="password" class="validate"> <label for="passwd">비밀번호</label>
+											type="password" name="passwd" class="validate"> <label for="passwd">비밀번호</label>
 										<span class="helper-text" data-error="wrong"
 											data-success="right">Helper text</span>
 									</div>
@@ -60,7 +60,7 @@
 								<div class="row">
 									<div class="input-field col s12">
 										<i class="material-icons prefix">person</i> <input id="name"
-											type="text" class="validate"> <label for="name">이름</label>
+											type="text" name="name" class="validate"> <label for="name">이름</label>
 									</div>
 								</div>
 
@@ -85,7 +85,7 @@
 								<div class="row">
 									<div class="input-field col s12">
 										<i class="material-icons prefix">mail</i> <input id="email"
-											type="email" class="validate"> <label for="email">본인
+											type="email" name="email" class="validate"> <label for="email">본인
 											확인 이메일</label>
 									</div>
 								</div>

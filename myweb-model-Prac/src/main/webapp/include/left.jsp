@@ -23,7 +23,7 @@
 				</div>
 				<div class="collapsible-body">
 					<ul>
-						<li><a href="/board/boardList.jsp">게시판</a></li>
+						<li><a href="/myweb/board/boardList.jsp">게시판</a></li>
 						<li>자료실</li>
 					</ul>
 				</div>

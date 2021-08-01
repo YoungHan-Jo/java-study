@@ -5,8 +5,18 @@
 	<div class="nav-wrapper container">
 		<a id="logo-container" href="/myweb/index.jsp" class="brand-logo">Logo</a>
 		<ul class="right hide-on-med-and-down">
+		
+			<!-- 로그아웃 상태 -->
 			<li><a href="/myweb/member/login.jsp">로그인</a></li>
 			<li><a href="/myweb/member/join.jsp">회원가입</a></li>
+			
+			<!-- 로그인 상태 -->
+			<li><a href="#">로그아웃</a></li>
+			<li><a href="#">내정보</a></li>
+			
+			<!-- 로그인 관계없이 보이는 메뉴 -->
+			<li><a href="#">게시판</a></li>
+			<li><a href="#">채팅</a></li>
 		</ul>
 
 		<ul id="nav-mobile" class="sidenav">
