@@ -1,13 +1,7 @@
-// init collapsible
-var elems = document.querySelectorAll('.collapsible');
-var instances = M.Collapsible.init(elems, {});
+$(document).ready(function() {
 
+	$('.sidenav').sidenav();
 
-
-(function ($) {
-  $(function () {
-
-    $('.sidenav').sidenav();
-
-  }); // end of document ready
-})(jQuery); // end of jQuery name space
+	// init collapsible
+	$('.collapsible').collapsible();
+});

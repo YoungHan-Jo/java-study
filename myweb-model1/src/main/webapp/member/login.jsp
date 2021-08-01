@@ -37,15 +37,16 @@
 								<div class="row">
 									<div class="input-field col s12">
 										<i class="material-icons prefix">account_circle</i> <input
-											id="id" type="text" name="id" class="validate"> <label for="id">아이디</label>
+											id="id" type="text" name="id" class="validate"> <label
+											for="id">아이디</label>
 									</div>
 								</div>
 
 								<div class="row">
 									<div class="input-field col s12">
 										<i class="material-icons prefix">password</i> <input
-											id="passwd" type="password" name="passwd" class="validate"> <label
-											for="passwd">비밀번호</label>
+											id="passwd" type="password" name="passwd" class="validate">
+										<label for="passwd">비밀번호</label>
 									</div>
 								</div>
 
