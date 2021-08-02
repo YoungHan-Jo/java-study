@@ -7,9 +7,8 @@ import lombok.ToString;
 @ToString
 public class Criteria {
 
-	private Integer pageNum; // 페이지번호
-	private Integer amount; // 한 페이지당 글 개수
-	private Integer startRow; // MySQL LIMIT절을 위한 시작 행 번호
+	private int pageNum; // 페이지번호
+	private int amount; // 한 페이지당 글 개수
 
 	public Criteria() {
 		this(1,10);
@@ -19,10 +18,5 @@ public class Criteria {
 		super();
 		this.pageNum = pageNum;
 		this.amount = amount;
-		
-		startRow = (pageNum-1)*amount;
-	}
-	
-	
-	
+	}	
 }

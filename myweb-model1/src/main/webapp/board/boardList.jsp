@@ -1,3 +1,4 @@
+<%@page import="com.example.domain.PageDTO"%>
 <%@page import="com.example.domain.Criteria"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="com.example.domain.BoardVO"%>
@@ -6,21 +7,26 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
+<%
+String id = (String) session.getAttribute("id");
+%>
+
 
 <%
+// 글목록 가져오기 조건객체 준비
+Criteria cri = new Criteria(); // 기본값 1페이지 10개
+
 // 요청 페이지번호 가져오기
 String strPageNum = request.getParameter("pageNum");
-strPageNum = (strPageNum == null) ? "1" : strPageNum;
-int pageNum = Integer.parseInt(strPageNum);
+if (strPageNum != null) { // 요청페이지번호 있으면 cir에 값 설정
+	cri.setPageNum(Integer.parseInt(strPageNum));
+}
 
 //요청 글 개수 가져오기
 String strAmount = request.getParameter("amount");
-strAmount = (strAmount == null) ? "10" : strAmount;
-int amount = Integer.parseInt(strAmount);
-
-//글 가져오기 조건객체 준비 후 값 설정
-Criteria cri = new Criteria(pageNum, amount);
-
+if (strAmount != null) {
+	cri.setAmount(Integer.parseInt(strAmount));
+}
 
 //DAO 객체준비
 BoardDAO boardDAO = BoardDAO.getInstance();
@@ -29,8 +35,10 @@ BoardDAO boardDAO = BoardDAO.getInstance();
 List<BoardVO> list = boardDAO.getBoards(cri);
 
 // 전체 글 개수 가져오기
-
 int totalCount = boardDAO.getCountAll();
+
+// 페이지블록 정보 객체준비. 필요한 정보를 생성자로 전달.
+PageDTO pageDTO = new PageDTO(cri, totalCount);
 %>
 
 <!DOCTYPE html>
@@ -70,12 +78,20 @@ table tbody tr {
 							<h5>일반 게시판</h5>
 							<div class="divider" style="margin: 30px 0;"></div>
 
+							<%
+							if (id != null) {
+							%>
 							<div class="row">
 								<a href="/board/boardWrite.jsp"
 									class="btn waves-effect waves-light right"> <i
 									class="material-icons left">create</i>새글쓰기
 								</a>
 							</div>
+							<%
+							}
+							%>
+
+
 
 							<table class="highlight responsive-table" id="board">
 								<thead>
@@ -91,14 +107,15 @@ table tbody tr {
 								<tbody>
 
 									<%
-									if (totalCount > 0) {
+									if (pageDTO.getTotalCount() > 0) {
 
 										SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
 
 										for (BoardVO boardVO : list) {
 											String strRegDate = sdf.format(boardVO.getRegDate());
 									%>
-									<tr onclick="location.href='/board/boardContent.jsp'">
+									<tr
+										onclick="location.href='/board/boardContent.jsp?num=<%=boardVO.getNum()%>&pageNum=<%=cri.getPageNum()%>'">
 										<td class="center-align"><%=boardVO.getNum()%></td>
 										<td><%=boardVO.getSubject()%></td>
 										<td class="center-align"><%=boardVO.getMid()%></td>
@@ -121,15 +138,40 @@ table tbody tr {
 
 							<br>
 							<ul class="pagination center">
-								<li class="disabled"><a href="#board"><i
+								<%
+								// 이전 버튼
+								//불리언은 is변수명 가능
+								if (pageDTO.isPrev()) {
+								%>
+								<li class="waves-effect"><a
+									href="/board/boardList.jsp?pageNum=<%=pageDTO.getStartPage() - 1%>#board"><i
 										class="material-icons">chevron_left</i></a></li>
-								<li class="active"><a href="#board">1</a></li>
-								<li class="waves-effect"><a href="#board">2</a></li>
-								<li class="waves-effect"><a href="#board">3</a></li>
-								<li class="waves-effect"><a href="#board">4</a></li>
-								<li class="waves-effect"><a href="#board">5</a></li>
-								<li class="waves-effect"><a href="#board"><i
+								<%
+								}
+								%>
+								<%
+								//페이지블록 내 최대 5개씩 출력
+								for (int i = pageDTO.getStartPage(); i <= pageDTO.getEndPage(); ++i) {
+								%>
+								<li
+									class="waves-effect <%=pageDTO.getCri().getPageNum() == i ? "active" : ""%>"><a
+									href="/board/boardList.jsp?pageNum=<%=i%>#board"><%=i%></a></li>
+								<%
+								}
+								%>
+								<%
+								// 다음 버튼
+								//불리언은 is변수명 가능
+								if (pageDTO.isNext()) {
+								%>
+								<li class="waves-effect"><a
+									href="/board/boardList.jsp?pageNum=<%=pageDTO.getEndPage() + 1%>#board"><i
 										class="material-icons">chevron_right</i></a></li>
+								<%
+								}
+								%>
+
+
 							</ul>
 
 							<div class="divider" style="margin: 30px 0;"></div>

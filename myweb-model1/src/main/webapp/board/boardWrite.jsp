@@ -1,5 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+
+
+<%
+String id = (String) session.getAttribute("id");
+%>
+
+
+
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -33,42 +41,46 @@
 							<h5>게시판 새글쓰기</h5>
 							<div class="divider" style="margin: 30px 0;"></div>
 
-							<form action="" method="POST">
+							<form action="" method="POST" enctype="multipart/form-data">
 								<div class="row">
 									<div class="input-field col s12">
 										<i class="material-icons prefix">account_box</i> <input
-											id="id" type="text" class="validate"> <label for="id">아이디</label>
-										<span class="helper-text" data-error="wrong"
-											data-success="right">필수 정보입니다.</span>
+											id="id" type="text" name="id" value="<%=id%>" readonly>
+										<label for="id">아이디</label>
 									</div>
 								</div>
 
 								<div class="row">
 									<div class="input-field">
 										<i class="material-icons prefix">subtitles</i> <input
-											type="text" id="title" class="validate"> <label
-											for="title">제목</label>
+											type="text" id="title" class="validate" name="subject">
+										<label for="title">제목</label>
 									</div>
 								</div>
 								<div class="row">
 									<div class="input-field">
 										<i class="material-icons prefix">subject</i>
-										<textarea id="textarea1" class="materialize-textarea"></textarea>
+										<textarea id="textarea1" class="materialize-textarea"
+											name="content"></textarea>
 										<label for="textarea1">내용</label>
 									</div>
 								</div>
 
 								<div class="row">
-									<div class="file-field input-field">
-										<div class="btn">
-											<span><i class="material-icons left">attach_file</i>첨부
-												파일</span> <input type="file" multiple>
-										</div>
-										<div class="file-path-wrapper">
-											<input type="text" class="file-path validate">
-										</div>
-										<span class="helper-text">첨부파일로 업로드 가능한 용량은 최대 50MB
-											입니다.</span>
+									<div class="col s12">
+										<button type="button"
+											class="btn-small waves-effect waves-light" id="btnAddFile">파일
+											추가</button>
+									</div>
+								</div>
+
+
+								<div class="row" id="fileBox">
+									<div class="col s12">
+										<input type="file" name="file0">
+										<button class="waves-effect waves-light btn-small">
+											<i class="material-icons">clear</i>
+										</button>
 									</div>
 								</div>
 
@@ -107,14 +119,21 @@
   <!--  Scripts-->
 	<jsp:include page="/include/commonJs.jsp" />
 	<script>
-		const sideNav = document.querySelector('.sidenav');
-		M.Sidenav.init(sideNav, {});
-
-		var textNeedCount = document.querySelectorAll('#member_id, #password');
-		M.CharacterCounter.init(textNeedCount);
-
-		var selects = document.querySelectorAll('select');
-		M.FormSelect.init(selects, {});
+	
+	var fileIndex = 1;
+		
+	$('#btnAddFile').on('click',function(){
+		
+		var str = `<div class="col s12">
+						<input type="file" name="file\${fileIndex}"> 
+						<button class="waves-effect waves-light btn-small"><i class="material-icons">clear</i></button>
+					</div>`;
+					
+		$('#fileBox').append(str);
+		
+		fileIndex++;
+	
+	})
 	</script>
 </body>
 

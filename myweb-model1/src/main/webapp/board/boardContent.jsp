@@ -1,5 +1,31 @@
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="com.example.domain.BoardVO"%>
+<%@page import="com.example.repository.BoardDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+
+<%
+String id = (String) session.getAttribute("id");
+%>
+<%
+// 상세보기 글 번호 파라미터값 가져오기
+//location.href='/board/boardContent.jsp?num=<%=boardVO.getNum()
+int num = Integer.parseInt(request.getParameter("num"));
+
+String pageNum = request.getParameter("pageNum");
+
+//DAO객체 준비
+BoardDAO boardDAO = BoardDAO.getInstance();
+
+//조회수 1증가
+boardDAO.updateReadcount(num);
+
+// 상세보기 할 글 한개 가져오기
+BoardVO boardVO = boardDAO.getBoardByNum(num);
+
+//날짜정보
+SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
+%>
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -40,16 +66,15 @@ time.comment-date {
 							<table class="striped" id="boardList">
 								<tr>
 									<th class="center-align">제목</th>
-									<td colspan="5">Lorem ipsum dolor sit amet, consectetur
-										adipiscing elit.</td>
+									<td colspan="5"><%=boardVO.getSubject()%></td>
 								</tr>
 								<tr>
 									<th class="center-align">작성자</th>
-									<td>Web Admin</td>
+									<td><%=boardVO.getMid()%></td>
 									<th class="center-align">작성일</th>
-									<td>2021.05.11</td>
+									<td><%=sdf.format(boardVO.getRegDate())%></td>
 									<th class="center-align">조회수</th>
-									<td>15000</td>
+									<td><%=boardVO.getReadcount()%></td>
 								</tr>
 								<tr>
 									<th class="center-align">추천</th>
@@ -61,13 +86,9 @@ time.comment-date {
 								</tr>
 								<tr>
 									<th class="center-align">내용</th>
-									<td colspan="5">Lorem ipsum dolor sit amet, consectetur
-										adipiscing elit.<br> Lorem ipsum dolor sit amet,
-										consectetur adipiscing elit.<br> Lorem ipsum dolor sit
-										amet, consectetur adipiscing elit.<br> Lorem ipsum dolor
-										sit amet, consectetur adipiscing elit.<br> Lorem ipsum
-										dolor sit amet, consectetur adipiscing elit.
-									</td>
+									<td colspan="5"><pre>
+									<%=boardVO.getContent()%>
+									</pre></td>
 								</tr>
 								<tr>
 									<th class="center-align">첨부파일</th>
@@ -79,14 +100,27 @@ time.comment-date {
 							<div class="section">
 								<div class="row">
 									<div class="col s12 right-align">
+
+										<%
+										if (id != null) {
+										%>
+
 										<a class="btn waves-effect waves-light"> <i
 											class="material-icons left">edit</i>글수정
 										</a> <a class="btn waves-effect waves-light"> <i
 											class="material-icons left">delete</i>글삭제
 										</a> <a class="btn waves-effect waves-light"> <i
 											class="material-icons left">reply</i>답글
-										</a> <a class="btn waves-effect waves-light"
-											href="/board/boardList.jsp"> <i
+										</a>
+
+										<%
+										}
+										%>
+
+
+
+										<a class="btn waves-effect waves-light"
+											href="/board/boardList.jsp?pageNum=<%=pageNum%>"> <i
 											class="material-icons left">list</i>글목록
 										</a>
 									</div>
@@ -252,30 +286,7 @@ time.comment-date {
 	<!-- end of footer area -->
 
 
-	<!--  Scripts-->
-	<jsp:include page="/include/commonJs.jsp" />
-	<script>
-		const sideNav = document.querySelector('.sidenav');
-		M.Sidenav.init(sideNav, {});
 
-		const ac = document.querySelector('.autocomplete');
-		M.Autocomplete.init(ac, {
-			data : {
-				'파리' : null,
-				'베네치아' : null,
-				'암스테르담' : null,
-				'부다페스트' : null,
-				'프랑크푸르트' : null,
-				'비엔나' : null,
-				'드라스덴' : null,
-				'프라하' : null,
-				'로마' : null
-			}
-		});
-
-		var selects = document.querySelectorAll('select');
-		M.FormSelect.init(selects, {});
-	</script>
 </body>
 
 </html>

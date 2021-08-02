@@ -154,7 +154,7 @@ public class BoardDAO {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		
+
 		try {
 			con = JdbcUtils.getConnection();
 			
@@ -200,6 +200,8 @@ public class BoardDAO {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
+		int startRow = (cri.getPageNum()-1)*cri.getAmount();
+		
 		try {
 			con = JdbcUtils.getConnection();
 			
@@ -210,7 +212,7 @@ public class BoardDAO {
 			sql +=" LIMIT ?, ? ";
 			
 			pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, cri.getStartRow());
+			pstmt.setInt(1, startRow);
 			pstmt.setInt(2, cri.getAmount());
 			
 			rs = pstmt.executeQuery();
@@ -240,6 +242,75 @@ public class BoardDAO {
 		}
 
 		return list;
+	} // getboard
+	
+	public BoardVO getBoardByNum(int num){
+		BoardVO boardVO = null;
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+				
+		try {
+			con = JdbcUtils.getConnection();
+			
+			String sql = "";
+			sql +="SELECT * ";
+			sql +=" FROM board ";
+			sql +=" WHERE num = ? ";
+	
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, num);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				boardVO = new BoardVO();
+				boardVO.setNum(rs.getInt("num"));
+				boardVO.setMid(rs.getString("mid"));
+				boardVO.setSubject(rs.getString("subject"));
+				boardVO.setContent(rs.getString("content"));
+				boardVO.setReadcount(rs.getInt("readcount"));
+				boardVO.setRegDate(rs.getTimestamp("reg_date"));
+				boardVO.setIpaddr(rs.getString("ipaddr"));
+				boardVO.setReRef(rs.getInt("re_ref"));
+				boardVO.setReLev(rs.getInt("re_lev"));
+				boardVO.setReSeq(rs.getInt("re_seq"));
+			}// if
+	
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			JdbcUtils.close(con, pstmt, rs);
+		}
+
+		return boardVO;
+	} // getboardByNum
+	
+	//조회수 1증가
+	public void updateReadcount(int num) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			con = JdbcUtils.getConnection();
+			
+			String sql = "";
+			sql += "UPDATE board ";
+			sql += " SET readcount = readcount+1 ";
+			sql += " WHERE num = ? ";
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, num);
+			
+			pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			JdbcUtils.close(con,pstmt);
+		}
 	}
 	
 	
