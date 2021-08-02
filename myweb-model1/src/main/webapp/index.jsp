@@ -13,7 +13,6 @@
 	<jsp:include page="/include/top.jsp" />
 	<!-- end of Navbar area -->
 
-
 	<div class="section no-pad-bot" id="index-banner">
 		<div class="container">
 			<br> <br>
