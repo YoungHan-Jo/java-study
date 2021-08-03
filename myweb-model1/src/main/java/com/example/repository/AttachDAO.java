@@ -56,7 +56,7 @@ public class AttachDAO {
 			con = JdbcUtils.getConnection();
 
 			String sql = "";
-			sql += " INSERT INTO board (uuid, uploadpath, filename, filetype, bno) ";
+			sql += " INSERT INTO attach (uuid, uploadpath, filename, filetype, bno) ";
 			sql += " VALUES (?,?,?,?,?) ";
 
 			pstmt = con.prepareStatement(sql);

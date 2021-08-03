@@ -82,7 +82,8 @@ table tbody tr {
 							if (id != null) {
 							%>
 							<div class="row">
-								<a href="/board/boardWrite.jsp"
+								<a
+									href="/board/boardWrite.jsp?pageNum=<%=pageDTO.getCri().getPageNum()%>"
 									class="btn waves-effect waves-light right"> <i
 									class="material-icons left">create</i>새글쓰기
 								</a>
@@ -90,8 +91,6 @@ table tbody tr {
 							<%
 							}
 							%>
-
-
 
 							<table class="highlight responsive-table" id="board">
 								<thead>
