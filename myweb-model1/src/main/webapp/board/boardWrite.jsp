@@ -46,9 +46,11 @@ String pageNum = request.getParameter("pageNum");
 							<div class="divider" style="margin: 30px 0;"></div>
 
 							<form action="/board/boardWritePro.jsp" method="POST" enctype="multipart/form-data">
+							
 								<!-- multipart/form-data 로 하면 뭉쳐져서 넘어가기 때문에
 									input:hidden 속성으로 name/ value 로 쿠키 넘기듯이 넘기기 -->
 								<input type="hidden" name="pageNum" value="<%=pageNum %>">
+								
 								<div class="row">
 									<div class="input-field col s12">
 										<i class="material-icons prefix">account_box</i> <input
@@ -151,19 +153,10 @@ String pageNum = request.getParameter("pageNum");
 	// 동적 이벤트 연결 (이벤트 등록을 이미있는 요소에게 위임하는 방식)
 	$('#fileBox').on('click','button.file-delete',function(){
 		$(this).closest('div').remove();
-		
-		
+
 	})
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	</script>
 </body>
 

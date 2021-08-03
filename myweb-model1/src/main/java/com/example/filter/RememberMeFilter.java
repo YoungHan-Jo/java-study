@@ -26,7 +26,7 @@ public class RememberMeFilter implements Filter {
 		// 세션에 이미 로그인 아이디가 있는지 확인(로그인 되어있는지)
 		String id = (String) session.getAttribute("id");
 		// 세션에 로그인아이디가 없으면 쿠키에서 아이디 찾아서 세션에 저장 (로그인 처리)
-		if (id != null) {
+		if (id == null) {
 			// 쿠키 배열객체 가져오기
 			Cookie[] cookies = req.getCookies();
 
@@ -42,7 +42,7 @@ public class RememberMeFilter implements Filter {
 				}//for
 			}
 
-		} // if (id != null)
+		} // if
 
 		// 다음 필터를 호출함 ( 그 다음 필터로 넘어감)
 		chain.doFilter(request, response);

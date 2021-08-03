@@ -110,14 +110,14 @@ while (enu.hasMoreElements()) { // 파일이 있으면
 	attachVO.setUuid(uuid.toString()); // 기본키 uuid 저장
 
 	File file = new File(uploadPath, filename); // 년월일 경로에 실제 파일명의 파일객체
-	
+
 	boolean isImage = checkImageType(file); // 이미지 파일 여부 확인
 
 	attachVO.setFiletype((isImage == true) ? "I" : "O");
-	
+
 	//이미지 파일이면 썸네일 이미지 생성하기
-	if(isImage == true){
-		File outFile = new File(uploadPath,"s_"+filename); // 출력할 썸네일 파일정보
+	if (isImage == true) {
+		File outFile = new File(uploadPath, "s_" + filename); // 출력할 썸네일 파일정보
 		// (읽을 파일, 출력할 썸네일 파일, 넓이,높이)
 		Thumbnailator.createThumbnail(file, outFile, 100, 100); // 썸네일 생성
 	}
@@ -157,7 +157,7 @@ boardDAO.addBoard(boardVO);
 String pageNum = multi.getParameter("pageNum");
 
 //글 상세보기 화면으로 이동// 글번호 페이지번호 같이 넣어서 보내기
-response.sendRedirect("/board/boardContent.jsp?num="+ boardVO.getNum() +"&pageNum=" + pageNum);
+response.sendRedirect("/board/boardContent.jsp?num=" + boardVO.getNum() + "&pageNum=" + pageNum);
 %>
 
 
