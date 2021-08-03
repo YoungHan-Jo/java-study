@@ -29,7 +29,7 @@ if (memberVO != null) { // 아이디 일치
 			Cookie cookie = new Cookie("loginId", id);
 		
 			//쿠키 유효기간 늘리기/ 기본값 0 이라서 바로없어짐
-			cookie.setMaxAge(60 * 10);
+			cookie.setMaxAge(60 * 60 * 24 * 7);
 		
 			//쿠키를 사용할 경로 설정
 			cookie.setPath("/"); // root 로 설정 프로젝트 모든 경로에서 쿠키 받도록 설정

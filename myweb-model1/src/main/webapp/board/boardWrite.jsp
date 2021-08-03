@@ -41,7 +41,7 @@ String id = (String) session.getAttribute("id");
 							<h5>게시판 새글쓰기</h5>
 							<div class="divider" style="margin: 30px 0;"></div>
 
-							<form action="" method="POST" enctype="multipart/form-data">
+							<form action="/board/boardWritePro.jsp" method="POST" enctype="multipart/form-data">
 								<div class="row">
 									<div class="input-field col s12">
 										<i class="material-icons prefix">account_box</i> <input
@@ -121,19 +121,42 @@ String id = (String) session.getAttribute("id");
 	<script>
 	
 	var fileIndex = 1;
+	var fileCount = 1;
 		
 	$('#btnAddFile').on('click',function(){
+		if(fileCount >= 5){
+			alert('첨부파일은 최대5개까지 가능합니다.');
+			return;
+		}
 		
 		var str = `<div class="col s12">
 						<input type="file" name="file\${fileIndex}"> 
-						<button class="waves-effect waves-light btn-small"><i class="material-icons">clear</i></button>
+						<button class="waves-effect waves-light btn-small file-delete"><i class="material-icons">clear</i></button>
 					</div>`;
 					
 		$('#fileBox').append(str);
 		
 		fileIndex++;
+		fileCount++;
 	
 	})
+	
+	// 동적 이벤트 연결 (이벤트 등록을 이미있는 요소에게 위임하는 방식)
+	$('#fileBox').on('click','button.file-delete',function(){
+		$(this).closest('div').remove();
+		
+		
+	})
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	</script>
 </body>
 
