@@ -1,3 +1,6 @@
+<%@page import="com.example.domain.AttachVO"%>
+<%@page import="java.util.List"%>
+<%@page import="com.example.repository.AttachDAO"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="com.example.domain.BoardVO"%>
 <%@page import="com.example.repository.BoardDAO"%>
@@ -16,6 +19,7 @@ String pageNum = request.getParameter("pageNum");
 
 //DAO객체 준비
 BoardDAO boardDAO = BoardDAO.getInstance();
+AttachDAO attachDAO = AttachDAO.getInstance();
 
 //조회수 1증가
 boardDAO.updateReadcount(num);
@@ -23,8 +27,13 @@ boardDAO.updateReadcount(num);
 // 상세보기 할 글 한개 가져오기
 BoardVO boardVO = boardDAO.getBoardByNum(num);
 
-//날짜정보
+// 글 작성 날짜형식
 SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
+
+// 첨부파일 정보리스트 가져오기
+List<AttachVO> attachList = attachDAO.getAttachesByBno(num);
+
+
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -92,7 +101,52 @@ time.comment-date {
 								</tr>
 								<tr>
 									<th class="center-align">첨부파일</th>
-									<td colspan="5">첨부파일1 첨부파일2 첨부파일3</td>
+									<td colspan="5">
+										<%
+										if(attachList.size() > 0){ // 첨부 파일이 있으면
+											%>
+											<ul>
+											<%
+											for(AttachVO attach : attachList){
+												if(attach.getFiletype().equals("O")){ // 일반 파일
+													//썸네일 이미지 경로
+													String fileCallPath = attach.getUploadpath() + "/" + attach.getFilename();
+													%>
+													<li>
+														<a href="/board/download.jsp?fileName=<%=fileCallPath %>">
+															<i class="material-icons">file_present</i>
+															<%=attach.getFilename() %>
+														</a>
+													</li>
+													<%	
+												}else if(attach.getFiletype().equals("I")) { // 이미지파일
+					                   				// 썸네일 이미지 경로
+					                   				String fileCallPath = attach.getUploadpath() + "/s_" + attach.getFilename();
+					                   				// 원본 이미지 경로
+					                   				String fileCallPathOrigin = attach.getUploadpath() + "/" + attach.getFilename();
+					                   				%>
+					                       			<li>
+					                       				<a href="/board/download.jsp?fileName=<%=fileCallPathOrigin %>">
+					                       					<img src="/board/display.jsp?fileName=<%=fileCallPath %>">
+					                       				</a>
+					                       			</li>
+					                       			<%
+												}
+	
+											}
+											%>
+											</ul>
+											<%
+
+										}else{ // 첨부파일이 없으면
+											%>
+											첨부파일 없음
+											<%
+										}
+		
+										%>
+									
+									</td>
 								</tr>
 							</table>
 
@@ -103,21 +157,25 @@ time.comment-date {
 
 										<%
 										if (id != null) {
-										%>
-
-										<a class="btn waves-effect waves-light"> <i
-											class="material-icons left">edit</i>글수정
-										</a> <a class="btn waves-effect waves-light"> <i
-											class="material-icons left">delete</i>글삭제
-										</a> <a class="btn waves-effect waves-light"> <i
-											class="material-icons left">reply</i>답글
-										</a>
+										
+											if(id.equals(boardVO.getMid())){ //로그인
+												%>
+												<a class="btn waves-effect waves-light" href="/board/boardModify.jsp?num=<%=boardVO.getNum() %>&pageNum=<%=pageNum %>"> <i
+												class="material-icons left">edit</i>글수정
+												</a> 
+												<a class="btn waves-effect waves-light" onclick="remove(event)"> <i
+													class="material-icons left">delete</i>글삭제
+												</a>
+												<%
+											}
+											%>
+											<a class="btn waves-effect waves-light"> <i
+												class="material-icons left">reply</i>답글
+											</a>
 
 										<%
 										}
 										%>
-
-
 
 										<a class="btn waves-effect waves-light"
 											href="/board/boardList.jsp?pageNum=<%=pageNum%>"> <i
@@ -284,7 +342,19 @@ time.comment-date {
 	<!-- footer area -->
 	<jsp:include page="/include/bottom.jsp" />
 	<!-- end of footer area -->
-
+	
+	<script>
+	//글 삭제 버튼을 클릭하면 호출되는 함수
+	function remove(event){
+		event.preventDefault();
+		
+		var isRemove = confirm('게시글을 삭제하시겠습니까?');
+		if(isRemove == true){
+			location.href = '/board/boardRemove.jsp?num=<%=boardVO.getNum() %>&pageNum=<%=pageNum %>';
+		}
+	}
+	
+	</script>
 
 
 </body>

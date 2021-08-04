@@ -45,7 +45,7 @@ public class BoardDAO {
 			JdbcUtils.close(con, pstmt);
 		}
 
-	}
+	}// deleteAll
 	
 	// 게시글 총 개수 가져오기
 	public int getCountAll() {
@@ -311,9 +311,29 @@ public class BoardDAO {
 		}finally {
 			JdbcUtils.close(con,pstmt);
 		}
-	}
+	}// updateReadcount
 	
-	
+	public void deleteBoardByNum(int num) {
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			con = JdbcUtils.getConnection();
+
+			String sql = "DELETE FROM board WHERE num = ?";
+
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, num);
+
+			pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			JdbcUtils.close(con, pstmt);
+		}
+
+	}// deleteBoardByNum
 	
 	
 	
