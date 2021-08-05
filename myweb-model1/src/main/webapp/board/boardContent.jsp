@@ -169,8 +169,9 @@ time.comment-date {
 												<%
 											}
 											%>
-											<a class="btn waves-effect waves-light"> <i
-												class="material-icons left">reply</i>답글
+											<a class="btn waves-effect waves-light" 
+											href="/board/replyWrite.jsp?reRef=<%=boardVO.getReRef() %>&reLev=<%=boardVO.getReLev()%>&reSeq=<%=boardVO.getReSeq()%>&pageNum=<%=pageNum %>"> 
+											<i class="material-icons left">reply</i>답글
 											</a>
 
 										<%

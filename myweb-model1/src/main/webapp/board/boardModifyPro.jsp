@@ -1,20 +1,19 @@
+<%@page import="com.example.domain.BoardVO"%>
 <%@page import="net.coobird.thumbnailator.Thumbnailator"%>
-<%@page import="java.io.IOException"%>
-<%@page import="java.nio.file.Files"%>
 <%@page import="java.util.UUID"%>
 <%@page import="com.example.domain.AttachVO"%>
 <%@page import="java.util.Enumeration"%>
-<%@page import="com.example.repository.AttachDAO"%>
-<%@page import="java.sql.Timestamp"%>
 <%@page import="com.example.repository.BoardDAO"%>
-<%@page import="com.example.domain.BoardVO"%>
+<%@page import="com.example.repository.AttachDAO"%>
+<%@page import="com.oreilly.servlet.multipart.DefaultFileRenamePolicy"%>
+<%@page import="com.oreilly.servlet.MultipartRequest"%>
+<%@page import="java.io.IOException"%>
+<%@page import="java.nio.file.Files"%>
 <%@page import="java.io.File"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.text.SimpleDateFormat"%>
-<%@page import="com.oreilly.servlet.multipart.DefaultFileRenamePolicy"%>
-<%@page import="com.oreilly.servlet.MultipartRequest"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>
 
 <%!// 선언부 // 이 파일 자체에서만 반복해서 사용할 때
 	String getFolder() {
@@ -47,7 +46,8 @@
 		}
 
 		return isImage;
-	}%>
+}%>
+
 
 <%
 String uploadFolder = "C:/jyh/upload"; // 업로드 기준 경로
@@ -70,11 +70,7 @@ if (uploadPath.exists() == false) {
 //파일 업로드하기
 MultipartRequest multi = new MultipartRequest(request, uploadPath.getPath(), 1024 * 1024 * 50, "utf-8",
 		new DefaultFileRenamePolicy());
-// 파일 업로드 완료
-
-// form으로부터 enctype="multipart/form-data" 로 전송받으면
-// 기본내장객체인 request로 부터 파라미터값을 바로 가져올 수 없음! null이 리턴됨
-// MultipartRequest 객체로부터 파라미터 값을 가져와야함. 사용방법은 rquest와 동일함
+//=== 파일 업로드 완료===
 
 // AttachDAO 객체 준비
 AttachDAO attachDAO = AttachDAO.getInstance();
@@ -82,15 +78,16 @@ AttachDAO attachDAO = AttachDAO.getInstance();
 //BoardDAO 객체준비
 BoardDAO boardDAO = BoardDAO.getInstance();
 
-// insert할 새 게시글 번호 가져오기
-int num = boardDAO.getNextnum();
+//수정할 게시글 번호
+int num = Integer.parseInt(multi.getParameter("num"));
+
+
+// ==================신규 첨부파일 정보를 테이블에 insert 하기 =================
 
 //input type="file" 태그의 name 속성들을 가져오기
 Enumeration<String> enu = multi.getFileNames(); // Iterator, Enumeration 반복자 객체
 
 while (enu.hasMoreElements()) { // 파일이 있으면
-	
-
 	String fname = enu.nextElement(); // file0 file1 file2 file3 등 하나씩 가져옴
 
 	// 저장된 파일명 가져오기
@@ -128,47 +125,76 @@ while (enu.hasMoreElements()) { // 파일이 있으면
 		// (읽을 파일, 출력할 썸네일 파일, 넓이,높이)
 		Thumbnailator.createThumbnail(file, outFile, 100, 100); // 썸네일 생성
 	}
-
+	
+	// 첨부파일 attach 테이블에 attachVO를 insert 하기
 	attachDAO.addAttach(attachVO);
 
 } //while
 
-// BoardVO 객체 준비
+//==============신규 첨부파일 정보를 테이블에 insert 하기 완료 =================
+
+
+
+//==============삭제할 첨부파일 정보를 삭제하기 =====================
+String[] delFilesUuid = multi.getParameterValues("delfile");
+
+if(delFilesUuid != null){
+	for(String uuid : delFilesUuid){
+		
+		// 첨부파일 uuid에 해당하는 첨부파일 VO객체 가져오기
+		AttachVO attach = attachDAO.getAttachByUuid(uuid);
+		
+		String path = uploadFolder + "/" + attach.getUploadpath()+"/"+attach.getFilename(); 
+		File deleteFile = new File(path);
+		
+		if(deleteFile.exists()){ // 삭제할 파일이 존재하면
+			deleteFile.delete(); // 파일 삭제하기
+		}//if
+		
+		if(attach.getFiletype().equals("I")){ // 이미지 파일이면 썸네일 파일도 지움
+			String thumbnailPath = uploadFolder + "/" + attach.getUploadpath()+"/s_"+attach.getFilename();
+			File thumbnailFile = new File(thumbnailPath);
+			if(thumbnailFile.exists()){ // 삭제할 파일이 존재하면
+				thumbnailFile.delete(); // 파일 삭제하기
+			}
+		}//if
+		
+		// DB에서 uuid에 해당하는 첨부파일정보 삭제하기
+		attachDAO.deleteAttachesByUuid(uuid);
+		
+	} // for
+}
+
+
+
+//=====================삭제할 첨부파일 정보를 삭제하기 완료 ========================
+
+
+
+//===================== board 테이블 게시글 수정하기 ========================
+// 수정에 사용할 게시글 VO 객체 준비
 BoardVO boardVO = new BoardVO();
 
-// 파라미터값 가져와서 VO에 저장. MultipartRequest 로 부터 가져옴
-boardVO.setMid(multi.getParameter("id"));
+//파라미터값 가져와서 VO에 저장
+boardVO.setNum(num);
 boardVO.setSubject(multi.getParameter("subject"));
 boardVO.setContent(multi.getParameter("content"));
+boardVO.setIpaddr(request.getRemoteAddr());
 
-//글 번호 설정
-boardVO.setNum(num);
+// DB에 게시글 수정하기
+boardDAO.updateBoard(boardVO);
 
-//ipaddr regDate readcount
-boardVO.setIpaddr(request.getRemoteAddr()); //ip 주소 String으로 가져오기
-boardVO.setRegDate(new Timestamp(System.currentTimeMillis()));
-boardVO.setReadcount(0);
+//===================== board 테이블 게시글 완료 ========================
 
-// 주글에서 re_ref re_lev re_seq 설정하기
-boardVO.setReRef(num); // 주글일때는 글 번호와 글 그룹 번호는 동일함
-boardVO.setReLev(0); // 들여쓰기 레벨. 주글은 0레벨
-boardVO.setReSeq(0); // 그룹내 순번, 주글은 그룹안에서 순번 0번(오름차순 시 첫번째)
-
-// 주글 등록하기
-boardDAO.addBoard(boardVO);
-
-//글목록으로 이동
-//response.sendRedirect("/board/boardList.jsp");
-
-// 요청 페이지번호.파라미터 가져오기
 String pageNum = multi.getParameter("pageNum");
 
-//글 상세보기 화면으로 이동// 글번호 페이지번호 같이 넣어서 보내기
-response.sendRedirect("/board/boardContent.jsp?num=" + boardVO.getNum() + "&pageNum=" + pageNum);
+// 수정 후 글목록 화면으로 이동
+//response.sendRedirect("/board/boardList.jsp?pageNum=" + pageNum);
+
+// 상세보기화면으로 이동
+response.sendRedirect("/board/boardContent.jsp?num="+num+"&pageNum="+pageNum);
+
+
+
+
 %>
-
-
-
-
-
-

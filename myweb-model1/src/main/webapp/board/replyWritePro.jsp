@@ -133,7 +133,10 @@ while (enu.hasMoreElements()) { // 파일이 있으면
 
 } //while
 
-// BoardVO 객체 준비
+
+//======================== 답글 DB에 board 추가하기 ============================
+	
+// 답글 BoardVO 객체 준비
 BoardVO boardVO = new BoardVO();
 
 // 파라미터값 가져와서 VO에 저장. MultipartRequest 로 부터 가져옴
@@ -149,10 +152,18 @@ boardVO.setIpaddr(request.getRemoteAddr()); //ip 주소 String으로 가져오�
 boardVO.setRegDate(new Timestamp(System.currentTimeMillis()));
 boardVO.setReadcount(0);
 
-// 주글에서 re_ref re_lev re_seq 설정하기
-boardVO.setReRef(num); // 주글일때는 글 번호와 글 그룹 번호는 동일함
-boardVO.setReLev(0); // 들여쓰기 레벨. 주글은 0레벨
-boardVO.setReSeq(0); // 그룹내 순번, 주글은 그룹안에서 순번 0번(오름차순 시 첫번째)
+
+// 글 등록하기 전에 update로 re_seq 새로 정렬하기
+boardDAO.updqteReSeqAndAddReply(boardVO);
+
+
+
+
+
+// 답글을 작성할 대상글의  re_ref re_lev re_seq 설정하기
+boardVO.setReRef(Integer.parseInt(multi.getParameter("reRef"))); 
+boardVO.setReLev(Integer.parseInt(multi.getParameter("reLev"))); 
+boardVO.setReSeq(Integer.parseInt(multi.getParameter("reSeq"))); 
 
 // 주글 등록하기
 boardDAO.addBoard(boardVO);

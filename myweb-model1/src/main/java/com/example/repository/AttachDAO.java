@@ -75,7 +75,7 @@ public class AttachDAO {
 		}
 	} // addAttach
 
-	//특정 게시글에 포함된 첨부파일 가져오기
+	// 특정 게시글에 포함된 첨부파일 가져오기
 	public List<AttachVO> getAttachesByBno(int bno) {
 		List<AttachVO> list = new ArrayList<>();
 
@@ -116,8 +116,45 @@ public class AttachDAO {
 
 		return list;
 	} // getAttachesByBno
-	
-	//특정 게시글 번호에 해당하는 첨부파일들 삭제하기
+
+	// 첨부파일 한개 정보 가져오기
+	public AttachVO getAttachByUuid(String uuid) {
+		AttachVO attachVO = null;
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			con = JdbcUtils.getConnection();
+
+			String sql = "";
+			sql += "SELECT * ";
+			sql += " FROM attach ";
+			sql += " WHERE uuid = ? ";
+
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, uuid);
+
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				attachVO = new AttachVO();
+				attachVO.setUuid(rs.getString("uuid"));
+				attachVO.setUploadpath(rs.getString("uploadpath"));
+				attachVO.setFilename(rs.getString("filename"));
+				attachVO.setFiletype(rs.getString("filetype"));
+				attachVO.setBno(rs.getInt("bno"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			JdbcUtils.close(con, pstmt, rs);
+		}
+		return attachVO;
+	} // getAttachByUuid
+
+	// 특정 게시글 번호에 해당하는 첨부파일들 삭제하기
 	public void deleteAttachesByBno(int bno) {
 
 		Connection con = null;
@@ -140,5 +177,31 @@ public class AttachDAO {
 		}
 
 	}// deleteAttachesByBno
+
+	// uuid에 해당하는 첨부파일들 삭제하기
+	public void deleteAttachesByUuid(String uuid) {
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			con = JdbcUtils.getConnection();
+
+			String sql = "DELETE FROM attach WHERE uuid = ?";
+
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, uuid);
+
+			pstmt.executeUpdate();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			JdbcUtils.close(con, pstmt);
+		}
+
+	}// deleteAttachesByUuid
+
+	
 
 } // boardDAO

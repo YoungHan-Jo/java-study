@@ -46,41 +46,36 @@ public class BoardDAO {
 		}
 
 	}// deleteAll
-	
+
 	// 게시글 총 개수 가져오기
 	public int getCountAll() {
 		int count = 0;
-		
+
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		
-		
+
 		try {
 			con = JdbcUtils.getConnection();
-			
+
 			String sql = "SELECT COUNT(*) AS cnt FROM board";
-			
+
 			pstmt = con.prepareStatement(sql);
-			
+
 			rs = pstmt.executeQuery();
-			
-			if(rs.next()) {
+
+			if (rs.next()) {
 				count = rs.getInt("cnt");
 			}
-			
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {
+		} finally {
 			JdbcUtils.close(con, pstmt, rs);
 		}
-		
-		
+
 		return count;
 	}
-	
-	
 
 	// SELECT IFNULL(MAX(num),0) + 1 AS nextnum FROM board
 	public int getNextnum() {
@@ -146,27 +141,26 @@ public class BoardDAO {
 		}
 
 	}// addBoard
-	
-	
-	public List<BoardVO> getBoards(){
+
+	public List<BoardVO> getBoards() {
 		List<BoardVO> list = new ArrayList<>();
-		
+
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 
 		try {
 			con = JdbcUtils.getConnection();
-			
+
 			String sql = "";
-			sql +="SELECT * ";
-			sql +=" FROM board ";
-			sql +=" ORDER BY re_ref DESC ";
-			
+			sql += "SELECT * ";
+			sql += " FROM board ";
+			sql += " ORDER BY re_ref DESC, re_seq ASC ";
+
 			pstmt = con.prepareStatement(sql);
 			rs = pstmt.executeQuery();
-			
-			while(rs.next()) {
+
+			while (rs.next()) {
 				BoardVO boardVO = new BoardVO();
 				boardVO.setNum(rs.getInt("num"));
 				boardVO.setMid(rs.getString("mid"));
@@ -178,12 +172,10 @@ public class BoardDAO {
 				boardVO.setReRef(rs.getInt("re_ref"));
 				boardVO.setReLev(rs.getInt("re_lev"));
 				boardVO.setReSeq(rs.getInt("re_seq"));
-				
+
 				list.add(boardVO);
 			}
-			
-			
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -192,32 +184,32 @@ public class BoardDAO {
 
 		return list;
 	}
-	
-	public List<BoardVO> getBoards(Criteria cri){
+
+	public List<BoardVO> getBoards(Criteria cri) {
 		List<BoardVO> list = new ArrayList<>();
-		
+
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		
-		int startRow = (cri.getPageNum()-1)*cri.getAmount();
-		
+
+		int startRow = (cri.getPageNum() - 1) * cri.getAmount();
+
 		try {
 			con = JdbcUtils.getConnection();
-			
+
 			String sql = "";
-			sql +="SELECT * ";
-			sql +=" FROM board ";
-			sql +=" ORDER BY re_ref DESC ";
-			sql +=" LIMIT ?, ? ";
-			
+			sql += "SELECT * ";
+			sql += " FROM board ";
+			sql += " ORDER BY re_ref DESC, re_seq ASC ";
+			sql += " LIMIT ?, ? ";
+
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, startRow);
 			pstmt.setInt(2, cri.getAmount());
-			
+
 			rs = pstmt.executeQuery();
-			
-			while(rs.next()) {
+
+			while (rs.next()) {
 				BoardVO boardVO = new BoardVO();
 				boardVO.setNum(rs.getInt("num"));
 				boardVO.setMid(rs.getString("mid"));
@@ -229,12 +221,10 @@ public class BoardDAO {
 				boardVO.setReRef(rs.getInt("re_ref"));
 				boardVO.setReLev(rs.getInt("re_lev"));
 				boardVO.setReSeq(rs.getInt("re_seq"));
-				
+
 				list.add(boardVO);
 			}
-			
-			
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -243,29 +233,28 @@ public class BoardDAO {
 
 		return list;
 	} // getboard
-	
-	public BoardVO getBoardByNum(int num){
+
+	public BoardVO getBoardByNum(int num) {
 		BoardVO boardVO = null;
-		
+
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-				
+
 		try {
 			con = JdbcUtils.getConnection();
-			
+
 			String sql = "";
-			sql +="SELECT * ";
-			sql +=" FROM board ";
-			sql +=" WHERE num = ? ";
-	
-			
+			sql += "SELECT * ";
+			sql += " FROM board ";
+			sql += " WHERE num = ? ";
+
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, num);
-			
+
 			rs = pstmt.executeQuery();
-			
-			if(rs.next()) {
+
+			if (rs.next()) {
 				boardVO = new BoardVO();
 				boardVO.setNum(rs.getInt("num"));
 				boardVO.setMid(rs.getString("mid"));
@@ -277,8 +266,8 @@ public class BoardDAO {
 				boardVO.setReRef(rs.getInt("re_ref"));
 				boardVO.setReLev(rs.getInt("re_lev"));
 				boardVO.setReSeq(rs.getInt("re_seq"));
-			}// if
-	
+			} // if
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -287,32 +276,60 @@ public class BoardDAO {
 
 		return boardVO;
 	} // getboardByNum
-	
-	//조회수 1증가
+
+	// 조회수 1증가
 	public void updateReadcount(int num) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
-		
+
 		try {
 			con = JdbcUtils.getConnection();
-			
+
 			String sql = "";
 			sql += "UPDATE board ";
 			sql += " SET readcount = readcount+1 ";
 			sql += " WHERE num = ? ";
-			
+
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, num);
-			
+
 			pstmt.executeUpdate();
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {
-			JdbcUtils.close(con,pstmt);
+		} finally {
+			JdbcUtils.close(con, pstmt);
 		}
 	}// updateReadcount
-	
+
+	// 게시글 수정하기
+	public void updateBoard(BoardVO boardVO) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			con = JdbcUtils.getConnection();
+
+			String sql = "";
+			sql += "UPDATE board ";
+			sql += " SET subject = ?, content = ?, ipaddr = ? ";
+			sql += " WHERE num = ? ";
+
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, boardVO.getSubject());
+			pstmt.setString(2, boardVO.getContent());
+			pstmt.setString(3, boardVO.getIpaddr());
+			pstmt.setInt(4, boardVO.getNum());
+
+			pstmt.executeUpdate();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			JdbcUtils.close(con, pstmt);
+		}
+	}// updateBoard
+
 	public void deleteBoardByNum(int num) {
 
 		Connection con = null;
@@ -334,25 +351,68 @@ public class BoardDAO {
 		}
 
 	}// deleteBoardByNum
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+	// 답글등록
+	public void updqteReSeqAndAddReply(BoardVO boardVO) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			con = JdbcUtils.getConnection();
+			// 수동커밋으로 변경(기본값 자동커밋)
+			con.setAutoCommit(false);
+
+			// 답글을 다는 대상글과 같은 글 그룹 내에서
+			// 답글을 다는 대상들의 그룹내 순번보다 큰 클들의 순번을 1씩 증가
+			String sql = "";
+			sql += "UPDATE board ";
+			sql += " SET re_seq = re_seq + 1 ";
+			sql += " WHERE re_ref = ? ";
+			sql += " AND re_seq > ? ";
+
+			pstmt = con.prepareStatement(sql); // update 문을 가진 문장객체 준비
+			pstmt.setInt(1, boardVO.getReRef());
+			pstmt.setInt(2, boardVO.getReSeq());
+
+			pstmt.executeUpdate(); // update 문을 가진 문장객체 실행
+			pstmt.close(); // 문장객체 닫기
+
+			sql = "";
+			sql += " INSERT INTO board (num, mid, subject, content, readcount, reg_date, ipaddr, re_ref, re_lev, re_seq) ";
+			sql += " VALUES (?,?,?,?,?,?,?,?,?,?) ";
+
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, boardVO.getNum());
+			pstmt.setString(2, boardVO.getMid());
+			pstmt.setString(3, boardVO.getSubject());
+			pstmt.setString(4, boardVO.getContent());
+			pstmt.setInt(5, boardVO.getReadcount());
+			pstmt.setTimestamp(6, boardVO.getRegDate());
+			pstmt.setString(7, boardVO.getIpaddr());
+			// re컬럼값은 insert될 답글정보로 수정하기
+			pstmt.setInt(8, boardVO.getReRef()); // 글 그룹은 동일
+			pstmt.setInt(9, boardVO.getReLev() + 1); // 답글의 레벨은 대상글의 레벨 + 1
+			pstmt.setInt(10, boardVO.getReSeq() + 1); // 답글의 순번은 대상글의 순번 + 1
+
+			pstmt.executeUpdate();
+
+			con.commit(); // 커밋하기
+			
+			con.setAutoCommit(true);
+			// Connection의 설정은 공유되기때문에 원상태, 자동수동으로 다시 설정해둬야함
+
+		} catch (Exception e) {
+			e.printStackTrace();
+
+			try {
+				con.rollback(); // 트랜잭션 단위작업에 문제가 생기면 롤백하기
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+
+		} finally {
+			JdbcUtils.close(con, pstmt);
+		}
+	} // updqteReSeqAndAddReply
 
 } // boardDAO
