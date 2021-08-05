@@ -53,10 +53,10 @@ String pageNum = request.getParameter("pageNum");
 							
 								<!-- multipart/form-data 로 하면 뭉쳐져서 넘어가기 때문에
 									input:hidden 속성으로 name/ value 로 쿠키 넘기듯이 넘기기 -->
+								<input type="hidden" name="pageNum" value="<%=pageNum %>">
 								<input type="hidden" name="reRef" value="<%=reRef %>">
 								<input type="hidden" name="reLev" value="<%=reLev %>">
 								<input type="hidden" name="reSeq" value="<%=reSeq %>">
-								<input type="hidden" name="pageNum" value="<%=pageNum %>">
 								
 								<div class="row">
 									<div class="input-field col s12">

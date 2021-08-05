@@ -89,8 +89,6 @@ int num = boardDAO.getNextnum();
 Enumeration<String> enu = multi.getFileNames(); // Iterator, Enumeration 반복자 객체
 
 while (enu.hasMoreElements()) { // 파일이 있으면
-	
-
 	String fname = enu.nextElement(); // file0 file1 file2 file3 등 하나씩 가져옴
 
 	// 저장된 파일명 가져오기
@@ -152,21 +150,13 @@ boardVO.setIpaddr(request.getRemoteAddr()); //ip 주소 String으로 가져오�
 boardVO.setRegDate(new Timestamp(System.currentTimeMillis()));
 boardVO.setReadcount(0);
 
-
-// 글 등록하기 전에 update로 re_seq 새로 정렬하기
-boardDAO.updqteReSeqAndAddReply(boardVO);
-
-
-
-
-
 // 답글을 작성할 대상글의  re_ref re_lev re_seq 설정하기
 boardVO.setReRef(Integer.parseInt(multi.getParameter("reRef"))); 
 boardVO.setReLev(Integer.parseInt(multi.getParameter("reLev"))); 
 boardVO.setReSeq(Integer.parseInt(multi.getParameter("reSeq"))); 
 
-// 주글 등록하기
-boardDAO.addBoard(boardVO);
+//글 등록하기 전에 update로 re_seq 새로 정렬하기
+boardDAO.updqteReSeqAndAddReply(boardVO);
 
 //글목록으로 이동
 //response.sendRedirect("/board/boardList.jsp");
