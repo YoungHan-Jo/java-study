@@ -87,7 +87,7 @@ String pageNum = request.getParameter("pageNum");
 								<div class="row" id="fileBox">
 									<div class="col s12">
 										<input type="file" name="file0">
-										<button class="waves-effect waves-light btn-small">
+										<button class="waves-effect waves-light btn-small file-delete">
 											<i class="material-icons">clear</i>
 										</button>
 									</div>
@@ -153,7 +153,7 @@ String pageNum = request.getParameter("pageNum");
 	// 동적 이벤트 연결 (이벤트 등록을 이미있는 요소에게 위임하는 방식)
 	$('#fileBox').on('click','button.file-delete',function(){
 		$(this).closest('div').remove();
-
+		fileCount--;
 	})
 	
 

@@ -37,6 +37,12 @@ List<AttachVO> attachList = attachDAO.getAttachesByBno(num);
 
 <head>
 <jsp:include page="/include/head.jsp" />
+<style>
+span.filename {
+display: inline-block;
+width: 275px;
+}
+</style>
 </head>
 
 <body>
@@ -99,24 +105,29 @@ List<AttachVO> attachList = attachDAO.getAttachesByBno(num);
 								<div class="row">
 									<div class="col s12">
 										<button type="button"
-											class="btn-small waves-effect waves-light" id="btnAddFile">파일
-											추가</button>
+											class="btn-small waves-effect waves-light" id="btnAddFile">파일추가</button>
 									</div>
 								</div>
 
-
-								<!-- 기존에 있던 파일 목록 -->
+								<!-- 기존 첨부 파일 목록 -->
 								<div class="row" id="oldFileBox">
-			
+								<%
+								for (AttachVO attach : attachList){
+									%>
+									<input type="hidden" name="oldfile" value="<%=attach.getUuid() %>">
 									<div class="col s12">
-										<input type="file" name="file0">
-										<button class="waves-effect waves-light btn-small">
+										<span class="filename"><%=attach.getFilename() %></span>
+										<button class="waves-effect waves-light btn-small delete-oldfile">
 											<i class="material-icons">clear</i>
 										</button>
 									</div>
+									<%
+								} // for
+								%>
+									
 								</div>
 								
-								<!-- 새로 적용할 파일 목록 -->
+								<!-- 신규 첨파 파일 목록 -->
 								<div class="row" id="newFileBox"></div>
 								
 								
@@ -158,31 +169,45 @@ List<AttachVO> attachList = attachDAO.getAttachesByBno(num);
 	<script>
 	
 	var fileIndex = 1;
-	var fileCount = 1;
+	
+	var currentFileCount = <%=attachList.size() %>; // 현재 첨부된 파일 개수
+	const MAX_FILE_COUNT = 5; // 최대 첨부파일 개수
 		
 	$('#btnAddFile').on('click',function(){
-		if(fileCount >= 5){
-			alert('첨부파일은 최대5개까지 가능합니다.');
+		if(currentFileCount >= MAX_FILE_COUNT){
+			alert(`첨부파일은 최대 \${MAX_FILE_COUNT}개까지 가능합니다.`);
 			return;
 		}
 		
 		var str = `<div class="col s12">
 						<input type="file" name="file\${fileIndex}"> 
-						<button class="waves-effect waves-light btn-small file-delete"><i class="material-icons">clear</i></button>
+						<button class="waves-effect waves-light btn-small delete-addfile"><i class="material-icons">clear</i></button>
 					</div>`;
 					
-		$('#fileBox').append(str);
+		$('#newFileBox').append(str);
 		
 		fileIndex++;
-		fileCount++;
+		currentFileCount++;
 	
 	})
 	
 	// 동적 이벤트 연결 (이벤트 등록을 이미있는 요소에게 위임하는 방식)
-	$('#fileBox').on('click','button.file-delete',function(){
+	$('#newFileBox').on('click','button.delete-addfile',function(){
 		$(this).closest('div').remove();
+		currentFileCount--;
+	})
+	
+	$('button.delete-oldfile').on('click',function(){
+	
+		$(this).parent().prev().prop('name','delfile'); // name속성의 값을 oldfile -> delfile
+		
+		//현재 클릭한 요소의 직계부모(parent)요소를 삭제하기
+		$(this).parent().remove();
+		
+		currentFileCount--;
 
 	})
+	
 	
 
 	</script>
