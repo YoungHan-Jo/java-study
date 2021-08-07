@@ -52,7 +52,8 @@ String pageNum = request.getParameter("pageNum");
 							<form action="/board/replyWritePro.jsp" method="POST" enctype="multipart/form-data">
 							
 								<!-- multipart/form-data 로 하면 뭉쳐져서 넘어가기 때문에
-									input:hidden 속성으로 name/ value 로 쿠키 넘기듯이 넘기기 -->
+									input:hidden 속성으로 name/ value 로 쿠키 넘기듯이 파라미터 넘기기
+									받을때 multi.requestParameter로 받음 -->
 								<input type="hidden" name="pageNum" value="<%=pageNum %>">
 								<input type="hidden" name="reRef" value="<%=reRef %>">
 								<input type="hidden" name="reLev" value="<%=reLev %>">

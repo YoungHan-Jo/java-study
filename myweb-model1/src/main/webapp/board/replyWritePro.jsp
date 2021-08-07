@@ -158,11 +158,11 @@ boardVO.setReSeq(Integer.parseInt(multi.getParameter("reSeq")));
 //글 등록하기 전에 update로 re_seq 새로 정렬하기
 boardDAO.updqteReSeqAndAddReply(boardVO);
 
-//글목록으로 이동
-//response.sendRedirect("/board/boardList.jsp");
-
-// 요청 페이지번호.파라미터 가져오기
+//요청 페이지번호.파라미터 가져오기
 String pageNum = multi.getParameter("pageNum");
+
+//글목록으로 이동
+//response.sendRedirect("/board/boardList.jsp?pageNum="+pageNum);
 
 //글 상세보기 화면으로 이동// 글번호 페이지번호 같이 넣어서 보내기
 response.sendRedirect("/board/boardContent.jsp?num=" + boardVO.getNum() + "&pageNum=" + pageNum);

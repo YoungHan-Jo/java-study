@@ -75,7 +75,47 @@ public class BoardDAO {
 		}
 
 		return count;
-	}
+	} // getCountAll
+	
+	// 게시글 총 개수 가져오기
+		public int getCountBySearch(Criteria cri) {
+			int count = 0;
+
+			Connection con = null;
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+
+			try {
+				con = JdbcUtils.getConnection();
+
+				String sql = "";
+				sql += "SELECT COUNT(*) AS cnt ";
+				sql += " FROM board ";
+				
+				if(cri.getType().length() > 0) {
+					sql += " WHERE " + cri.getType() + " LIKE ? ";
+				}
+
+				pstmt = con.prepareStatement(sql);
+				if (cri.getType().length() > 0) { // 검색어가 있으면
+					pstmt.setString(1, "%" + cri.getKeyword() + "%");
+				}
+
+
+				rs = pstmt.executeQuery();
+
+				if (rs.next()) {
+					count = rs.getInt("cnt");
+				}
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				JdbcUtils.close(con, pstmt, rs);
+			}
+
+			return count;
+		} // getCountBySearch
 
 	// SELECT IFNULL(MAX(num),0) + 1 AS nextnum FROM board
 	public int getNextnum() {
@@ -197,15 +237,28 @@ public class BoardDAO {
 		try {
 			con = JdbcUtils.getConnection();
 
+			// 동적 sql문
 			String sql = "";
 			sql += "SELECT * ";
 			sql += " FROM board ";
+			if (cri.getType().length() > 0) { // cri.getType().equals("")==false
+				sql += " WHERE " + cri.getType() + " LIKE ?";
+			}
 			sql += " ORDER BY re_ref DESC, re_seq ASC ";
 			sql += " LIMIT ?, ? ";
-
+			
+			
+			//실행문도 두가지 조건으로
 			pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, startRow);
-			pstmt.setInt(2, cri.getAmount());
+			if (cri.getType().length() > 0) { // cri.getType().equals("")==false
+				pstmt.setString(1, "%" + cri.getKeyword() + "%");
+				pstmt.setInt(2, startRow);
+				pstmt.setInt(3, cri.getAmount());
+			} else {
+				pstmt.setInt(1, startRow);
+				pstmt.setInt(2, cri.getAmount());
+			}
+			
 
 			rs = pstmt.executeQuery();
 
@@ -391,21 +444,21 @@ public class BoardDAO {
 			pstmt.setString(7, boardVO.getIpaddr());
 			// re컬럼값은 insert될 답글정보로 수정하기
 			pstmt.setInt(8, boardVO.getReRef()); // 글 그룹은 동일
-			pstmt.setInt(9, boardVO.getReLev() + 1); // 답글의 레벨은 대상글의 레벨 + 1
-			pstmt.setInt(10, boardVO.getReSeq() + 1); // 답글의 순번은 대상글의 순번 + 1
+			pstmt.setInt(9, boardVO.getReLev() + 1); // 답글의 레벨은 = 답글을 달 대상글의 레벨 + 1
+			pstmt.setInt(10, boardVO.getReSeq() + 1); // 답글의 순번은 = 답글을 달 대상글의 순번 + 1
 
 			pstmt.executeUpdate();
 
 			con.commit(); // 커밋하기
-			
+
 			con.setAutoCommit(true);
-			// Connection의 설정은 공유되기때문에 원상태, 자동수동으로 다시 설정해둬야함
+			// 커넥션 풀링은 공유되기때문에 반납하기전에 원상태, 자동수동으로 다시 설정해둬야함
 
 		} catch (Exception e) {
 			e.printStackTrace();
 
 			try {
-				con.rollback(); // 트랜잭션 단위작업에 문제가 생기면 롤백하기
+				con.rollback(); // 트랜잭션 단위작업에 예외(문제)가 발생 생기면 롤백하기
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}

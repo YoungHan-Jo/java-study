@@ -27,11 +27,11 @@ public class Ex1 {
 		System.out.println("============================================================");
 
 		// Iterator을 사용하여 하나씩 값 가져오기
-		Iterator<Element> ie1 = element.select("strong.rank").iterator();
-		Iterator<Element> ie2 = element.select("strong.title").iterator();
+		Iterator<Element> iter1 = element.select("strong.rank").iterator();
+		Iterator<Element> iter2 = element.select("strong.title").iterator();
 
-		while (ie1.hasNext()) {
-			System.out.println(ie1.next().text() + "\t" + ie2.next().text());
+		while (iter1.hasNext()) {
+			System.out.println(iter1.next().text() + "\t" + iter2.next().text());
 		}
 
 		System.out.println("============================================================");
