@@ -159,6 +159,33 @@
 			
 		})
 		
+		$('input#id').on('keyup',function(){
+			var id = $(this).val();
+			if (id.length == 0){
+				return;
+			}
+
+			var $inputId = $(this);
+			var $span = $inputId.next().next();
+			
+			$.ajax({
+				url : '/api/members/' + id,
+				method : 'GET',
+				success : function(data){
+					console.log(data);
+					console.log(typeof data);
+										
+					if(data.count == 0){ // 사용가능한 아이디
+						$span.html('사용가능한 아이디 입니다.').css('color','green');
+					}else{ // data.count == 1 // 아이디 중복
+						$span.html('사용중인 아이디 입니다.').css('color','red');
+					}
+				}// success
+			});
+		})
+		
+		
+		
 		$('#passwd2').on('focusout',function(){
 			const passwd = $('#passwd').val();
 			const passwd2 = $(this).val();
