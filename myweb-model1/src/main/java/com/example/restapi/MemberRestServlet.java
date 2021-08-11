@@ -15,7 +15,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.example.domain.MemberVO;
 import com.example.repository.MemberDAO;
+import com.example.util.MemberDeserializer;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 @WebServlet("/api/members/*")
 public class MemberRestServlet extends HttpServlet {
@@ -25,6 +27,12 @@ public class MemberRestServlet extends HttpServlet {
 	private MemberDAO memberDAO = MemberDAO.getInstance();
 
 	private Gson gson = new Gson(); // gson 라이브러리
+	
+	public MemberRestServlet() {
+		GsonBuilder builder = new GsonBuilder();
+		builder.registerTypeAdapter(MemberVO.class, new MemberDeserializer());
+		gson = builder.create();
+	}
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
