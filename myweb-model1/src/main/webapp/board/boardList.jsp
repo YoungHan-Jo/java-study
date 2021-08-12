@@ -17,7 +17,7 @@ Criteria cri = new Criteria(); // 기본값 1페이지 10개
 
 // 요청 페이지번호 가져오기
 String strPageNum = request.getParameter("pageNum");
-if (strPageNum != null) { // 요청페이지번호 있으면 cir에 값 설정
+if (strPageNum != null) { // 요청페이지번호 있으면 cri에 값 설정
 	cri.setPageNum(Integer.parseInt(strPageNum));
 }
 

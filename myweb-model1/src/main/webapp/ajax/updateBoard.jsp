@@ -108,8 +108,8 @@ span.delete-oldfile, span.delete-addfile {
 			str += `
 				<input type="hidden" name="oldfile" value="\${attach.uuid}">
 				<div>
-				\${attach.filename}	
-				<span class="delete-oldfile">❌</span>
+					\${attach.filename}
+					<span class="delete-oldfile">X</span>
 				</div>
 			`;
 		}// for
@@ -118,39 +118,36 @@ span.delete-oldfile, span.delete-addfile {
 		
 	} // showData
 	
-	
-	$('#btnAddFile').on('click',function(){
-		
-		if(fileCount >= 5){
-			alert('파일은 5개까지만 첨부할수있습니다.');
+	$('#btnAddFile').on('click', function () {
+		if (fileCount >= 5) {
+			alert('첨부파일은 최대 5개 까지만 첨부할 수 있습니다.');
 			return;
 		}
 		
 		var str = `
 			<div>
-			<input type="file" name="file\${fileIndex}"><span
-				class="delete-addfile">❌</span>
+				<input type="file" name="file\${fileIndex}">
+				<span class="delete-addfile">X</span>
 			</div>
-			`;
-			
-		$('div#newFileBox').append(str)
+		`;
+		
+		$('#newFileBox').append(str);
 		
 		fileIndex++;
 		fileCount++;
 	});
 	
 	//동적 이벤트 연결 ( 이벤트 위임 방식)
-	$('#newFileBox').on('click','span.delete-addfile', function(){
+	$('#newFileBox').on('click', 'span.delete-addfile', function () {
 		//$(this).closest('div').remove();
 		$(this).parent().remove();
 		
 		fileCount--;
-		
 	});
 	
-	$('div#oldFileBox').on('click','span.delete-oldfile',function(){
+$('div#oldFileBox').on('click', 'span.delete-oldfile', function () {
 		
-		$(this).parent().prev().prop('name','delfile'); // hidden input 요소의 name 속성 변경
+		$(this).parent().prev().prop('name', 'delfile'); // hidden input 요소의 name속성 변경
 		
 		$(this).parent().remove();
 		
@@ -193,20 +190,6 @@ span.delete-oldfile, span.delete-addfile {
 		});
 		
 	});
-	
-	function showUploadedFile(attachList){
-		
-		var str = '';
-		
-		for(var attach of attachList){
-			str += `
-				<li>\${attach.filename}</li>
-			`;
-		}//for
-		
-		//$('div#uploadResult > ul').html(str); // 기존 내용 지우고 다시 쓰기
-		$('div#uploadResult > ul').append(str); // 기존에 있던거에 추가
-	} // showUploadedFile
 	
 
 </script>

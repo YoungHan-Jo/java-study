@@ -100,7 +100,7 @@ span.file-delete {
 		
 	});
 	
-	var cloneObj = $('div#fileBox').clone(); // 완전히 복사시키는거 deepCopy
+	var cloneObj = $('div#fileBox').clone(); // 하위항목까지 완전히 복사시키기/ deepCopy
 	
 	// 글쓰기 버튼 클릭했을 때
 	$('#btnWrite').on('click',function(){
@@ -128,7 +128,6 @@ span.file-delete {
 				}
 				
 				$('form#frm')[0].reset();
-				
 				$('div#fileBox').html(cloneObj.html()); // 파일첨부 부분 초기화 시키기
 				
 				showUploadedFile(data.attachList);

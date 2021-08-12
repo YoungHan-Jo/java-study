@@ -109,7 +109,7 @@ public class BoardRestServlet extends HttpServlet {
 		if (type.equals("new")) {
 			writeNewBoard(request, response);
 		} else if (type.equals("reply")) {
-			writeReplyBoard(request, response);
+			//writeReplyBoard(request, response); // 새로운 답글쓰기
 		}
 
 	} // doPost
@@ -122,7 +122,6 @@ public class BoardRestServlet extends HttpServlet {
 
 		String requestURI = request.getRequestURI();
 		String bno = requestURI.substring(BASE_URI.length() + 1);
-
 		int num = Integer.parseInt(bno);
 
 		String uploadFolder = "C:/jyh/upload"; // 업로드 기준 경로
@@ -258,11 +257,7 @@ public class BoardRestServlet extends HttpServlet {
 		String strJson = gson.toJson(map);
 		// 클라이언트 쪽으로 출력하기
 		sendResponse(response, strJson);
-		
-		
-		
-		
-		
+
 
 	} // doPut
 

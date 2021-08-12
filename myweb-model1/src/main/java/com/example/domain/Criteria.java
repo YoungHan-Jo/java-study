@@ -17,7 +17,7 @@ public class Criteria {
 		this(1, 10);
 	}
 
-	public Criteria(Integer pageNum, Integer amount) {
+	public Criteria(int pageNum, int amount) {
 		super();
 		this.pageNum = pageNum;
 		this.amount = amount;

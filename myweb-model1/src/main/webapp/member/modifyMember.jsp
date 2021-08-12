@@ -15,7 +15,7 @@ MemberVO memberVO = memberDAO.getMemberById(id);
 
 String birthday = memberVO.getBirthday(); // '20020101' -> '2002-01-01'
 
-// String -> Data 객체 변환
+// String -> Date 객체 변환
 SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 
 Date date = sdf.parse(birthday);
