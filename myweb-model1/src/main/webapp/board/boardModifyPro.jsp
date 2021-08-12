@@ -13,7 +13,7 @@
 <%@page import="java.util.Date"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 
 <%!// 선언부 // 이 파일 자체에서만 반복해서 사용할 때
 	String getFolder() {
@@ -46,7 +46,7 @@
 		}
 
 		return isImage;
-}%>
+	}%>
 
 
 <%
@@ -81,7 +81,6 @@ BoardDAO boardDAO = BoardDAO.getInstance();
 //수정할 게시글 번호
 int num = Integer.parseInt(multi.getParameter("num"));
 
-
 // ==================신규 첨부파일 정보를 테이블에 insert 하기 =================
 
 //input type="file" 태그의 name 속성들을 가져오기
@@ -93,10 +92,10 @@ while (enu.hasMoreElements()) { // 파일이 있으면
 	// 저장된 파일명 가져오기
 	String filename = multi.getFilesystemName(fname); // fname이 file0 일때
 	System.out.println("getFilesystemName : " + filename);
-	
+
 	// 원본 파일명 가져오기
-		String original = multi.getOriginalFileName(fname);
-		System.out.println("getOriginalFileName : " + original);
+	String original = multi.getOriginalFileName(fname);
+	System.out.println("getOriginalFileName : " + original);
 
 	if (filename == null) { // 업로드 할 파일정보가 없으면
 		continue; // 그 다음 반복으로 건너뛰기
@@ -125,7 +124,7 @@ while (enu.hasMoreElements()) { // 파일이 있으면
 		// (읽을 파일, 출력할 썸네일 파일, 넓이,높이)
 		Thumbnailator.createThumbnail(file, outFile, 100, 100); // 썸네일 생성
 	}
-	
+
 	// 첨부파일 attach 테이블에 attachVO를 insert 하기
 	attachDAO.addAttach(attachVO);
 
@@ -133,43 +132,37 @@ while (enu.hasMoreElements()) { // 파일이 있으면
 
 //==============신규 첨부파일 정보를 테이블에 insert 하기 완료 =================
 
-
-
 //==============삭제할 첨부파일 정보를 삭제하기 =====================
 String[] delFilesUuid = multi.getParameterValues("delfile");
 
-if(delFilesUuid != null){
-	for(String uuid : delFilesUuid){
-		
+if (delFilesUuid != null) {
+	for (String uuid : delFilesUuid) {
+
 		// 첨부파일 uuid에 해당하는 첨부파일 VO객체 가져오기
 		AttachVO attach = attachDAO.getAttachByUuid(uuid);
-		
-		String path = uploadFolder + "/" + attach.getUploadpath()+"/"+attach.getFilename(); 
+
+		String path = uploadFolder + "/" + attach.getUploadpath() + "/" + attach.getFilename();
 		File deleteFile = new File(path);
-		
-		if(deleteFile.exists()){ // 삭제할 파일이 존재하면
-			deleteFile.delete(); // 파일 삭제하기
-		}//if
-		
-		if(attach.getFiletype().equals("I")){ // 이미지 파일이면 썸네일 파일도 지움
-			String thumbnailPath = uploadFolder + "/" + attach.getUploadpath()+"/s_"+attach.getFilename();
-			File thumbnailFile = new File(thumbnailPath);
-			if(thumbnailFile.exists()){ // 삭제할 파일이 존재하면
-				thumbnailFile.delete(); // 파일 삭제하기
-			}
-		}//if
-		
+
+		if (deleteFile.exists()) { // 삭제할 파일이 존재하면
+	deleteFile.delete(); // 파일 삭제하기
+		} //if
+
+		if (attach.getFiletype().equals("I")) { // 이미지 파일이면 썸네일 파일도 지움
+	String thumbnailPath = uploadFolder + "/" + attach.getUploadpath() + "/s_" + attach.getFilename();
+	File thumbnailFile = new File(thumbnailPath);
+	if (thumbnailFile.exists()) { // 삭제할 파일이 존재하면
+		thumbnailFile.delete(); // 파일 삭제하기
+	}
+		} //if
+
 		// DB에서 uuid에 해당하는 첨부파일정보 삭제하기
 		attachDAO.deleteAttachesByUuid(uuid);
-		
+
 	} // for
 }
 
-
-
 //=====================삭제할 첨부파일 정보를 삭제하기 완료 ========================
-
-
 
 //===================== board 테이블 게시글 수정하기 ========================
 // 수정에 사용할 게시글 VO 객체 준비
@@ -184,7 +177,7 @@ boardVO.setIpaddr(request.getRemoteAddr());
 // DB에 게시글 수정하기
 boardDAO.updateBoard(boardVO);
 
-//===================== board 테이블 게시글 완료 ========================
+//===================== board 테이블 게시글 수정하기 완료 ========================
 
 String pageNum = multi.getParameter("pageNum");
 
@@ -192,9 +185,5 @@ String pageNum = multi.getParameter("pageNum");
 //response.sendRedirect("/board/boardList.jsp?pageNum=" + pageNum);
 
 // 상세보기화면으로 이동
-response.sendRedirect("/board/boardContent.jsp?num="+num+"&pageNum="+pageNum);
-
-
-
-
+response.sendRedirect("/board/boardContent.jsp?num=" + num + "&pageNum=" + pageNum);
 %>
