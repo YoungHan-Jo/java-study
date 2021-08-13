@@ -202,6 +202,46 @@ public class AttachDAO {
 
 	}// deleteAttachesByUuid
 
+	// 업로드 경로가 일치하는 첨부파일 정보 가져오기
+	public List<AttachVO> getAttachesByUploadpath(String uploadpath) {
+		List<AttachVO> list = new ArrayList<>();
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			con = JdbcUtils.getConnection();
+
+			String sql = "";
+			sql += "SELECT * ";
+			sql += " FROM attach ";
+			sql += " WHERE uploadpath = ? ";
+
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, uploadpath);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				AttachVO attachVO = new AttachVO();
+				attachVO.setUuid(rs.getString("uuid"));
+				attachVO.setUploadpath(rs.getString("uploadpath"));
+				attachVO.setFilename(rs.getString("filename"));
+				attachVO.setFiletype(rs.getString("filetype"));
+				attachVO.setBno(rs.getInt("bno"));
+
+				list.add(attachVO);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			JdbcUtils.close(con, pstmt, rs);
+		}
+
+		return list;
+	} // getAttachesByUploadpath
 	
 
 } // boardDAO
