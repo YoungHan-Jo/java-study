@@ -64,8 +64,7 @@ String id = (String) session.getAttribute("id");
 
 <script>
 	// html 문서가 로딩 완료됐을때
-	$(document).ready(
-			function() {
+	$(document).ready(function() {
 				$('ul#mainMenu a').on(
 						'click',
 						function(event) {
