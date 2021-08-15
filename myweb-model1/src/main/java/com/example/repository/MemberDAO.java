@@ -12,7 +12,7 @@ import com.example.domain.MemberVO;
 
 public class MemberDAO {
 
-	// 싱글톤(singleton) 클래스 설계 : 객체만 한개만 공유해서 사용하기
+	// 싱글톤(singleton) 클래스 설계 : 객체 한개만 공유해서 사용하기
 	private static MemberDAO instance;
 
 	public static MemberDAO getInstance() { // 외부에서 호출할때 이 메소드 사용

@@ -75,7 +75,6 @@ public class RemoveUploadedFilesJob implements Job {
 					//파일명 출력하기
 					System.out.println(delFile.getName() + " 파일 삭제됨");
 				}
-
 			}
 		} // for
 
