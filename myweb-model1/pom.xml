@@ -78,6 +78,15 @@
 			<version>1.7.32</version>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/org.apache.tomcat/tomcat-websocket-api -->
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-websocket-api</artifactId>
+			<version>9.0.52</version>
+		</dependency>
+
+
+
 		<!-- https://mvnrepository.com/artifact/junit/junit -->
 		<dependency>
 			<groupId>junit</groupId>
