@@ -48,6 +48,10 @@ document.getElementById('btnConnect').addEventListener('click',function(){
 	};
 	webSocket.onmessage = function(event){
 		ta.value += '서버로부터 받은 메세지 : ' + event.data + '\n';
+		
+		ta.scrollTop = ta.scrollHeight;
+		// scrollTop = 0 일때 스크롤 제일위로 붙어 있음
+		// scrollHeight만큼 위에서 떨어뜨리기
 	};
 });
 

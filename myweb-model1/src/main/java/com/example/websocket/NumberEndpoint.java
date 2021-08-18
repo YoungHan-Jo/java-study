@@ -49,11 +49,11 @@ public class NumberEndpoint {
 
 	@OnClose
 	public void handleClose(Session session, CloseReason closeReason) throws IOException {
-		System.out.println("@OnClose : 클라이언트 " + session.getId() + "가 현재 서버에 연결을 끊음...");
+		System.out.println("@OnClose : 클라이언트 " + session.getId() + " 와 " + closeReason + "이유로 인해 연결이 끊어짐...");
 	}
 
 	@OnError
-	public void handleError(Session session, Throwable throwable) { // 오류,예외 포함한 상위 클래스
+	public void handleError(Session session, Throwable throwable) { // 오류,예외 둘다 발생할 수 있으므로 둘다 포함한 상위 클래스
 		System.out.println("@OnError : 현재 클라이언트" + session.getId() + "와 연결중에 에러가 발생됨...");
 
 		System.out.println(throwable.getMessage());

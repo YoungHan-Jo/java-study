@@ -35,7 +35,7 @@ public class EchoEndpoint {
 
 	@OnClose
 	public void handleClose(Session session, CloseReason closeReason) throws IOException {
-		System.out.println("@OnClose : 클라이언트 " + session.getId() + "가 현재 서버에 연결을 끊음...");
+		System.out.println("@OnClose : 클라이언트 " + session.getId() + " 와 " + closeReason + "이유로 인해 연결이 끊어짐...");
 	}
 
 	@OnError
