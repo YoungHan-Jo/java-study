@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.example.domain.BoardVO;
 import com.example.domain.Criteria;
@@ -467,5 +468,7 @@ public class BoardDAO {
 			JdbcUtils.close(con, pstmt);
 		}
 	} // updqteReSeqAndAddReply
+	
+	
 
 } // boardDAO

@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.example.domain.MemberVO;
 
@@ -278,6 +280,50 @@ public class MemberDAO {
 		}
 
 		return list;
-	}
+	} //getMembers
+	
+	public List<Map<String, Object>> getCountPerGender(){
+		List<Map<String, Object>> list = new ArrayList<>();
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			con = JdbcUtils.getConnection();
+			String sql = "";
+			sql += "SELECT CASE ";
+			sql += " 		WHEN gender = 'F' then '여성' ";
+			sql += "         WHEN gender = 'M' then '남성' ";
+			sql += "         ELSE '모름' ";
+			sql += " 		END AS gender_name, ";
+			sql += "         count(*) AS cnt ";
+			sql += " FROM member ";
+			sql += " GROUP BY gender ";
+			sql += " ORDER BY gender_name ";
+			
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				Map<String, Object> map = new HashMap<>();
+				map.put("genderName",rs.getString("gender_name"));
+				map.put("cnt", rs.getInt("cnt"));
+				
+				list.add(map);
+			}
+
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			JdbcUtils.close(con, pstmt, rs);
+		}
+		
+		
+		return list;
+	} //getCountPerGender
+	
+	
 
 }
