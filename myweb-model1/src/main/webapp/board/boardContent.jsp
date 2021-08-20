@@ -109,7 +109,7 @@ time.comment-date {
 											<%
 											for(AttachVO attach : attachList){
 												if(attach.getFiletype().equals("O")){ // 일반 파일
-													//썸네일 이미지 경로
+													//파일 이름 경로
 													String fileCallPath = attach.getUploadpath() + "/" + attach.getFilename();
 													%>
 													<li>

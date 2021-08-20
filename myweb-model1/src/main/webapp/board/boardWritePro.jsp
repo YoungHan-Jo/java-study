@@ -98,8 +98,8 @@ while (enu.hasMoreElements()) { // 파일이 있으면
 	System.out.println("getFilesystemName : " + filename);
 	
 	// 원본 파일명 가져오기
-		String original = multi.getOriginalFileName(fname);
-		System.out.println("getOriginalFileName : " + original);
+	String original = multi.getOriginalFileName(fname);
+	System.out.println("getOriginalFileName : " + original);
 
 	if (filename == null) { // 업로드 할 파일정보가 없으면
 		continue; // 그 다음 반복으로 건너뛰기
