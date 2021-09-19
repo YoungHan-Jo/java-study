@@ -145,15 +145,15 @@ if (delFilesUuid != null) {
 		File deleteFile = new File(path);
 
 		if (deleteFile.exists()) { // 삭제할 파일이 존재하면
-	deleteFile.delete(); // 파일 삭제하기
+		deleteFile.delete(); // 파일 삭제하기
 		} //if
 
 		if (attach.getFiletype().equals("I")) { // 이미지 파일이면 썸네일 파일도 지움
-	String thumbnailPath = uploadFolder + "/" + attach.getUploadpath() + "/s_" + attach.getFilename();
-	File thumbnailFile = new File(thumbnailPath);
-	if (thumbnailFile.exists()) { // 삭제할 파일이 존재하면
-		thumbnailFile.delete(); // 파일 삭제하기
-	}
+				String thumbnailPath = uploadFolder + "/" + attach.getUploadpath() + "/s_" + attach.getFilename();
+				File thumbnailFile = new File(thumbnailPath);
+				if (thumbnailFile.exists()) { // 삭제할 파일이 존재하면
+					thumbnailFile.delete(); // 파일 삭제하기
+				}
 		} //if
 
 		// DB에서 uuid에 해당하는 첨부파일정보 삭제하기
