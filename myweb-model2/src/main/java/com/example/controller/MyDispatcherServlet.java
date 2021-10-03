@@ -51,7 +51,6 @@ public class MyDispatcherServlet extends HttpServlet {
 		} else if (command.equals("memberJoin.do")) {
 			
 		}
-		
 		// 3. 작업 처리 후 사용자에게 알맞은 응답(화면 또는 데이터)을 보내기
 		
 		
