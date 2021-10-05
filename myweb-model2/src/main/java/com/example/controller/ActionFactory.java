@@ -8,8 +8,10 @@ import com.example.controller.member.MemberJoinAction;
 import com.example.controller.member.MemberJoinProAction;
 import com.example.controller.member.MemberLoginAction;
 
+// 메인컨트롤러는 수정하지 않아도 되도록. 액션을 관리하는 클래스 따로 만듦
 public class ActionFactory {
 	
+	// 싱글톤 처리
 	private static ActionFactory instance;
 	
 	public static ActionFactory getInstance() {
@@ -19,7 +21,7 @@ public class ActionFactory {
 		return instance;
 	}
 	
-	
+	// 해시맵으로 관리 
 	private Map<String,Action> actionMap = new HashMap<>();
 	
 	private ActionFactory() {
@@ -35,6 +37,7 @@ public class ActionFactory {
 		
 	}// 기본 생성자
 
+	//명령어를 입력 받으면 Action을 반환함.
 	public Action getAction(String command) {
 		Action action = null;
 
