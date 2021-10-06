@@ -4,11 +4,15 @@
 	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
-	
+
 	<!-- Root Context: defines shared resources visible to all other web components -->
-		
+
 	<!-- 스프링에서 관리해야할 패키지 등록 (전체 다 스캔하면 시간 너무 오래걸림) -->
 	<!-- @Component 클래스를 스캔해서 스프링 빈으로 등록하고 의존관계 주입시킴 -->
-	<context:component-scan base-package="com.example.controller"/>	
-		
+	<!-- 하단의 namespaces로 가서 context 활성화 -->
+	<context:component-scan
+		base-package="com.example.controller" />
+	<context:component-scan
+		base-package="com.example.myapp" />
+
 </beans>

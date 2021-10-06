@@ -14,7 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 // CarTests 클래스도 실행되면 스프링 빈이 됨! ( 빈과 빈 끼리는 의존관계 주입이 가능함)
 
 // pom.xml에 springTest 모듈을 등록했기때문에 사용가능
-@RunWith(SpringJUnit4ClassRunner.class) // spring과 junit 통합, @Component 계열 애노테이션
+@RunWith(SpringJUnit4ClassRunner.class) // spring과 junit 통합, Component 계열 애노테이션
 @ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context.xml") // root-context을 실행시키기(Component-scan)
 public class CarTests {
 
@@ -29,6 +29,8 @@ public class CarTests {
 
 	@Test
 	public void testCar() {
+		
+		assertNotNull(car);
 
 		car.drive();
 	}

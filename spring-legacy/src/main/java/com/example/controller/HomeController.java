@@ -3,7 +3,7 @@ package com.example.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
-@Controller //@Component애노테이션 계열. 스프링 빈
+@Controller // Component애노테이션 계열. 스프링 빈
 public class HomeController {
 
 	// 애노테이션으로 메서드 단위로 관리함
