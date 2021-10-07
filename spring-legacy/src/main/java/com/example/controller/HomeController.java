@@ -12,7 +12,7 @@ public class HomeController {
 	public String home() {
 		System.out.println("home() 호출됨...");
 		
-		return "index"; // return "redirecd:index"; 로 리다이렉트 or 포워드 구분
+		return "index"; // return "redirect:index"; 로 리다이렉트 or 포워드 구분
 	}
 	
 	
