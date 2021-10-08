@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import com.example.domain.MemberVO;
 
-@Component
 public interface MemberMapper {
 
 	// 기존에 sql문 pstmt 입력하던걸 여기서는 이렇게 , ???? 1234 set멤버변수() 하던걸 #{멤버변수명}으로 설정함

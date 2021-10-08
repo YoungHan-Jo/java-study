@@ -5,14 +5,12 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<!-- 프로젝트 정보 -->
 	<groupId>com.example</groupId>
 	<artifactId>myapp</artifactId>
 	<name>spring-legacy</name>
 	<packaging>war</packaging>
 	<version>1.0.0-BUILD-SNAPSHOT</version>
 
-	<!-- 변수 만들어줌 -->
 	<properties>
 		<java-version>1.8</java-version>
 		<org.springframework-version>5.2.17.RELEASE</org.springframework-version>
@@ -39,7 +37,6 @@
 			<artifactId>spring-webmvc</artifactId>
 			<version>${org.springframework-version}</version>
 		</dependency>
-
 		<!-- https://mvnrepository.com/artifact/org.springframework/spring-test -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -47,15 +44,12 @@
 			<version>${org.springframework-version}</version>
 			<scope>test</scope>
 		</dependency>
-
 		<!-- https://mvnrepository.com/artifact/org.springframework/spring-jdbc -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
 			<version>${org.springframework-version}</version>
 		</dependency>
-
-		<!-- DB transaction -->
 		<!-- https://mvnrepository.com/artifact/org.springframework/spring-tx -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -63,14 +57,13 @@
 			<version>${org.springframework-version}</version>
 		</dependency>
 
+
 		<!-- https://mvnrepository.com/artifact/org.mybatis/mybatis -->
 		<dependency>
 			<groupId>org.mybatis</groupId>
 			<artifactId>mybatis</artifactId>
 			<version>3.5.7</version>
 		</dependency>
-
-		<!-- db 객체 자동 맵핑 -->
 		<!-- https://mvnrepository.com/artifact/org.mybatis/mybatis-spring -->
 		<dependency>
 			<groupId>org.mybatis</groupId>
@@ -84,16 +77,13 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<version>8.0.26</version>
 		</dependency>
-
-		<!-- HikariCP : connection pool -->
+		
 		<!-- https://mvnrepository.com/artifact/com.zaxxer/HikariCP -->
 		<dependency>
 			<groupId>com.zaxxer</groupId>
 			<artifactId>HikariCP</artifactId>
 			<version>5.0.0</version>
 		</dependency>
-
-
 		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
@@ -101,42 +91,23 @@
 			<version>1.18.20</version>
 			<scope>provided</scope>
 		</dependency>
-
 		<!-- https://mvnrepository.com/artifact/org.mindrot/jbcrypt -->
 		<dependency>
 			<groupId>org.mindrot</groupId>
 			<artifactId>jbcrypt</artifactId>
 			<version>0.4</version>
 		</dependency>
-
 		<!-- https://mvnrepository.com/artifact/net.coobird/thumbnailator -->
 		<dependency>
 			<groupId>net.coobird</groupId>
 			<artifactId>thumbnailator</artifactId>
 			<version>0.4.14</version>
 		</dependency>
-
-		<!-- 입출력처리 -->
 		<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
 			<version>2.11.0</version>
-		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/org.quartz-scheduler/quartz -->
-		<dependency>
-			<groupId>org.quartz-scheduler</groupId>
-			<artifactId>quartz</artifactId>
-			<version>2.3.2</version>
-		</dependency>
-
-		<!-- quartz 스케쥴링할때 job클래스 -->
-		<!-- https://mvnrepository.com/artifact/org.quartz-scheduler/quartz-jobs -->
-		<dependency>
-			<groupId>org.quartz-scheduler</groupId>
-			<artifactId>quartz-jobs</artifactId>
-			<version>2.3.2</version>
 		</dependency>
 
 
@@ -205,7 +176,6 @@
 			<version>4.0.1</version>
 			<scope>provided</scope>
 		</dependency>
-
 		<!-- https://mvnrepository.com/artifact/javax.servlet.jsp/javax.servlet.jsp-api -->
 		<dependency>
 			<groupId>javax.servlet.jsp</groupId>
@@ -213,7 +183,6 @@
 			<version>2.3.3</version>
 			<scope>provided</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
@@ -228,6 +197,8 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+
+
 	<build>
 		<plugins>
 			<plugin>

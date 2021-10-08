@@ -18,11 +18,6 @@
     <factorypathentry kind="VARJAR" id="M2_REPO/org/mindrot/jbcrypt/0.4/jbcrypt-0.4.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/net/coobird/thumbnailator/0.4.14/thumbnailator-0.4.14.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/commons-io/commons-io/2.11.0/commons-io-2.11.0.jar" enabled="true" runInBatchMode="false"/>
-    <factorypathentry kind="VARJAR" id="M2_REPO/org/quartz-scheduler/quartz/2.3.2/quartz-2.3.2.jar" enabled="true" runInBatchMode="false"/>
-    <factorypathentry kind="VARJAR" id="M2_REPO/com/mchange/c3p0/0.9.5.4/c3p0-0.9.5.4.jar" enabled="true" runInBatchMode="false"/>
-    <factorypathentry kind="VARJAR" id="M2_REPO/com/mchange/mchange-commons-java/0.2.15/mchange-commons-java-0.2.15.jar" enabled="true" runInBatchMode="false"/>
-    <factorypathentry kind="VARJAR" id="M2_REPO/com/zaxxer/HikariCP-java7/2.4.13/HikariCP-java7-2.4.13.jar" enabled="true" runInBatchMode="false"/>
-    <factorypathentry kind="VARJAR" id="M2_REPO/org/quartz-scheduler/quartz-jobs/2.3.2/quartz-jobs-2.3.2.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/aspectj/aspectjrt/1.9.7/aspectjrt-1.9.7.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/slf4j/slf4j-api/1.7.32/slf4j-api-1.7.32.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/slf4j/jcl-over-slf4j/1.7.32/jcl-over-slf4j-1.7.32.jar" enabled="true" runInBatchMode="false"/>

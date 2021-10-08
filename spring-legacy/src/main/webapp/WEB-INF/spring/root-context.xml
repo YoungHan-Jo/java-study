@@ -8,35 +8,29 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
 
 	<!-- Root Context: defines shared resources visible to all other web components -->
-
-
-	<!-- 외부 클래스라서 @Component로 간단하게 빈으로 만들기 불가 -->
-	<!-- DB setting -->
+		
 	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
-		<property name="driverClassName"
-			value="com.mysql.cj.jdbc.Driver" />
-		<property name="jdbcUrl"
-			value="jdbc:mysql://localhost:3306/jspdb?useUnicode=true&amp;characterEncoding=utf8&amp;allowPublicKeyRetrieval=true&amp;useSSL=false&amp;serverTimezone=Asia/Seoul" />
+		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
+		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/jspdb?useUnicode=true&amp;characterEncoding=utf8&amp;allowPublicKeyRetrieval=true&amp;useSSL=false&amp;serverTimezone=Asia/Seoul" />
 		<property name="username" value="jspid" />
 		<property name="password" value="jsppass" />
 	</bean>
-
-	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource"
-		destroy-method="close">
+	
+	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
 		<constructor-arg ref="hikariConfig" />
 	</bean>
-
+	
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
-		<property name="configLocation"
-			value="classpath:/mybatis-config.xml" />
+		<property name="configLocation" value="classpath:/mybatis-config.xml" />
 	</bean>
 	
-	<!-- 기준패키지에 있는 맵퍼 인터페이스는 스캔에 의해서 DAO와 같이 구현된 클래스로 자동 변환되고 
-			스프링이 관리하는 객체(빈)으로 준비됨. 의존관계주입이 가능함. -->
+	<!-- 기준패키지에 있는 매퍼 인터페이스는 스캔에 의해서 DAO와 같은 구현된 클래스로 자동 변환되고
+	     스프링이 관리하는 객체(빈)으로 준비됨. 의존관계 주입이 가능함. -->
 	<mybatis-spring:scan base-package="com.example.mapper"/>
-
-	<!-- 스프링에서 관리해야할 패키지 등록 (전체 다 스캔하면 시간 너무 오래걸림) -->
-
-
+	
+	
+	<!-- @Component 계열 클래스를 스캔해서 스프링 빈으로 등록하고 의존관계 주입시킴 -->
+	
+		
 </beans>
