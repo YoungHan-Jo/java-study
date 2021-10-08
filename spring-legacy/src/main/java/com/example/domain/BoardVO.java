@@ -1,6 +1,7 @@
 package com.example.domain;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 import lombok.Data;
 
@@ -14,7 +15,7 @@ public class BoardVO {
 	private String subject;
 	private String content;
 	private Integer readcount;
-	private Timestamp regDate;
+	private Date regDate;
 	private String ipaddr;
 	private Integer reRef;
 	private Integer reLev;
